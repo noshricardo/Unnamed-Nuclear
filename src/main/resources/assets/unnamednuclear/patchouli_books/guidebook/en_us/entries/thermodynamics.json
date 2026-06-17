@@ -1,0 +1,29 @@
+{
+  "name": "Thermodynamics & Power",
+  "category": "unnamednuclear:reactors",
+  "icon": "unnamednuclear:steam_turbine",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Generating power from a reactor requires a multi-stage thermodynamic loop. $(br2)1. Primary Loop: Liquid Sodium is pumped into the Reactor Controller. It absorbs core heat and becomes Hot Liquid Sodium."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "2. Heat Exchanger: Hot Sodium is pumped into a Heat Exchanger. It transfers its thermal energy to a secondary water loop, flashing the water into Steam while returning cooled Sodium to the reactor."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "3. Steam Turbine: Steam is piped into a Steam Turbine. The turbine converts the thermal energy and pressure of the steam into rotation, generating Forge Energy (FE). Spent steam can be condensed back to water."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:heat_exchanger",
+      "text": "The Heat Exchanger is the bridge between the radioactive core loop and the clean power loop."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:steam_turbine",
+      "text": "The Steam Turbine is where the actual electricity is generated."
+    }
+  ]
+}

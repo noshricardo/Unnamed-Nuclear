@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ChemicalConverterScreen extends AbstractContainerScreen<ChemicalConverterMenu> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, "textures/gui/container/centrifuge.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, "textures/gui/container/chemical_converter.png");
 
     public ChemicalConverterScreen(ChemicalConverterMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);

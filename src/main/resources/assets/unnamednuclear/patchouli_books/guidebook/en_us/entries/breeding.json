@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The PUREX process involves dissolving spent fuel in Nitric Acid (HNO3) in a Solvent Extractor to create Uranyl Nitrate and Plutonium Nitrate solutions. These are then treated with Tributyl Phosphate (TBP) to separate Uranium and Plutonium from Fission Products."
+      "text": "The PUREX process is used to reprocess spent nuclear fuel. $(br2)1. Dissolution: Spent fuel is dissolved in Nitric Acid in the Solvent Extractor.$(br)2. Extraction: TBP is used to separate Uranium and Plutonium from Fission Products.$(br)3. Solidification: The nitrates are converted back to solid oxides in the Chemical Converter."
     },
     {
        "type": "patchouli:text",

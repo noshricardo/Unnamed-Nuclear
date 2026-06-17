@@ -1,0 +1,26 @@
+{
+  "name": "PUREX Reprocessing",
+  "category": "unnamednuclear:processing",
+  "icon": "unnamednuclear:solvent_extractor",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Spent nuclear fuel contains unburned Uranium, Plutonium, and dangerous Fission Products. $(br2)The PUREX process isolates these components using solvent extraction. $(br2)1. Dissolve spent rods in Nitric Acid to create a nitrate solution.$(br)2. Mix with TBP in Kerosene to separate Uranium and Plutonium from the waste."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:solvent_extractor_block",
+      "text": "The Solvent Extractor uses multi-stage centrifugal contactors to isolate isotopes with high purity."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:nitric_acid_bucket",
+      "text": "Nitric Acid is used to dissolve spent fuel."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:tbp_kerosene_bucket",
+      "text": "TBP is the organic solvent that extracts Uranium and Plutonium."
+    }
+  ]
+}

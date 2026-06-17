@@ -15,6 +15,8 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
@@ -44,15 +46,37 @@ public class UnnamedNuclear {
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modEventBus.addListener(this::registerCapabilities);
+        modEventBus.addListener(this::registerPayloads);
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            UnnamedNuclearClient.registerModEvents(modEventBus);
+        }
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
     private void registerCapabilities(net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event) {
-        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, (BlockEntityType<com.unnamednuclear.block.HeatExchangerBlockEntity>)Registration.HEAT_EXCHANGER_BE.get(), (be, side) -> {
-            // Return one of the tanks based on side or just a wrapper
-            return null; // For now
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, Registration.HEAT_EXCHANGER_BE.get(), (be, side) -> {
+            com.unnamednuclear.block.HeatExchangerBlockEntity exchanger = (com.unnamednuclear.block.HeatExchangerBlockEntity) be;
+            if (side == net.minecraft.core.Direction.UP || side == net.minecraft.core.Direction.DOWN) return exchanger.getPrimaryTank();
+            if (side == net.minecraft.core.Direction.NORTH || side == net.minecraft.core.Direction.SOUTH) return exchanger.getWaterTank();
+            return exchanger.getSteamTank();
         });
-        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage.BLOCK, (BlockEntityType<com.unnamednuclear.block.SteamTurbineBlockEntity>)Registration.STEAM_TURBINE_BE.get(), (be, side) -> null);
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, Registration.REACTOR_CONTROLLER_BE.get(), (be, side) -> {
+            com.unnamednuclear.block.ReactorControllerBlockEntity controller = (com.unnamednuclear.block.ReactorControllerBlockEntity) be;
+            if (side == net.minecraft.core.Direction.UP) return controller.getInputTank();
+            return controller.getOutputTank();
+        });
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, Registration.STEAM_TURBINE_BE.get(), (be, side) -> ((com.unnamednuclear.block.SteamTurbineBlockEntity)be).getSteamTank());
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage.BLOCK, Registration.STEAM_TURBINE_BE.get(), (be, side) -> ((com.unnamednuclear.block.SteamTurbineBlockEntity)be).getEnergyStorage());
+    }
+
+    private void registerPayloads(final net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent event) {
+        final net.neoforged.neoforge.network.registration.PayloadRegistrar registrar = event.registrar(MODID);
+        registrar.playToClient(
+                com.unnamednuclear.network.SimulationDataSyncPayload.TYPE,
+                com.unnamednuclear.network.SimulationDataSyncPayload.STREAM_CODEC,
+                com.unnamednuclear.network.NetworkHandler::handleSimulationData
+        );
     }
 }

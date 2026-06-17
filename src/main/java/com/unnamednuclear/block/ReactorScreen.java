@@ -1,5 +1,6 @@
 package com.unnamednuclear.block;
 
+import com.unnamednuclear.UnnamedNuclear;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -9,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ReactorScreen extends AbstractContainerScreen<ReactorMenu> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.withDefaultNamespace("textures/gui/container/dispenser.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, "textures/gui/container/reactor_controller.png");
 
     public ReactorScreen(ReactorMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title);
@@ -22,7 +23,7 @@ public class ReactorScreen extends AbstractContainerScreen<ReactorMenu> {
 
         this.addRenderableWidget(Button.builder(Component.literal("Toggle"), (btn) -> {
             this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 0);
-        }).pos(this.leftPos + 100, this.topPos + 35).size(60, 20).build());
+        }).pos(this.leftPos + 105, this.topPos + 20).size(60, 20).build());
     }
 
     @Override

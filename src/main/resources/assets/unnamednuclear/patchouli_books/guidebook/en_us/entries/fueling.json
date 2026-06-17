@@ -6,6 +6,16 @@
     {
       "type": "patchouli:text",
       "text": "To operate a reactor, you must insert fuel into the $(l:unnamednuclear:fuel_channel)Fuel Channels$. Right-click a Fuel Channel with a $(l:unnamednuclear:nuclear_fuel)Fuel Rod$ to insert it. Higher enrichment levels will produce more heat and neutrons."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:nuclear_fuel_rod",
+      "text": "Assembling the enriched pellets into a Zircaloy-clad fuel rod."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:fuel_pellet",
+      "text": "UO2 powder is pressed into small, high-density pellets."
     }
   ]
 }

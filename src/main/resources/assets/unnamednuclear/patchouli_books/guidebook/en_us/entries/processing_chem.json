@@ -1,0 +1,15 @@
+{
+  "name": "Chemical Processing",
+  "category": "unnamednuclear:processing",
+  "icon": "unnamednuclear:chemical_converter",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The path from Uranium Ore to Reactor Fuel involves several chemical steps:$(br2)1. Yellowcake + Nitric Acid -> Uranyl Nitrate$(br)2. Uranyl Nitrate -> Uranium Dioxide (UO2)$(br)3. UO2 + Hydrofluoric Acid -> Uranium Tetrafluoride (UF4)$(br)4. UF4 + Fluorine Gas -> Uranium Hexafluoride (UF6)"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Each of these steps occurs in the Chemical Converter. $(br2)UF6 is the gaseous form required for enrichment in the Centrifuge. After enrichment, UF6 must be converted back to UO2 pellets for use in fuel rods."
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:shaped",
+  "pattern": [
+    "ICI",
+    "RER",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "unnamednuclear:reactor_casing"
+    },
+    "C": {
+      "item": "minecraft:comparator"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "E": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "count": 1,
+    "item": "unnamednuclear:reactor_controller"
+  }
+}

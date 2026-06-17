@@ -15,6 +15,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -40,9 +43,15 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
     private final List<BlockPos> interiorNodes = new ArrayList<>();
     private int tickCounter = 0;
 
+    private final FluidTank inputTank = new FluidTank(4000);
+    private final FluidTank outputTank = new FluidTank(4000);
+
     public ReactorControllerBlockEntity(BlockPos pos, BlockState state) {
         super(Registration.REACTOR_CONTROLLER_BE.get(), pos, state);
     }
+
+    public FluidTank getInputTank() { return inputTank; }
+    public FluidTank getOutputTank() { return outputTank; }
 
     public void tick() {
         if (level == null || level.isClientSide) return;
@@ -50,6 +59,34 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
         tickCounter++;
         if (tickCounter % 20 == 0) {
             checkMultiblock();
+            transferHeatToCoolant();
+        }
+    }
+
+    private void transferHeatToCoolant() {
+        if (!assembled || !active) return;
+        
+        WorldSimulationData data = WorldSimulationData.get((net.minecraft.server.level.ServerLevel) level);
+        if (inputTank.getFluidAmount() > 0 && inputTank.getFluid().is(Registration.SODIUM.get())) {
+            int amountToHeats = Math.min(inputTank.getFluidAmount(), 100);
+            double totalHeat = 0;
+            for (BlockPos pos : interiorNodes) {
+                SimulationNode node = data.getNode(pos);
+                if (node != null) totalHeat += node.heat;
+            }
+
+            if (totalHeat > 100) { // Some threshold to start heating
+                inputTank.drain(amountToHeats, IFluidHandler.FluidAction.EXECUTE);
+                outputTank.fill(new FluidStack(Registration.HOT_SODIUM.get(), amountToHeats), IFluidHandler.FluidAction.EXECUTE);
+                
+                // Remove heat from the core
+                double heatToRemove = amountToHeats * 2.0;
+                double heatPerNode = heatToRemove / interiorNodes.size();
+                for (BlockPos pos : interiorNodes) {
+                    SimulationNode node = data.getNode(pos);
+                    if (node != null) node.heat = Math.max(0, node.heat - heatPerNode);
+                }
+            }
         }
     }
 
@@ -161,6 +198,10 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
         return assembled;
     }
 
+    public double getCoreTemperature() {
+        return getTotalHeat();
+    }
+
     public double getTotalHeat() {
         if (level == null || level.isClientSide) return 0;
         WorldSimulationData data = WorldSimulationData.get((net.minecraft.server.level.ServerLevel) level);
@@ -172,6 +213,19 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
             }
         }
         return totalHeat;
+    }
+
+    public double getNetFlux() {
+        if (level == null || level.isClientSide) return 0;
+        WorldSimulationData data = WorldSimulationData.get((net.minecraft.server.level.ServerLevel) level);
+        double totalFlux = 0;
+        for (BlockPos pos : interiorNodes) {
+            SimulationNode node = data.getNode(pos);
+            if (node != null) {
+                totalFlux += node.fastNeutrons + node.thermalNeutrons;
+            }
+        }
+        return totalFlux;
     }
 
     public double getAverageXenon() {
@@ -254,6 +308,8 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
         tag.putBoolean("assembled", assembled);
         tag.putBoolean("active", active);
         tag.putInt("result", lastResult.ordinal());
+        tag.put("inputTank", inputTank.writeToNBT(registries, new CompoundTag()));
+        tag.put("outputTank", outputTank.writeToNBT(registries, new CompoundTag()));
         long[] posArray = new long[errorPositions.size()];
         for (int i = 0; i < errorPositions.size(); i++) {
             posArray[i] = errorPositions.get(i).asLong();
@@ -268,6 +324,12 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
         active = tag.contains("active") ? tag.getBoolean("active") : true;
         if (tag.contains("result")) {
             lastResult = AssemblyResult.values()[tag.getInt("result")];
+        }
+        if (tag.contains("inputTank")) {
+            inputTank.readFromNBT(registries, tag.getCompound("inputTank"));
+        }
+        if (tag.contains("outputTank")) {
+            outputTank.readFromNBT(registries, tag.getCompound("outputTank"));
         }
         errorPositions.clear();
         if (tag.contains("errorPositions")) {

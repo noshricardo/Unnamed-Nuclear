@@ -83,9 +83,9 @@ public class DefaultReactorType implements ReactorType {
             data.nextHeat += moderated * 0.01;
         } else if (state.is(Registration.CONTROL_CHANNEL.get()) && be instanceof com.unnamednuclear.block.ReactorChannelBlockEntity channel) {
             if (channel.getItem().is(Registration.CONTROL_ROD_ITEM.get())) {
-                // Future: support fractional insertion via block state or item data
-                data.nextFastNeutrons -= data.fastNeutrons * 0.5;
-                data.nextThermalNeutrons -= data.thermalNeutrons * 0.99;
+                double insertion = state.getValue(com.unnamednuclear.block.ReactorChannelBlock.INSERTION) / 10.0;
+                data.nextFastNeutrons -= data.fastNeutrons * 0.5 * insertion;
+                data.nextThermalNeutrons -= data.thermalNeutrons * 0.99 * insertion;
             }
         } else if (state.is(Registration.COOLANT_CHANNEL.get())) {
             // Active cooling will be handled by fluid exchange later, but basic heat removal for now

@@ -26,6 +26,10 @@ public class WorldSimulationData extends SavedData {
         return nodes.get(pos);
     }
 
+    public Map<BlockPos, SimulationNode> getNodes() {
+        return nodes;
+    }
+
     public void addNode(BlockPos pos, ReactorType type) {
         nodes.putIfAbsent(pos, new SimulationNode());
         types.put(pos, type);

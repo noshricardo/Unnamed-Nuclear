@@ -77,21 +77,33 @@ public class ChemicalConverterBlockEntity extends BlockEntity implements MenuPro
     }
 
     private boolean canProcess(ItemStack input) {
-        if (input.isEmpty()) return false;
+        if (input.isEmpty()) {
+            // Electrolysis of HF to F2 (requires no item input, just fluid in tank)
+            return fluidTank.getFluid().is(Registration.HF.get()) && fluidTank.getFluidAmount() >= 500;
+        }
         
-        // Step 1: Yellowcake (U3O8) + Nitric Acid -> Uranyl Nitrate
+        // Step 0: Fluorite -> HF Acid (assumes water is internal or from atmosphere)
+        if (input.is(Registration.FLUORITE.get())) {
+            return (fluidTank.isEmpty() || fluidTank.getFluid().is(Registration.HF.get())) && fluidTank.getFluidAmount() <= 3500;
+        }
+
+        // Step 0.1: Redstone -> Nitric Acid (simplified)
+        if (input.is(net.minecraft.world.item.Items.REDSTONE)) {
+            return (fluidTank.isEmpty() || fluidTank.getFluid().is(Registration.HNO3.get())) && fluidTank.getFluidAmount() <= 3500;
+        }
+
+        // Step 1: Yellowcake + Nitric Acid -> Uranyl Nitrate
         if (input.is(Registration.YELLOWCAKE.get())) {
              return fluidTank.getFluidAmount() >= 200 && fluidTank.getFluid().is(Registration.HNO3.get()) 
                 && inventory.getStackInSlot(1).getCount() < 64;
         }
 
-        // Step 2: Uranyl Nitrate + (Heat/Reducing Agent) -> Uranium Dioxide (UO2)
-        // For simplicity in one machine, we use the converter for this as well.
+        // Step 2: Uranyl Nitrate -> Uranium Dioxide (UO2)
         if (input.is(Registration.URANYL_NITRATE.get())) {
             return inventory.getStackInSlot(1).getCount() < 64;
         }
         
-        // Step 3: UO2 + 4HF -> UF4 + 2H2O
+        // Step 3: UO2 + 4HF -> UF4
         if (input.is(Registration.URANIUM_DIOXIDE.get())) {
             return fluidTank.getFluidAmount() >= 400 && fluidTank.getFluid().is(Registration.HF.get())
                 && inventory.getStackInSlot(1).getCount() < 64;
@@ -107,15 +119,28 @@ public class ChemicalConverterBlockEntity extends BlockEntity implements MenuPro
     }
 
     private void process(ItemStack input) {
+        if (input.isEmpty()) {
+            // HF -> F2
+            if (fluidTank.getFluid().is(Registration.HF.get()) && fluidTank.getFluidAmount() >= 500) {
+                fluidTank.drain(500, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+                fluidTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.F2.get(), 500), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+            }
+            return;
+        }
+
         ItemStack result = ItemStack.EMPTY;
         int fluidUsed = 0;
+        net.neoforged.neoforge.fluids.FluidStack fluidToGenerate = net.neoforged.neoforge.fluids.FluidStack.EMPTY;
 
-        if (input.is(Registration.YELLOWCAKE.get())) {
+        if (input.is(Registration.FLUORITE.get())) {
+            fluidToGenerate = new net.neoforged.neoforge.fluids.FluidStack(Registration.HF.get(), 500);
+        } else if (input.is(net.minecraft.world.item.Items.REDSTONE)) {
+            fluidToGenerate = new net.neoforged.neoforge.fluids.FluidStack(Registration.HNO3.get(), 500);
+        } else if (input.is(Registration.YELLOWCAKE.get())) {
             result = new ItemStack(Registration.URANYL_NITRATE.get());
             fluidUsed = 200;
         } else if (input.is(Registration.URANYL_NITRATE.get())) {
             result = new ItemStack(Registration.URANIUM_DIOXIDE.get());
-            fluidUsed = 0;
         } else if (input.is(Registration.URANIUM_DIOXIDE.get())) {
             result = new ItemStack(Registration.URANIUM_TETRAFLUORIDE.get());
             fluidUsed = 400;
@@ -124,15 +149,23 @@ public class ChemicalConverterBlockEntity extends BlockEntity implements MenuPro
             fluidUsed = 200;
         }
 
-        if (!result.isEmpty()) {
-            if (input.has(Registration.COMPOSITION.get())) {
-                result.set(Registration.COMPOSITION.get(), input.get(Registration.COMPOSITION.get()));
+        if (!result.isEmpty() || !fluidToGenerate.isEmpty()) {
+            com.unnamednuclear.item.NuclearComposition comp = input.get(Registration.COMPOSITION.get());
+            if (comp == null && !result.isEmpty() && (input.is(Registration.YELLOWCAKE.get()) || input.is(Registration.URANYL_NITRATE.get()) || input.is(Registration.URANIUM_DIOXIDE.get()) || input.is(Registration.URANIUM_TETRAFLUORIDE.get()))) {
+                comp = new com.unnamednuclear.item.NuclearComposition(0.007, 0.993, 0, 0, 0, 0, 0, 0, 0);
             }
+            
             input.shrink(1);
             if (fluidUsed > 0) {
                 fluidTank.drain(fluidUsed, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
             }
-            addOrGrow(1, result);
+            if (!result.isEmpty()) {
+                if (comp != null) result.set(Registration.COMPOSITION.get(), comp);
+                addOrGrow(1, result);
+            }
+            if (!fluidToGenerate.isEmpty()) {
+                fluidTank.fill(fluidToGenerate, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+            }
         }
     }
 

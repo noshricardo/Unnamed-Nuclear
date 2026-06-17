@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "item": "unnamednuclear:fluorite_ore"
+  },
+  "result": {
+    "item": "unnamednuclear:fluorite"
+  },
+  "experience": 0.5,
+  "cookingtime": 100
+}

@@ -1,7 +1,8 @@
 {
   "replace": false,
   "values": [
-    "unnamednuclear:reactor_controller",
-    "unnamednuclear:reactor_casing"
+    "unnamednuclear:uranium_ore",
+    "unnamednuclear:deepslate_uranium_ore",
+    "unnamednuclear:fluorite_ore"
   ]
 }

@@ -12,9 +12,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+
 public class ReactorChannelBlock extends Block implements EntityBlock {
+    public static final IntegerProperty INSERTION = IntegerProperty.create("insertion", 0, 10);
+
     public ReactorChannelBlock(Properties properties) {
         super(properties);
+        this.registerDefaultState(this.stateDefinition.any().setValue(INSERTION, 0));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(INSERTION);
     }
 
     @Nullable
@@ -26,6 +37,13 @@ public class ReactorChannelBlock extends Block implements EntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         if (level.isClientSide) return InteractionResult.SUCCESS;
+
+        if (player.isSecondaryUseActive()) {
+            int current = state.getValue(INSERTION);
+            int next = (current + 1) % 11;
+            level.setBlock(pos, state.setValue(INSERTION, next), 3);
+            return InteractionResult.SUCCESS;
+        }
 
         BlockEntity be = level.getBlockEntity(pos);
         if (be instanceof ReactorChannelBlockEntity channel) {

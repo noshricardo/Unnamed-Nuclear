@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:shapeless",
+  "ingredients": [
+    {
+      "item": "unnamednuclear:uranium_dioxide"
+    },
+    {
+      "item": "unnamednuclear:hydrofluoric_acid_bucket"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "unnamednuclear:uranium_tetrafluoride"
+  }
+}

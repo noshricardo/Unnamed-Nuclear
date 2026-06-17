@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:shaped",
+  "pattern": [
+    "III",
+    "ILI",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "L": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "count": 1,
+    "item": "unnamednuclear:reactor_casing"
+  }
+}

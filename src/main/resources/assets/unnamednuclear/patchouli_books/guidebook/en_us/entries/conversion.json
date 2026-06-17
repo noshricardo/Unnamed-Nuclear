@@ -1,0 +1,31 @@
+{
+  "name": "Chemical Conversion",
+  "category": "unnamednuclear:processing",
+  "icon": "unnamednuclear:chemical_converter",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Before enrichment, raw Uranium must be converted into a gaseous form. $(br2)1. Yellowcake + Nitric Acid -> Uranyl Nitrate.$(br)2. Uranyl Nitrate -> Uranium Dioxide (UO2).$(br)3. UO2 + HF Acid -> Uranium Tetrafluoride (UF4).$(br)4. UF4 + Fluorine Gas -> Uranium Hexafluoride (UF6)."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:chemical_converter_block",
+      "text": "The Chemical Converter handles all these conversion steps. It requires various fluid inputs like Nitric Acid, HF, and Fluorine Gas."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:hydrofluoric_acid_bucket",
+      "text": "Producing HF acid for conversion."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:uranium_tetrafluoride",
+      "text": "Producing UF4 as a solid intermediate."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:uranium_hexafluoride",
+      "text": "Final conversion to UF6 gas for enrichment."
+    }
+  ]
+}

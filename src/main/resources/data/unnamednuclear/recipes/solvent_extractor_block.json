@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:shaped",
+  "pattern": [
+    "IPI",
+    "IRI",
+    "III"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "count": 1,
+    "item": "unnamednuclear:solvent_extractor"
+  }
+}

@@ -1,11 +1,29 @@
 {
-  "name": "Ores",
+  "name": "Ores and Raw Materials",
   "category": "unnamednuclear:basics",
   "icon": "unnamednuclear:uranium_ore",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The first step in nuclear engineering is finding the right materials. $(br2)Search for $(l:unnamednuclear:uranium_ore)Uranium Ore$ and $(l:unnamednuclear:fluorite_ore)Fluorite Ore$ deep underground. Uranium is used for fuel, while Fluorite is used in the enrichment process."
+      "text": "The core of nuclear power lies in Uranium. You can find $(l:unnamednuclear:uranium_ore)Uranium Ore$ and its deepslate variant throughout the world. $(br2)Additionally, $(l:unnamednuclear:fluorite_ore)Fluorite Ore$ is required for the production of Hydrofluoric Acid and Fluorine gas."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Smelting these ores will yield $(l:unnamednuclear:raw_uranium)Raw Uranium$ and $(l:unnamednuclear:fluorite)Fluorite$ crystals, which are the starting points for your industrial processes."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Starting the process: smelting raw ores into usable materials."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:yellowcake_from_smelting",
+      "text": "Refining Raw Uranium into Yellowcake."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:fluorite_from_smelting",
+      "text": "Smelting Fluorite Ore into pure Fluorite crystals."
     }
   ]
 }

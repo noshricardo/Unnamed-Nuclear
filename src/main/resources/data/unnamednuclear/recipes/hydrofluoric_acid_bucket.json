@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:water_bucket"
+    },
+    {
+      "item": "unnamednuclear:fluorite"
+    }
+  ],
+  "result": {
+    "item": "unnamednuclear:hydrofluoric_acid_bucket"
+  }
+}

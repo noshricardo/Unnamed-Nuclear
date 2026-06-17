@@ -88,7 +88,7 @@ public class SolventExtractorBlockEntity extends BlockEntity implements MenuProv
         // Nitric Acid Dissolution: Spent Fuel -> Nitrates
         if (input.is(Registration.NUCLEAR_FUEL.get())) {
             com.unnamednuclear.item.NuclearComposition comp = input.get(Registration.COMPOSITION.get());
-            if (comp == null || comp.waste() < 0.05) return false;
+            if (comp == null) return false;
             return fluidTank.getFluidAmount() >= 1000 && fluidTank.getFluid().is(Registration.HNO3.get())
                 && inventory.getStackInSlot(1).getCount() < 64 && inventory.getStackInSlot(2).getCount() < 64
                 && inventory.getStackInSlot(3).getCount() < 64;

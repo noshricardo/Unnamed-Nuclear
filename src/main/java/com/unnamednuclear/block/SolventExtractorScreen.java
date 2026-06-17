@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class SolventExtractorScreen extends AbstractContainerScreen<SolventExtractorMenu> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, "textures/gui/container/centrifuge.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, "textures/gui/container/solvent_extractor.png");
 
     public SolventExtractorScreen(SolventExtractorMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);

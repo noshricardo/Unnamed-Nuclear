@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "unnamednuclear:block/heat_exchanger"
+    }
+  }
+}

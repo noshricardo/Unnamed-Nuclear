@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:shaped",
+  "pattern": [
+    "CCC",
+    "CGC",
+    "CCC"
+  ],
+  "key": {
+    "C": {
+      "item": "unnamednuclear:reactor_casing"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "result": {
+    "item": "unnamednuclear:coolant_channel",
+    "count": 1
+  }
+}

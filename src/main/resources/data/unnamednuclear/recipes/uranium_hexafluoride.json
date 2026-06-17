@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:shapeless",
   "category": "misc",
   "ingredients": [
     {
@@ -17,6 +17,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "unnamednuclear:uranium_hexafluoride"
+    "item": "unnamednuclear:uranium_hexafluoride"
   }
 }

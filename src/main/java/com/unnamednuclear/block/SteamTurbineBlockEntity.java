@@ -18,6 +18,9 @@ public class SteamTurbineBlockEntity extends BlockEntity {
         super(Registration.STEAM_TURBINE_BE.get(), pos, state);
     }
 
+    public FluidTank getSteamTank() { return steamTank; }
+    public EnergyStorage getEnergyStorage() { return energyStorage; }
+
     public static void tick(Level level, BlockPos pos, BlockState state, SteamTurbineBlockEntity be) {
         if (level.isClientSide) return;
 

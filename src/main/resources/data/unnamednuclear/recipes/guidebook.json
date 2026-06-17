@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:shaped",
+  "pattern": [
+    " U ",
+    " B ",
+    "   "
+  ],
+  "key": {
+    "U": {
+      "item": "unnamednuclear:raw_uranium"
+    },
+    "B": {
+      "item": "minecraft:book"
+    }
+  },
+  "result": {
+    "item": "unnamednuclear:guidebook"
+  }
+}

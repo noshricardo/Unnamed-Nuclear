@@ -9,6 +9,11 @@
     "unnamednuclear:coolant_channel",
     "unnamednuclear:centrifuge",
     "unnamednuclear:chemical_converter",
-    "unnamednuclear:solvent_extractor"
+    "unnamednuclear:solvent_extractor",
+    "unnamednuclear:uranium_ore",
+    "unnamednuclear:deepslate_uranium_ore",
+    "unnamednuclear:fluorite_ore",
+    "unnamednuclear:heat_exchanger",
+    "unnamednuclear:steam_turbine"
   ]
 }

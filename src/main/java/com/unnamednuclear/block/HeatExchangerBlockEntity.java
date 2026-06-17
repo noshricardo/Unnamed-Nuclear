@@ -22,15 +22,23 @@ public class HeatExchangerBlockEntity extends BlockEntity {
         super(Registration.HEAT_EXCHANGER_BE.get(), pos, state);
     }
 
+    public FluidTank getPrimaryTank() { return primaryTank; }
+    public FluidTank getWaterTank() { return waterTank; }
+    public FluidTank getSteamTank() { return steamTank; }
+
     public static void tick(Level level, BlockPos pos, BlockState state, HeatExchangerBlockEntity be) {
         if (level.isClientSide) return;
 
-        // 1. Heat transfer from primary coolant
-        if (!be.primaryTank.isEmpty()) {
+        // 1. Heat transfer from hot sodium
+        if (!be.primaryTank.isEmpty() && be.primaryTank.getFluid().is(Registration.HOT_SODIUM.get())) {
             FluidStack stack = be.primaryTank.getFluid();
             // Simple model: 1mB of primary coolant transfers some heat
-            double transfer = stack.getAmount() * 0.01 * (stack.getFluid().getFluidType().getTemperature() - be.internalHeat);
+            double transfer = stack.getAmount() * 0.01;
             be.internalHeat += transfer;
+            
+            // Turn hot sodium back to liquid sodium
+            int amount = be.primaryTank.getFluidAmount();
+            be.primaryTank.setFluid(new FluidStack(Registration.SODIUM.get(), amount));
         }
 
         // 2. Steam generation

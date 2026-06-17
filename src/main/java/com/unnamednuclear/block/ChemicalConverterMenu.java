@@ -23,7 +23,7 @@ public class ChemicalConverterMenu extends AbstractContainerMenu {
         this.access = ContainerLevelAccess.create(blockEntity.getLevel(), blockEntity.getBlockPos());
         this.data = data;
 
-        addSlot(new SlotItemHandler(blockEntity.getInventory(), 0, 56, 35));
+        addSlot(new SlotItemHandler(blockEntity.getInventory(), 0, 44, 35));
         addSlot(new SlotItemHandler(blockEntity.getInventory(), 1, 116, 35));
 
         layoutPlayerInventorySlots(playerInventory, 8, 84);

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:shaped",
+  "pattern": [
+    " I ",
+    " I ",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "count": 1,
+    "item": "unnamednuclear:control_rod"
+  }
+}

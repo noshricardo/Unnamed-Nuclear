@@ -1,0 +1,16 @@
+{
+  "name": "Getting Started",
+  "category": "unnamednuclear:basics",
+  "icon": "minecraft:grass_block",
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Welcome to Unnamed Nuclear! This mod brings a high level of realism to nuclear engineering in Minecraft. $(br2)Your journey begins with prospecting for Uranium and Fluorite ores, found deep in the world."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The fundamental path is:$(br)1. Mine and process ores into raw materials.$(br)2. Use the Chemical Converter to create UF6 gas.$(br)3. Enrich UF6 in a Centrifuge cascade.$(br)4. Fabricate Nuclear Fuel rods.$(br)5. Build a reactor and generate power!"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:shaped",
+  "pattern": [
+    "GRG",
+    "RER",
+    "GRG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    }
+  },
+  "result": {
+    "item": "unnamednuclear:debug_item"
+  }
+}

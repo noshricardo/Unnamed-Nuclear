@@ -1,15 +1,16 @@
 {
-  "name": "Enrichment",
+  "name": "Enrichment Cascades",
   "category": "unnamednuclear:processing",
   "icon": "unnamednuclear:centrifuge",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The Isotope Centrifuge can enrich Uranium by separating U-235 from U-238. However, a single stage only provides a small boost. You may need multiple stages or a cascade to reach high enrichment levels. Enriched UF6 and tails (depleted UF6) are outputted and should be recycled to maximize efficiency."
+      "text": "Natural Uranium contains only 0.7% U-235. To make reactor fuel, you need 3-5% enrichment. $(br2)A single $(l:unnamednuclear:centrifuge)Centrifuge$ only provides a small boost. You must link multiple centrifuges in a cascade, piping the 'product' to the next stage and the 'tails' back."
     },
     {
-      "type": "patchouli:text",
-      "text": "The enrichment process uses Uranium Hexafluoride (UF6) gas. The centrifuge splits 2 units of input into 1 unit of slightly enriched product and 1 unit of slightly depleted tails. This mass-conservative process requires a cascade of machines to reach higher enrichment levels."
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:centrifuge_block",
+      "text": "The Isotope Centrifuge separates U-235 from U-238 using centrifugal force."
     }
   ]
 }

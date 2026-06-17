@@ -5,7 +5,39 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Reactors are large multiblocks. They require a $(l:unnamednuclear:reactor_casing)Casing$ and a $(l:unnamednuclear:reactor_controller)Controller$ on the surface. $(br2)The interior can contain $(l:unnamednuclear:fuel_channel)Fuel Channels$, $(l:unnamednuclear:moderator)Moderators$ (like Coal Blocks), and $(l:unnamednuclear:control_channel)Control Rods$."
+      "text": "Reactors are custom multiblocks. A valid reactor needs a $(l:unnamednuclear:reactor_casing)Casing$ and a $(l:unnamednuclear:reactor_controller)Controller$. $(br2)Inside the casing, you place $(l:unnamednuclear:fuel_channel)Fuel Channels$, $(l:unnamednuclear:moderator)Moderators$, and $(l:unnamednuclear:control_channel)Control Channels$."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Reactors are 3D grid-based. Each block interacts with its neighbors through neutrons. $(br2)Fast Neutrons: Emitted by fission, need moderation.$(br)Thermal Neutrons: Slowed down by moderators, high probability of causing fission in U-235."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Safety is critical. $(br2)Control Rods: Absorb neutrons to slow the reaction.$(br)Xenon-135: A byproduct of fission that poisons the reaction. $(br)Meltdowns: If heat exceeds 2000 units, the core will explode!"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The $(l:unnamednuclear:debug_item)Nuclear Analysis Tool$ can be used to visualize neutron flux and heat in real-time. Holding it will highlight active simulation nodes with colored boxes.$(br)Red: Heat$(br)Green: Thermal Neutrons$(br)Blue: Fast Neutrons"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:reactor_controller",
+      "text": "The heart of the multiblock."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:reactor_casing",
+      "text": "Used for the outer shell."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "unnamednuclear:fuel_channel",
+      "text": "Holds the fuel rods."
+    },
+    {
+       "type": "patchouli:crafting",
+       "recipe": "unnamednuclear:moderator",
+       "text": "Slows down neutrons to increase fission efficiency."
     }
   ]
 }
