@@ -2,6 +2,8 @@ package com.unnamednuclear.block;
 
 import com.unnamednuclear.client.ClientReactorTracker;
 import com.unnamednuclear.registration.Registration;
+import com.unnamednuclear.simulation.SimulationNode;
+import com.unnamednuclear.simulation.WorldSimulationData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -23,6 +25,7 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
         TOO_LARGE("too_large"),
         INVALID_BLOCK("invalid_block"),
         NO_INTERIOR("no_interior"),
+        NOT_ON_SURFACE("not_on_surface"),
         INCOMPLETE("incomplete");
 
         private final String messageKey;
@@ -35,7 +38,6 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
     private AssemblyResult lastResult = AssemblyResult.NO_INTERIOR;
     private final List<BlockPos> errorPositions = new ArrayList<>();
     private final List<BlockPos> interiorNodes = new ArrayList<>();
-    private final Map<BlockPos, BlockData> simulationData = new HashMap<>();
     private int tickCounter = 0;
 
     public ReactorControllerBlockEntity(BlockPos pos, BlockState state) {
@@ -49,10 +51,6 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
         if (tickCounter % 20 == 0) {
             checkMultiblock();
         }
-
-        if (assembled) {
-            simulate();
-        }
     }
 
     private void checkMultiblock() {
@@ -61,47 +59,51 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
         List<BlockPos> foundInterior = new ArrayList<>();
         List<BlockPos> foundErrors = new ArrayList<>();
         
-        // Start from neighbors of controller
-        for (Direction dir : Direction.values()) {
-            BlockPos neighbor = worldPosition.relative(dir);
-            if (!isCasing(neighbor)) {
-                queue.add(neighbor);
-                visited.add(neighbor);
-            }
-        }
-
         AssemblyResult result = AssemblyResult.SUCCESS;
         int maxSize = 1000;
+
+        // Start from the back of the controller
+        Direction facing = getBlockState().getValue(ReactorControllerBlock.FACING);
+        BlockPos back = worldPosition.relative(facing.getOpposite());
         
-        while (!queue.isEmpty()) {
-            BlockPos current = queue.poll();
-            if (isCasing(current)) continue;
+        if (!isCasing(back)) {
+            queue.add(back);
+            visited.add(back);
+        } else {
+            result = AssemblyResult.NO_INTERIOR;
+        }
 
-            if (current.distManhattan(worldPosition) > 64) {
-                result = AssemblyResult.INCOMPLETE;
-                foundErrors.add(current);
-                break;
-            }
-            
-            if (!isValidInterior(current)) {
-                if (foundErrors.size() < 100) {
+        if (result == AssemblyResult.SUCCESS) {
+            while (!queue.isEmpty()) {
+                BlockPos current = queue.poll();
+                if (isCasing(current)) continue;
+
+                if (current.distManhattan(worldPosition) > 64) {
+                    result = AssemblyResult.INCOMPLETE;
                     foundErrors.add(current);
+                    break;
                 }
-            } else {
-                foundInterior.add(current);
-            }
+                
+                if (!isValidInterior(current)) {
+                    if (foundErrors.size() < 100) {
+                        foundErrors.add(current);
+                    }
+                } else {
+                    foundInterior.add(current);
+                }
 
-            if (foundInterior.size() > maxSize) {
-                result = AssemblyResult.TOO_LARGE;
-                foundErrors.add(current);
-                break;
-            }
-            
-            for (Direction dir : Direction.values()) {
-                BlockPos next = current.relative(dir);
-                if (!visited.contains(next) && !isCasing(next)) {
-                    visited.add(next);
-                    queue.add(next);
+                if (foundInterior.size() > maxSize) {
+                    result = AssemblyResult.TOO_LARGE;
+                    foundErrors.add(current);
+                    break;
+                }
+                
+                for (Direction dir : Direction.values()) {
+                    BlockPos next = current.relative(dir);
+                    if (!visited.contains(next) && !isCasing(next)) {
+                        visited.add(next);
+                        queue.add(next);
+                    }
                 }
             }
         }
@@ -111,6 +113,8 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
                 result = AssemblyResult.INVALID_BLOCK;
             } else if (foundInterior.isEmpty()) {
                 result = AssemblyResult.NO_INTERIOR;
+            } else if (foundInterior.contains(worldPosition.relative(facing))) {
+                result = AssemblyResult.NOT_ON_SURFACE; // Controller must be on the surface
             }
         }
 
@@ -124,17 +128,12 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
                 assembled = true;
                 interiorNodes.clear();
                 interiorNodes.addAll(foundInterior);
-                simulationData.clear();
-                for (BlockPos pos : interiorNodes) {
-                    simulationData.put(pos, new BlockData());
-                }
                 changed = true;
             }
         } else {
             if (assembled) {
                 assembled = false;
                 interiorNodes.clear();
-                simulationData.clear();
                 changed = true;
             }
         }
@@ -152,93 +151,27 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
 
     private boolean isValidInterior(BlockPos pos) {
         BlockState state = level.getBlockState(pos);
-        return state.isAir() || state.is(Registration.FUEL_ROD.get()) || 
-               state.is(Registration.MODERATOR.get()) || state.is(Registration.CONTROL_ROD.get());
+        return state.isAir() || state.is(Registration.FUEL_CHANNEL.get()) || 
+               state.is(Registration.MODERATOR.get()) || state.is(Registration.CONTROL_CHANNEL.get()) ||
+               state.is(Registration.COOLANT_CHANNEL.get());
     }
 
-    private void simulate() {
-        // 1. Generation & Transformation
-        for (BlockPos pos : interiorNodes) {
-            BlockData data = simulationData.get(pos);
-            BlockState state = level.getBlockState(pos);
-
-            if (state.is(Registration.FUEL_ROD.get())) {
-                double fission = active ? ((data.thermalNeutrons * 0.1) + 0.01) : 0;
-                data.nextFastNeutrons += fission * 2.5;
-                data.nextHeat += fission * 20.0;
-            } else if (state.is(Registration.MODERATOR.get())) {
-                double moderated = data.fastNeutrons * 0.5;
-                data.fastNeutrons -= moderated;
-                data.thermalNeutrons += moderated;
-            } else if (state.is(Registration.CONTROL_ROD.get())) {
-                data.fastNeutrons *= 0.1;
-                data.thermalNeutrons *= 0.1;
-            }
-        }
-
-        // 2. Diffusion
-        for (BlockPos pos : interiorNodes) {
-            BlockData data = simulationData.get(pos);
-            
-            double diffusedFast = data.fastNeutrons * 0.1;
-            double diffusedThermal = data.thermalNeutrons * 0.1;
-            double diffusedHeat = data.heat * 0.05;
-
-            data.fastNeutrons -= diffusedFast * 6;
-            data.thermalNeutrons -= diffusedThermal * 6;
-            data.heat -= diffusedHeat * 6;
-
-            for (Direction dir : Direction.values()) {
-                BlockPos neighborPos = pos.relative(dir);
-                BlockData neighborData = simulationData.get(neighborPos);
-                if (neighborData != null) {
-                    neighborData.nextFastNeutrons += diffusedFast;
-                    neighborData.nextThermalNeutrons += diffusedThermal;
-                    neighborData.nextHeat += diffusedHeat;
-                } else if (isCasing(neighborPos)) {
-                    // Heat loss to casing
-                    data.heat -= diffusedHeat;
-                }
-            }
-        }
-
-        // 3. Update values
-        double totalHeat = 0;
-        for (BlockData data : simulationData.values()) {
-            data.fastNeutrons = Math.max(0, data.fastNeutrons + data.nextFastNeutrons);
-            data.thermalNeutrons = Math.max(0, data.thermalNeutrons + data.nextThermalNeutrons);
-            data.heat = Math.max(0, data.heat + data.nextHeat);
-            
-            data.nextFastNeutrons = 0;
-            data.nextThermalNeutrons = 0;
-            data.nextHeat = 0;
-
-            // Ambient cooling
-            data.heat *= 0.99;
-            totalHeat += data.heat;
-        }
-        
-        if (tickCounter % 20 == 0) {
-            // UnnamedNuclear.LOGGER.info("Reactor status: Assembled={}, Heat={}, Nodes={}", assembled, totalHeat, interiorNodes.size());
-        }
-    }
-
-    private static class BlockData {
-        double fastNeutrons;
-        double thermalNeutrons;
-        double heat;
-
-        double nextFastNeutrons;
-        double nextThermalNeutrons;
-        double nextHeat;
-    }
 
     public boolean isAssembled() {
         return assembled;
     }
 
     public double getTotalHeat() {
-        return simulationData.values().stream().mapToDouble(d -> d.heat).sum();
+        if (level == null || level.isClientSide) return 0;
+        WorldSimulationData data = WorldSimulationData.get((net.minecraft.server.level.ServerLevel) level);
+        double totalHeat = 0;
+        for (BlockPos pos : interiorNodes) {
+            SimulationNode node = data.getNode(pos);
+            if (node != null) {
+                totalHeat += node.heat;
+            }
+        }
+        return totalHeat;
     }
 
     public int getInteriorSize() {

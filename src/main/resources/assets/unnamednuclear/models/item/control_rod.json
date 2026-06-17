@@ -1,1 +1,6 @@
-{"parent": "unnamednuclear:block/control_rod"}
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "unnamednuclear:item/control_rod"
+  }
+}

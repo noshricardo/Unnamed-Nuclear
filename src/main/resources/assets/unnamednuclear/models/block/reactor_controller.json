@@ -1,1 +1,6 @@
-{"parent": "minecraft:block/cube_all", "textures": {"all": "minecraft:block/command_block_front"}}
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "unnamednuclear:block/reactor_controller"
+  }
+}

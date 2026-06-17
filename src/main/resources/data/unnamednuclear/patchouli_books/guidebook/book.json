@@ -1,0 +1,7 @@
+{
+  "name": "Nuclear Engineering Guidebook",
+  "landing_text": "Welcome to the guide for Unnamed Nuclear. Here you will find everything you need to know about nuclear reactors, uranium processing, and more.",
+  "use_resource_pack": true,
+  "model": "unnamednuclear:guidebook",
+  "show_progress": false
+}

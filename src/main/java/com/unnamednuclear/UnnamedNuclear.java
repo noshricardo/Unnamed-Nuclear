@@ -33,6 +33,7 @@ public class UnnamedNuclear {
     public UnnamedNuclear(IEventBus modEventBus, ModContainer modContainer) {
         Registration.BLOCKS.register(modEventBus);
         Registration.ITEMS.register(modEventBus);
+        Registration.DATA_COMPONENTS.register(modEventBus);
         Registration.BLOCK_ENTITIES.register(modEventBus);
         Registration.MENU_TYPES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);

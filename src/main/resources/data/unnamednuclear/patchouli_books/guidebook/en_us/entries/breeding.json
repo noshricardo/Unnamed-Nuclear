@@ -1,0 +1,11 @@
+{
+  "name": "Breeding and Reprocessing",
+  "category": "unnamednuclear:reactors",
+  "icon": "unnamednuclear:plutonium",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Nuclear reactors don't just produce power; they can also transform elements. $(br2)Fast neutrons can turn U-238 into $(l:unnamednuclear:plutonium)Pu-239$ (Breeding). Spent fuel rods can be reprocessed in a centrifuge to recover Plutonium and unused Uranium."
+    }
+  ]
+}

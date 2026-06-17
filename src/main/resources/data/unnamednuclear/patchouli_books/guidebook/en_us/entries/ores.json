@@ -1,0 +1,11 @@
+{
+  "name": "Ores",
+  "category": "unnamednuclear:basics",
+  "icon": "unnamednuclear:uranium_ore",
+  "pages": [
+    {
+      "type": "text",
+      "text": "The first step in nuclear engineering is finding the right materials. $(br2)Search for $(l:unnamednuclear:uranium_ore)Uranium Ore$ and $(l:unnamednuclear:fluorite_ore)Fluorite Ore$ deep underground. Uranium is used for fuel, while Fluorite is used in the enrichment process."
+    }
+  ]
+}

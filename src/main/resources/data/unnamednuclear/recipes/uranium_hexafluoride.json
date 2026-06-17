@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "unnamednuclear:yellowcake"
+    },
+    {
+      "item": "unnamednuclear:fluorite"
+    },
+    {
+      "item": "unnamednuclear:fluorite"
+    },
+    {
+      "item": "unnamednuclear:fluorite"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "unnamednuclear:uranium_hexafluoride"
+  }
+}

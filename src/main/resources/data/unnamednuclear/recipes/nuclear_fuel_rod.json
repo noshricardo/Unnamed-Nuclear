@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "unnamednuclear:enriched_uranium"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "I",
+    "E",
+    "I"
+  ],
+  "result": {
+    "count": 1,
+    "id": "unnamednuclear:nuclear_fuel",
+    "components": {
+      "unnamednuclear:fuel_type": "uranium",
+      "unnamednuclear:enrichment": 0.05
+    }
+  }
+}

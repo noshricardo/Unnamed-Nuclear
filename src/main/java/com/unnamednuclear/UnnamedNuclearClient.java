@@ -1,6 +1,7 @@
 package com.unnamednuclear;
 
 import com.unnamednuclear.block.ReactorScreen;
+import com.unnamednuclear.block.CentrifugeScreen;
 import com.unnamednuclear.client.ReactorOverlayRenderer;
 import com.unnamednuclear.registration.Registration;
 import net.neoforged.api.distmarker.Dist;
@@ -22,5 +23,6 @@ public class UnnamedNuclearClient {
 
     public void registerScreens(RegisterMenuScreensEvent event) {
         event.register(Registration.REACTOR_MENU.get(), ReactorScreen::new);
+        event.register(Registration.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
     }
 }
