@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "unnamednuclear:reactor_controller",
+    "unnamednuclear:reactor_casing"
+  ]
+}

@@ -19,34 +19,11 @@ license="${mod_license}"
 
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
-
-# The modid of the mod
-modId="${mod_id}" #mandatory
-
-# The version number of the mod
-version="${mod_version}" #mandatory
-
-# A display name for the mod
-displayName="${mod_name}" #mandatory
-
-# A URL to query for updates for this mod. See the JSON update specification https://docs.neoforged.net/docs/misc/updatechecker/
-#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
-
-# A URL for the "homepage" for this mod, displayed in the mod UI
-#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
-
-# A file name (in the root of the mod JAR) containing a logo for display
-#logoFile="examplemod.png" #optional
-
-# A text field displayed in the mod UI
-#credits="" #optional
-
-# The authors of the mod, displayed in the mod UI (optional)
-#authors=""
-
-# The description text for the mod (multi line!) (#mandatory)
+modId="unnamednuclear"
+version="${mod_version}"
+displayName="Unnamed Nuclear"
 description='''
-Example mod description.
+A freeform nuclear reactor mod with simplified physics.
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
@@ -61,7 +38,7 @@ Example mod description.
 # The coremods config file path is not configurable and is always loaded from META-INF/coremods.json
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.${mod_id}]] #optional
+[[dependencies.unnamednuclear]] #optional
     # the modid of the dependency
     modId="neoforge" #mandatory
     # The type of the dependency. Can be one of "required", "optional", "incompatible" or "discouraged" (case insensitive).
@@ -80,7 +57,7 @@ Example mod description.
     side="BOTH"
 
 # Here's another dependency
-[[dependencies.${mod_id}]]
+[[dependencies.unnamednuclear]]
     modId="minecraft"
     type="required"
     # This version range declares a minimum of the current minecraft version up to but not including the next major version

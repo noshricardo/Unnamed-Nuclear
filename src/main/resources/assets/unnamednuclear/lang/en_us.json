@@ -1,0 +1,13 @@
+{
+  "itemGroup.unnamednuclear": "Unnamed Nuclear",
+  "block.unnamednuclear.reactor_controller": "Reactor Controller",
+  "block.unnamednuclear.reactor_controller.desc": "Manages the reactor multiblock and simulation. Right-click to see status.",
+  "block.unnamednuclear.reactor_casing": "Reactor Casing",
+  "block.unnamednuclear.reactor_casing.desc": "Used to enclose the reactor. Must be airtight.",
+  "block.unnamednuclear.fuel_rod": "Uranium Fuel Rod",
+  "block.unnamednuclear.fuel_rod.desc": "Generates fast neutrons and heat from thermal neutrons.",
+  "block.unnamednuclear.moderator": "Graphite Moderator",
+  "block.unnamednuclear.moderator.desc": "Slows down fast neutrons into thermal neutrons, which are better for fission.",
+  "block.unnamednuclear.control_rod": "Control Rod",
+  "block.unnamednuclear.control_rod.desc": "Absorbs neutrons to slow down the chain reaction."
+}

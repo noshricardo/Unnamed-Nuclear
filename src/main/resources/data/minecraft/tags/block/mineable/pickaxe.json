@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "unnamednuclear:reactor_controller",
+    "unnamednuclear:reactor_casing",
+    "unnamednuclear:fuel_rod",
+    "unnamednuclear:moderator",
+    "unnamednuclear:control_rod"
+  ]
+}
