@@ -34,6 +34,7 @@ public class UnnamedNuclear {
         Registration.BLOCKS.register(modEventBus);
         Registration.ITEMS.register(modEventBus);
         Registration.BLOCK_ENTITIES.register(modEventBus);
+        Registration.MENU_TYPES.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);

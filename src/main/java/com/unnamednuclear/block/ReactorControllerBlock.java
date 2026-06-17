@@ -24,12 +24,7 @@ public class ReactorControllerBlock extends Block implements EntityBlock {
         if (!level.isClientSide) {
             BlockEntity be = level.getBlockEntity(pos);
             if (be instanceof ReactorControllerBlockEntity controller) {
-                player.sendSystemMessage(Component.literal("Reactor Status:"));
-                player.sendSystemMessage(Component.literal(" - Assembled: " + controller.isAssembled()));
-                if (controller.isAssembled()) {
-                    player.sendSystemMessage(Component.literal(" - Total Heat: " + String.format("%.2f", controller.getTotalHeat())));
-                    player.sendSystemMessage(Component.literal(" - Interior Size: " + controller.getInteriorSize()));
-                }
+                player.openMenu(controller, pos);
             }
         }
         return InteractionResult.SUCCESS;

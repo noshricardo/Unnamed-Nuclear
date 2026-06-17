@@ -9,5 +9,10 @@
   "block.unnamednuclear.moderator": "Graphite Moderator",
   "block.unnamednuclear.moderator.desc": "Slows down fast neutrons into thermal neutrons, which are better for fission.",
   "block.unnamednuclear.control_rod": "Control Rod",
-  "block.unnamednuclear.control_rod.desc": "Absorbs neutrons to slow down the chain reaction."
+  "block.unnamednuclear.control_rod.desc": "Absorbs neutrons to slow down the chain reaction.",
+  "tooltip.unnamednuclear.assembly.ok": "Reactor correctly assembled.",
+  "tooltip.unnamednuclear.assembly.too_large": "Reactor interior is too large (max 1000 blocks).",
+  "tooltip.unnamednuclear.assembly.invalid_block": "Invalid block found inside reactor.",
+  "tooltip.unnamednuclear.assembly.no_interior": "Reactor has no interior space.",
+  "tooltip.unnamednuclear.assembly.incomplete": "Reactor casing is not closed."
 }
