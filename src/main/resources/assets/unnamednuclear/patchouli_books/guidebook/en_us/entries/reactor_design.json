@@ -4,7 +4,7 @@
   "icon": "unnamednuclear:reactor_controller",
   "pages": [
     {
-      "type": "text",
+      "type": "patchouli:text",
       "text": "Reactors are large multiblocks. They require a $(l:unnamednuclear:reactor_casing)Casing$ and a $(l:unnamednuclear:reactor_controller)Controller$ on the surface. $(br2)The interior can contain $(l:unnamednuclear:fuel_channel)Fuel Channels$, $(l:unnamednuclear:moderator)Moderators$ (like Coal Blocks), and $(l:unnamednuclear:control_channel)Control Rods$."
     }
   ]

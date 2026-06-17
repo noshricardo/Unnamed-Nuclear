@@ -80,6 +80,8 @@ public class WorldSimulationData extends SavedData {
             nodeTag.putDouble("fast", node.fastNeutrons);
             nodeTag.putDouble("thermal", node.thermalNeutrons);
             nodeTag.putDouble("heat", node.heat);
+            nodeTag.putDouble("iodine", node.iodine135);
+            nodeTag.putDouble("xenon", node.xenon135);
             nodeTag.putString("type", types.get(pos).getId());
             list.add(nodeTag);
         }
@@ -97,6 +99,8 @@ public class WorldSimulationData extends SavedData {
             node.fastNeutrons = nodeTag.getDouble("fast");
             node.thermalNeutrons = nodeTag.getDouble("thermal");
             node.heat = nodeTag.getDouble("heat");
+            node.iodine135 = nodeTag.getDouble("iodine");
+            node.xenon135 = nodeTag.getDouble("xenon");
             data.nodes.put(pos, node);
             // For now, only default type
             data.types.put(pos, DefaultReactorType.INSTANCE);

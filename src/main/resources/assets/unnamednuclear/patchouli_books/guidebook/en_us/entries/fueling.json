@@ -4,7 +4,7 @@
   "icon": "unnamednuclear:nuclear_fuel",
   "pages": [
     {
-      "type": "text",
+      "type": "patchouli:text",
       "text": "To operate a reactor, you must insert fuel into the $(l:unnamednuclear:fuel_channel)Fuel Channels$. Right-click a Fuel Channel with a $(l:unnamednuclear:nuclear_fuel)Fuel Rod$ to insert it. Higher enrichment levels will produce more heat and neutrons."
     }
   ]

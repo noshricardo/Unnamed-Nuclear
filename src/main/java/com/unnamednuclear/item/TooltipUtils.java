@@ -19,27 +19,29 @@ public class TooltipUtils {
         }
 
         if (comp != null) {
-            double u235 = comp.u235();
-            double u238 = comp.u238();
-            double pu239 = comp.pu239();
-            double waste = comp.waste();
             double total = comp.getTotal();
-
             if (total > 0) {
-                tooltip.add(Component.translatable("tooltip.unnamednuclear.composition.u235", String.format("%.2f%%", (u235 / total) * 100)).withStyle(ChatFormatting.GRAY));
-                tooltip.add(Component.translatable("tooltip.unnamednuclear.composition.u238", String.format("%.2f%%", (u238 / total) * 100)).withStyle(ChatFormatting.GRAY));
-                if (pu239 > 0.0001) {
-                    tooltip.add(Component.translatable("tooltip.unnamednuclear.composition.pu239", String.format("%.2f%%", (pu239 / total) * 100)).withStyle(ChatFormatting.GOLD));
-                }
-                if (waste > 0.0001) {
-                    tooltip.add(Component.translatable("tooltip.unnamednuclear.composition.waste", String.format("%.2f%%", (waste / total) * 100)).withStyle(ChatFormatting.DARK_GRAY));
-                }
+                addPart(tooltip, "u235", comp.u235(), total, ChatFormatting.GRAY);
+                addPart(tooltip, "u238", comp.u238(), total, ChatFormatting.GRAY);
+                addPart(tooltip, "u234", comp.u234(), total, ChatFormatting.DARK_GRAY);
+                addPart(tooltip, "u236", comp.u236(), total, ChatFormatting.DARK_GRAY);
+                addPart(tooltip, "pu239", comp.pu239(), total, ChatFormatting.GOLD);
+                addPart(tooltip, "pu240", comp.pu240(), total, ChatFormatting.GOLD);
+                addPart(tooltip, "sr90", comp.sr90(), total, ChatFormatting.DARK_RED);
+                addPart(tooltip, "cs137", comp.cs137(), total, ChatFormatting.DARK_PURPLE);
+                addPart(tooltip, "waste", comp.waste(), total, ChatFormatting.DARK_GRAY);
             }
         } else {
             Double enrichment = stack.get(Registration.ENRICHMENT.get());
             if (enrichment != null) {
                 tooltip.add(Component.translatable("tooltip.unnamednuclear.enrichment", String.format("%.1f%%", enrichment * 100)).withStyle(ChatFormatting.GRAY));
             }
+        }
+    }
+
+    private static void addPart(List<Component> tooltip, String key, double amount, double total, ChatFormatting color) {
+        if (amount > 0.00001) {
+            tooltip.add(Component.translatable("tooltip.unnamednuclear.composition." + key, String.format("%.3f%%", (amount / total) * 100)).withStyle(color));
         }
     }
 }

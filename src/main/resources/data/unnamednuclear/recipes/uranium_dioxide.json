@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "unnamednuclear:enriched_uranium"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "unnamednuclear:uranium_dioxide"
+  }
+}

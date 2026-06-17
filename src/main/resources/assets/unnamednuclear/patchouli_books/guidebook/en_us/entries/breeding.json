@@ -1,0 +1,15 @@
+{
+  "name": "Breeding and Reprocessing",
+  "category": "unnamednuclear:reactors",
+  "icon": "unnamednuclear:plutonium",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The PUREX process involves dissolving spent fuel in Nitric Acid (HNO3) in a Solvent Extractor to create Uranyl Nitrate and Plutonium Nitrate solutions. These are then treated with Tributyl Phosphate (TBP) to separate Uranium and Plutonium from Fission Products."
+    },
+    {
+       "type": "patchouli:text",
+       "text": "The Chemical Converter is used for the conversion chain: Yellowcake + HNO3 -> Uranyl Nitrate. Uranyl Nitrate + TBP -> UO2. UO2 + HF -> UF4. UF4 + F2 -> UF6. This realistic cycle is essential for fuel fabrication and enrichment."
+    }
+  ]
+}

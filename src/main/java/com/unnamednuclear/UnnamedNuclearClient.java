@@ -1,28 +1,38 @@
 package com.unnamednuclear;
 
-import com.unnamednuclear.block.ReactorScreen;
-import com.unnamednuclear.block.CentrifugeScreen;
-import com.unnamednuclear.client.ReactorOverlayRenderer;
+import com.unnamednuclear.block.*;
 import com.unnamednuclear.registration.Registration;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.ModContainer;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.common.NeoForge;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 
-@Mod(value = UnnamedNuclear.MODID, dist = Dist.CLIENT)
+@EventBusSubscriber(modid = UnnamedNuclear.MODID, value = Dist.CLIENT)
 public class UnnamedNuclearClient {
-    public UnnamedNuclearClient(ModContainer container, IEventBus modEventBus) {
-        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-        modEventBus.addListener(this::registerScreens);
-        NeoForge.EVENT_BUS.addListener(ReactorOverlayRenderer::onRenderLevelStage);
-    }
-
-    public void registerScreens(RegisterMenuScreensEvent event) {
+    @SubscribeEvent
+    public static void registerScreens(RegisterMenuScreensEvent event) {
         event.register(Registration.REACTOR_MENU.get(), ReactorScreen::new);
         event.register(Registration.CENTRIFUGE_MENU.get(), CentrifugeScreen::new);
+        event.register(Registration.CHEMICAL_CONVERTER_MENU.get(), ChemicalConverterScreen::new);
+        event.register(Registration.SOLVENT_EXTRACTOR_MENU.get(), SolventExtractorScreen::new);
+    }
+
+    @SubscribeEvent
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() -> {
+            ItemBlockRenderTypes.setRenderLayer(Registration.HF.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(Registration.HF_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(Registration.F2.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(Registration.F2_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(Registration.UF6.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(Registration.UF6_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(Registration.HNO3.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(Registration.HNO3_FLOWING.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(Registration.TBP.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(Registration.TBP_FLOWING.get(), RenderType.translucent());
+        });
     }
 }

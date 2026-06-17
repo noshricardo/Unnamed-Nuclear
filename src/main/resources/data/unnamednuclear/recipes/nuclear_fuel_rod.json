@@ -2,24 +2,20 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "E": {
-      "item": "unnamednuclear:enriched_uranium"
+    "C": {
+      "item": "unnamednuclear:reactor_casing"
     },
-    "I": {
-      "item": "minecraft:iron_ingot"
+    "P": {
+      "item": "unnamednuclear:fuel_pellet"
     }
   },
   "pattern": [
-    "I",
-    "E",
-    "I"
+    "C",
+    "P",
+    "C"
   ],
   "result": {
     "count": 1,
-    "id": "unnamednuclear:nuclear_fuel",
-    "components": {
-      "unnamednuclear:fuel_type": "uranium",
-      "unnamednuclear:enrichment": 0.05
-    }
+    "item": "unnamednuclear:nuclear_fuel"
   }
 }

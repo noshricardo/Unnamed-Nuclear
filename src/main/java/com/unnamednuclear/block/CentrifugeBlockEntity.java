@@ -26,6 +26,13 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
         }
     };
 
+    private final net.neoforged.neoforge.fluids.capability.templates.FluidTank fluidTank = new net.neoforged.neoforge.fluids.capability.templates.FluidTank(4000) {
+        @Override
+        protected void onContentsChanged() {
+            setChanged();
+        }
+    };
+
     private int progress = 0;
     private int maxProgress = 200; // 10 seconds at 20 tps
 
@@ -78,51 +85,59 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
 
     private boolean canProcess(ItemStack input) {
         if (input.isEmpty()) return false;
-        if (input.is(Registration.URANIUM_HEXAFLUORIDE.get()) || input.is(Registration.ENRICHED_URANIUM.get())) {
-            ItemStack outputSlot = inventory.getStackInSlot(1);
-            return outputSlot.isEmpty() || (outputSlot.is(Registration.ENRICHED_URANIUM.get()) && outputSlot.getCount() < outputSlot.getMaxStackSize());
+        
+        // Enrichment: UF6 gas enrichment
+        if (input.is(Registration.URANIUM_HEXAFLUORIDE.get())) {
+            if (input.getCount() < 2) return false;
+            
+            ItemStack enrichedSlot = inventory.getStackInSlot(1);
+            ItemStack depletedSlot = inventory.getStackInSlot(2);
+            
+            boolean canFitEnriched = enrichedSlot.isEmpty() || (enrichedSlot.is(Registration.URANIUM_HEXAFLUORIDE.get()) && enrichedSlot.getCount() < 64);
+            boolean canFitDepleted = depletedSlot.isEmpty() || (depletedSlot.is(Registration.URANIUM_HEXAFLUORIDE.get()) && depletedSlot.getCount() < 64);
+            
+            return canFitEnriched && canFitDepleted;
         }
-        if (input.is(Registration.NUCLEAR_FUEL.get())) {
-            com.unnamednuclear.item.NuclearComposition comp = input.get(Registration.COMPOSITION.get());
-            if (comp != null && comp.waste() > 0.1) {
-                return inventory.getStackInSlot(1).getCount() < 64 && inventory.getStackInSlot(2).getCount() < 64 && inventory.getStackInSlot(3).getCount() < 64;
-            }
-        }
+
         return false;
     }
 
     private void process(ItemStack input) {
         if (input.is(Registration.URANIUM_HEXAFLUORIDE.get())) {
-            input.shrink(1);
-            ItemStack result = new ItemStack(Registration.ENRICHED_URANIUM.get());
-            result.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(0.05, 0.95, 0, 0));
-            addOrGrow(1, result);
-        } else if (input.is(Registration.ENRICHED_URANIUM.get())) {
             com.unnamednuclear.item.NuclearComposition comp = input.get(Registration.COMPOSITION.get());
-            if (comp != null) {
-                input.shrink(1);
-                double newU235 = Math.min(0.95, comp.u235() + 0.05);
-                double newU238 = Math.max(0, comp.u238() - 0.05);
-                ItemStack result = new ItemStack(Registration.ENRICHED_URANIUM.get());
-                result.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(newU235, newU238, 0, 0));
-                addOrGrow(1, result);
-            }
-        } else if (input.is(Registration.NUCLEAR_FUEL.get())) {
-            com.unnamednuclear.item.NuclearComposition comp = input.get(Registration.COMPOSITION.get());
-            if (comp != null && comp.waste() > 0.1) {
-                input.shrink(1);
-                if (comp.u235() + comp.u238() > 0.1) {
-                    ItemStack u = new ItemStack(Registration.ENRICHED_URANIUM.get());
-                    u.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(comp.u235(), comp.u238(), 0, 0));
-                    addOrGrow(1, u);
-                }
-                if (comp.pu239() > 0.01) {
-                    addOrGrow(2, new ItemStack(Registration.PLUTONIUM.get()));
-                }
-                if (comp.waste() > 0.01) {
-                    addOrGrow(3, new ItemStack(Registration.FISSION_PRODUCTS.get()));
-                }
-            }
+            if (comp == null) comp = new com.unnamednuclear.item.NuclearComposition(0.0071, 0.99285, 0, 0, 0, 0, 0.00005, 0, 0);
+
+            input.shrink(2);
+            
+            // Separation logic (cascade stage)
+            double x_f = comp.u235() / (comp.u235() + comp.u238());
+            double alpha = 1.1; // Realistic stage separation factor is actually smaller (~1.004), but for gameplay 1.1 is better
+            double x_p = (alpha * x_f) / (1 + (alpha - 1) * x_f);
+            
+            double totalU235 = comp.u235() * 2;
+            double enrichedU235 = x_p; 
+            double depletedU235 = Math.max(0.001, totalU235 - enrichedU235);
+            
+            double enrichedU238 = 1.0 - enrichedU235;
+            double depletedU238 = 1.0 - depletedU235;
+            
+            // Normalize
+            double sumE = enrichedU235 + enrichedU238;
+            enrichedU235 /= sumE;
+            enrichedU238 /= sumE;
+            
+            double sumD = depletedU235 + depletedU238;
+            depletedU235 /= sumD;
+            depletedU238 /= sumD;
+            
+            ItemStack enrichedResult = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
+            enrichedResult.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(enrichedU235, enrichedU238, 0, 0, 0, 0, comp.u234(), comp.u236(), 0));
+            
+            ItemStack depletedResult = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
+            depletedResult.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(depletedU235, depletedU238, 0, 0, 0, 0, comp.u234(), comp.u236(), 0));
+            
+            addOrGrow(1, enrichedResult);
+            addOrGrow(2, depletedResult);
         }
     }
 
@@ -154,6 +169,7 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("Inventory", inventory.serializeNBT(registries));
+        tag.put("FluidTank", fluidTank.writeToNBT(registries, new CompoundTag()));
         tag.putInt("Progress", progress);
     }
 
@@ -162,6 +178,9 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
         super.loadAdditional(tag, registries);
         if (tag.contains("Inventory")) {
             inventory.deserializeNBT(registries, tag.getCompound("Inventory"));
+        }
+        if (tag.contains("FluidTank")) {
+            fluidTank.readFromNBT(registries, tag.getCompound("FluidTank"));
         }
         progress = tag.getInt("Progress");
     }

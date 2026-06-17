@@ -2,5 +2,6 @@
   "name": "Reactors",
   "description": "Designing and building nuclear reactors.",
   "icon": "unnamednuclear:reactor_controller",
-  "priority": 2
+  "priority": 2,
+  "show_progress": false
 }

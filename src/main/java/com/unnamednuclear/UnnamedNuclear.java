@@ -12,8 +12,11 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 @Mod(UnnamedNuclear.MODID)
 public class UnnamedNuclear {
@@ -36,8 +39,20 @@ public class UnnamedNuclear {
         Registration.DATA_COMPONENTS.register(modEventBus);
         Registration.BLOCK_ENTITIES.register(modEventBus);
         Registration.MENU_TYPES.register(modEventBus);
+        Registration.FLUID_TYPES.register(modEventBus);
+        Registration.FLUIDS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
 
+        modEventBus.addListener(this::registerCapabilities);
+
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+    }
+
+    private void registerCapabilities(net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event) {
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, (BlockEntityType<com.unnamednuclear.block.HeatExchangerBlockEntity>)Registration.HEAT_EXCHANGER_BE.get(), (be, side) -> {
+            // Return one of the tanks based on side or just a wrapper
+            return null; // For now
+        });
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage.BLOCK, (BlockEntityType<com.unnamednuclear.block.SteamTurbineBlockEntity>)Registration.STEAM_TURBINE_BE.get(), (be, side) -> null);
     }
 }

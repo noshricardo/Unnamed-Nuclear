@@ -3,8 +3,12 @@
   "values": [
     "unnamednuclear:reactor_controller",
     "unnamednuclear:reactor_casing",
-    "unnamednuclear:fuel_rod",
+    "unnamednuclear:fuel_channel",
     "unnamednuclear:moderator",
-    "unnamednuclear:control_rod"
+    "unnamednuclear:control_channel",
+    "unnamednuclear:coolant_channel",
+    "unnamednuclear:centrifuge",
+    "unnamednuclear:chemical_converter",
+    "unnamednuclear:solvent_extractor"
   ]
 }

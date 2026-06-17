@@ -2,5 +2,6 @@
   "name": "Basics",
   "description": "Fundamental concepts of nuclear engineering.",
   "icon": "unnamednuclear:uranium_ore",
-  "priority": 0
+  "priority": 0,
+  "show_progress": false
 }

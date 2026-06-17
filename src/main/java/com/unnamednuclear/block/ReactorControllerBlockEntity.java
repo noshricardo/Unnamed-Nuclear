@@ -174,6 +174,21 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
         return totalHeat;
     }
 
+    public double getAverageXenon() {
+        if (level == null || level.isClientSide) return 0;
+        WorldSimulationData data = WorldSimulationData.get((net.minecraft.server.level.ServerLevel) level);
+        double totalXenon = 0;
+        int count = 0;
+        for (BlockPos pos : interiorNodes) {
+            SimulationNode node = data.getNode(pos);
+            if (node != null) {
+                totalXenon += node.xenon135;
+                count++;
+            }
+        }
+        return count == 0 ? 0 : totalXenon / count;
+    }
+
     public int getInteriorSize() {
         return interiorNodes.size();
     }
