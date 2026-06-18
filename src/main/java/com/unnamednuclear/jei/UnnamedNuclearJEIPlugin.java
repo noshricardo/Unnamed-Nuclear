@@ -43,42 +43,29 @@ public class UnnamedNuclearJEIPlugin implements IModPlugin {
     private void registerCentrifugeRecipes(IRecipeRegistration registration) {
         List<CentrifugeRecipeJEI> recipes = new ArrayList<>();
 
-        // UF6 Enrichment
-        ItemStack uf6 = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get(), 2);
+        // UF6 Enrichment (Natural -> LEU)
+        ItemStack uf6 = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
+        uf6.set(Registration.COMPOSITION.get(), new NuclearComposition(0.0071, 0.9929, 0, 0, 0, 0, 0, 0, 0));
         
-        ItemStack enrichedU = new ItemStack(Registration.ENRICHED_URANIUM.get());
-        enrichedU.set(Registration.COMPOSITION.get(), new NuclearComposition(0.0084, 0.9916, 0, 0, 0, 0, 0, 0, 0));
+        ItemStack enrichedU = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
+        enrichedU.set(Registration.COMPOSITION.get(), new NuclearComposition(0.03, 0.97, 0, 0, 0, 0, 0, 0, 0));
         
-        ItemStack depletedU = new ItemStack(Registration.DEPLETED_URANIUM.get());
-        depletedU.set(Registration.COMPOSITION.get(), new NuclearComposition(0.0056, 0.9944, 0, 0, 0, 0, 0, 0, 0));
+        ItemStack depletedU = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
+        depletedU.set(Registration.COMPOSITION.get(), new NuclearComposition(0.002, 0.998, 0, 0, 0, 0, 0, 0, 0));
         
         recipes.add(new CentrifugeRecipeJEI(List.of(uf6), List.of(enrichedU, depletedU)));
 
-        // Higher Enrichment
-        ItemStack enrichedInput = new ItemStack(Registration.ENRICHED_URANIUM.get(), 2);
-        enrichedInput.set(Registration.COMPOSITION.get(), new NuclearComposition(0.0084, 0.9916, 0, 0, 0, 0, 0, 0, 0));
+        // Higher Enrichment (LEU -> HEU)
+        ItemStack leuInput = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
+        leuInput.set(Registration.COMPOSITION.get(), new NuclearComposition(0.03, 0.97, 0, 0, 0, 0, 0, 0, 0));
 
-        ItemStack higherEnriched = new ItemStack(Registration.ENRICHED_URANIUM.get());
-        higherEnriched.set(Registration.COMPOSITION.get(), new NuclearComposition(0.01008, 0.98992, 0, 0, 0, 0, 0, 0, 0));
+        ItemStack heuOutput = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
+        heuOutput.set(Registration.COMPOSITION.get(), new NuclearComposition(0.20, 0.80, 0, 0, 0, 0, 0, 0, 0));
 
-        ItemStack moreDepleted = new ItemStack(Registration.DEPLETED_URANIUM.get());
-        moreDepleted.set(Registration.COMPOSITION.get(), new NuclearComposition(0.00672, 0.99328, 0, 0, 0, 0, 0, 0, 0));
+        ItemStack tailsOutput = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
+        tailsOutput.set(Registration.COMPOSITION.get(), new NuclearComposition(0.01, 0.99, 0, 0, 0, 0, 0, 0, 0));
 
-        recipes.add(new CentrifugeRecipeJEI(List.of(enrichedInput), List.of(higherEnriched, moreDepleted)));
-
-        // Spent Fuel Reprocessing
-        ItemStack spentFuel = new ItemStack(Registration.NUCLEAR_FUEL.get());
-        spentFuel.set(Registration.COMPOSITION.get(), new NuclearComposition(0.01, 0.80, 0.05, 0.04, 0.05, 0.05, 0, 0, 0));
-        
-        ItemStack recoveredU = new ItemStack(Registration.ENRICHED_URANIUM.get());
-        recoveredU.set(Registration.COMPOSITION.get(), new NuclearComposition(0.0123, 0.9877, 0, 0, 0, 0, 0, 0, 0)); // Normalized
-        
-        ItemStack recoveredPu = new ItemStack(Registration.PLUTONIUM.get());
-        recoveredPu.set(Registration.COMPOSITION.get(), new NuclearComposition(0, 0, 1.0, 0, 0, 0, 0, 0, 0));
-        
-        ItemStack waste = new ItemStack(Registration.FISSION_PRODUCTS.get());
-        
-        recipes.add(new CentrifugeRecipeJEI(List.of(spentFuel), List.of(recoveredU, recoveredPu, waste)));
+        recipes.add(new CentrifugeRecipeJEI(List.of(leuInput), List.of(heuOutput, tailsOutput)));
 
         registration.addRecipes(CentrifugeRecipeCategory.TYPE, recipes);
     }
@@ -86,32 +73,34 @@ public class UnnamedNuclearJEIPlugin implements IModPlugin {
     private void registerConverterRecipes(IRecipeRegistration registration) {
         List<ChemicalConverterRecipeJEI> recipes = new ArrayList<>();
         
-        // Yellowcake -> Uranyl Nitrate
+        // Yellowcake + Nitric Acid -> Uranyl Nitrate
         recipes.add(new ChemicalConverterRecipeJEI(
-            List.of(new ItemStack(Registration.YELLOWCAKE.get())),
-            List.of(new FluidStack(Registration.HNO3.get(), 200)),
+            List.of(new ItemStack(Registration.YELLOWCAKE.get()), new ItemStack(Registration.NITRIC_ACID.get())),
             List.of(new ItemStack(Registration.URANYL_NITRATE.get()))
         ));
         
         // Uranyl Nitrate -> UO2
         recipes.add(new ChemicalConverterRecipeJEI(
             List.of(new ItemStack(Registration.URANYL_NITRATE.get())),
-            List.of(),
             List.of(new ItemStack(Registration.URANIUM_DIOXIDE.get()))
         ));
 
-        // UO2 -> UF4
+        // UO2 + HF -> UF4
         recipes.add(new ChemicalConverterRecipeJEI(
-            List.of(new ItemStack(Registration.URANIUM_DIOXIDE.get())),
-            List.of(new FluidStack(Registration.HF.get(), 400)),
+            List.of(new ItemStack(Registration.URANIUM_DIOXIDE.get()), new ItemStack(Registration.HYDROFLUORIC_ACID.get())),
             List.of(new ItemStack(Registration.URANIUM_TETRAFLUORIDE.get()))
         ));
 
-        // UF4 -> UF6
+        // UF4 + F2 -> UF6
         recipes.add(new ChemicalConverterRecipeJEI(
-            List.of(new ItemStack(Registration.URANIUM_TETRAFLUORIDE.get())),
-            List.of(new FluidStack(Registration.F2.get(), 200)),
+            List.of(new ItemStack(Registration.URANIUM_TETRAFLUORIDE.get()), new ItemStack(Registration.FLUORINE_GAS.get())),
             List.of(new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get()))
+        ));
+        
+        // HF -> F2
+        recipes.add(new ChemicalConverterRecipeJEI(
+            List.of(new ItemStack(Registration.HYDROFLUORIC_ACID.get())),
+            List.of(new ItemStack(Registration.FLUORINE_GAS.get()))
         ));
 
         registration.addRecipes(ChemicalConverterRecipeCategory.TYPE, recipes);
@@ -120,29 +109,26 @@ public class UnnamedNuclearJEIPlugin implements IModPlugin {
     private void registerExtractorRecipes(IRecipeRegistration registration) {
         List<SolventExtractorRecipeJEI> recipes = new ArrayList<>();
         
-        // PUREX Dissolution/Extraction
+        // PUREX Dissolution/Extraction: Spent Fuel + Nitric Acid -> Nitrates
         ItemStack spentFuel = new ItemStack(Registration.NUCLEAR_FUEL.get());
         spentFuel.set(Registration.COMPOSITION.get(), new NuclearComposition(0.01, 0.80, 0.05, 0.04, 0.05, 0.05, 0, 0, 0));
         
         recipes.add(new SolventExtractorRecipeJEI(
-            List.of(spentFuel),
-            List.of(new FluidStack(Registration.HNO3.get(), 1000)),
+            List.of(spentFuel, new ItemStack(Registration.NITRIC_ACID.get())),
             List.of(new ItemStack(Registration.URANYL_NITRATE.get()), new ItemStack(Registration.PLUTONIUM_NITRATE.get()), new ItemStack(Registration.FISSION_PRODUCTS.get()))
         ));
 
         // PUREX Extraction: Uranyl Nitrate + TBP -> UO2 (Separation)
         ItemStack uranylNitrate = new ItemStack(Registration.URANYL_NITRATE.get());
         recipes.add(new SolventExtractorRecipeJEI(
-            List.of(uranylNitrate),
-            List.of(new FluidStack(Registration.TBP.get(), 500)),
+            List.of(uranylNitrate, new ItemStack(Registration.TBP_KEROSENE.get())),
             List.of(new ItemStack(Registration.URANIUM_DIOXIDE.get()))
         ));
 
         // PUREX Extraction: Plutonium Nitrate + TBP -> Plutonium
         ItemStack plutoniumNitrate = new ItemStack(Registration.PLUTONIUM_NITRATE.get());
         recipes.add(new SolventExtractorRecipeJEI(
-            List.of(plutoniumNitrate),
-            List.of(new FluidStack(Registration.TBP.get(), 500)),
+            List.of(plutoniumNitrate, new ItemStack(Registration.TBP_KEROSENE.get())),
             List.of(new ItemStack(Registration.PLUTONIUM.get()))
         ));
 

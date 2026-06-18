@@ -24,9 +24,8 @@ public class CentrifugeMenu extends AbstractContainerMenu {
         this.data = data;
 
         addSlot(new SlotItemHandler(blockEntity.getInventory(), 0, 44, 35));
-        addSlot(new SlotItemHandler(blockEntity.getInventory(), 1, 108, 35));
-        addSlot(new SlotItemHandler(blockEntity.getInventory(), 2, 126, 35));
-        addSlot(new SlotItemHandler(blockEntity.getInventory(), 3, 144, 35));
+        addSlot(new SlotItemHandler(blockEntity.getInventory(), 1, 108, 26));
+        addSlot(new SlotItemHandler(blockEntity.getInventory(), 2, 108, 44));
 
         layoutPlayerInventorySlots(playerInventory, 8, 84);
 
@@ -48,8 +47,8 @@ public class CentrifugeMenu extends AbstractContainerMenu {
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            if (index < 4) {
-                if (!this.moveItemStackTo(itemstack1, 4, this.slots.size(), true)) {
+            if (index < 3) {
+                if (!this.moveItemStackTo(itemstack1, 3, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {

@@ -1,0 +1,15 @@
+{
+  "name": "Multiblock Reactor Basics",
+  "category": "unnamednuclear:reactor",
+  "icon": "unnamednuclear:reactor_casing",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Unlike simple reactors, these advanced reactors are free-form multiblocks. You must build a structural casing and fill the interior with functional components.$(br2)Components include Fuel Channels, Moderators, Control Channels, and Coolant Channels."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The $(l:unnamednuclear:reactor_controller)Reactor Controller$(/l) must be placed on the outer surface of the casing. It manages the simulation and fluid exchange.$(br2)Hot coolant is produced which must then be sent to a Heat Exchanger."
+    }
+  ]
+}

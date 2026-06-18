@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shaped",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "ICI",
     "CGC",
@@ -18,6 +19,6 @@
   },
   "result": {
     "count": 1,
-    "item": "unnamednuclear:heat_exchanger"
+    "id": "unnamednuclear:heat_exchanger"
   }
 }

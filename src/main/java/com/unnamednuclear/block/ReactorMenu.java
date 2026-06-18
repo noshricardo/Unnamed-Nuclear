@@ -1,4 +1,6 @@
 package com.unnamednuclear.block;
+import net.minecraft.world.level.block.state.BlockState;
+import java.util.List;
 import com.unnamednuclear.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,6 +21,8 @@ public class ReactorMenu extends AbstractContainerMenu {
     private int syncedLastResult;
     private int syncedActive;
     private int syncedErrorX, syncedErrorY, syncedErrorZ, syncedErrorCount;
+    private int syncedFlux;
+    private int syncedXenon;
 
     public ReactorMenu(int containerId, Inventory playerInventory, FriendlyByteBuf extraData) {
         this(containerId, playerInventory, (ReactorControllerBlockEntity) playerInventory.player.level().getBlockEntity(extraData.readBlockPos()));
@@ -67,10 +71,20 @@ public class ReactorMenu extends AbstractContainerMenu {
             @Override public int get() { return blockEntity.getErrorPositions().size(); }
             @Override public void set(int value) { syncedErrorCount = value; }
         });
+        addDataSlot(new DataSlot() {
+            @Override public int get() { return (int) (blockEntity.getNetFlux() * 100); }
+            @Override public void set(int value) { syncedFlux = value; }
+        });
+        addDataSlot(new DataSlot() {
+            @Override public int get() { return (int) (blockEntity.getAverageXenon() * 1000000); }
+            @Override public void set(int value) { syncedXenon = value; }
+        });
     }
 
     public boolean isAssembled() { return (blockEntity != null && !blockEntity.getLevel().isClientSide) ? blockEntity.isAssembled() : syncedAssembled != 0; }
     public double getHeat() { return (blockEntity != null && !blockEntity.getLevel().isClientSide) ? blockEntity.getTotalHeat() : syncedHeat / 100.0; }
+    public double getFlux() { return (blockEntity != null && !blockEntity.getLevel().isClientSide) ? blockEntity.getNetFlux() : syncedFlux / 100.0; }
+    public double getXenon() { return (blockEntity != null && !blockEntity.getLevel().isClientSide) ? blockEntity.getAverageXenon() : syncedXenon / 1000000.0; }
     public int getInteriorSize() { return (blockEntity != null && !blockEntity.getLevel().isClientSide) ? blockEntity.getInteriorSize() : syncedSize; }
     public boolean isActive() { return (blockEntity != null && !blockEntity.getLevel().isClientSide) ? blockEntity.isActive() : syncedActive != 0; }
     
@@ -95,7 +109,54 @@ public class ReactorMenu extends AbstractContainerMenu {
             blockEntity.setActive(!blockEntity.isActive());
             return true;
         }
+        if (id >= 100 && blockEntity != null) {
+            // Channel interaction
+            // Format: 100 + (action * 10000) + (index)
+            // Action 0: Extract fuel
+            // Action 1: Insert fuel from hand
+            // Action 2: Adjust insertion
+            int action = (id - 100) / 10000;
+            int index = (id - 100) % 10000;
+            
+            List<BlockPos> interior = blockEntity.getInteriorNodes();
+            if (index >= 0 && index < interior.size()) {
+                BlockPos pos = interior.get(index);
+                if (action == 0) {
+                    if (blockEntity.getLevel().getBlockEntity(pos) instanceof ReactorChannelBlockEntity channel) {
+                        ItemStack stack = channel.getItem();
+                        if (!stack.isEmpty()) {
+                            if (player.getInventory().add(stack)) {
+                                channel.setItem(ItemStack.EMPTY);
+                            }
+                        }
+                    }
+                } else if (action == 1) {
+                    if (blockEntity.getLevel().getBlockEntity(pos) instanceof ReactorChannelBlockEntity channel) {
+                        ItemStack stack = player.getItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND);
+                        if (!stack.isEmpty() && channel.getItem().isEmpty()) {
+                            ItemStack toInsert = stack.copy();
+                            toInsert.setCount(1);
+                            channel.setItem(toInsert);
+                            stack.shrink(1);
+                        }
+                    }
+                } else if (action == 2) {
+                    BlockState state = blockEntity.getLevel().getBlockState(pos);
+                    if (state.hasProperty(ReactorChannelBlock.INSERTION)) {
+                        int current = state.getValue(ReactorChannelBlock.INSERTION);
+                        int next = (current + 1) % 11;
+                        blockEntity.getLevel().setBlock(pos, state.setValue(ReactorChannelBlock.INSERTION, next), 3);
+                    }
+                }
+            }
+            return true;
+        }
         return false;
+    }
+
+    public List<BlockPos> getInteriorNodes() {
+        if (blockEntity != null) return blockEntity.getInteriorNodes();
+        return java.util.Collections.emptyList();
     }
 
     public ReactorControllerBlockEntity getBlockEntity() {

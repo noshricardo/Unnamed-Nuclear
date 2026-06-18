@@ -29,6 +29,19 @@ public class SimulationEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
+        if (event.getLevel() instanceof ServerLevel serverLevel) {
+            BlockPos pos = event.getPos();
+            if (isReactorBlock(event.getState())) {
+                WorldSimulationData.get(serverLevel).addNode(pos, determineReactorType(serverLevel, pos));
+            }
+            if (isReactorBlock(event.getState()) || event.getState().is(Registration.REACTOR_CASING.get())) {
+                notifyController(serverLevel, pos);
+            }
+        }
+    }
+
     private static void syncToDebugPlayers(ServerLevel level, WorldSimulationData data) {
         Map<BlockPos, SimulationDataSyncPayload.NodeData> syncData = null;
         
@@ -36,11 +49,9 @@ public class SimulationEventHandler {
             if (player.getMainHandItem().is(Registration.DEBUG_ITEM.get()) || player.getOffhandItem().is(Registration.DEBUG_ITEM.get())) {
                 if (syncData == null) {
                     syncData = new HashMap<>();
-                    // We'll just send all nodes for now, but in a real mod we might want to limit by distance
-                    // However, nuclear reactors aren't usually spread over thousands of blocks
                     for (BlockPos pos : data.getNodes().keySet()) {
                         SimulationNode node = data.getNode(pos);
-                        syncData.put(pos, new SimulationDataSyncPayload.NodeData((float)node.fastNeutrons, (float)node.thermalNeutrons, (float)node.heat));
+                        syncData.put(pos, new SimulationDataSyncPayload.NodeData((float)node.fastNeutrons, (float)node.thermalNeutrons, (float)node.heat, (float)node.xenon135));
                     }
                 }
                 PacketDistributor.sendToPlayer(player, new SimulationDataSyncPayload(syncData));
@@ -48,14 +59,27 @@ public class SimulationEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
-        if (event.getLevel() instanceof ServerLevel serverLevel) {
-            BlockPos pos = event.getPos();
-            if (isReactorBlock(event.getState())) {
-                WorldSimulationData.get(serverLevel).addNode(pos, DefaultReactorType.INSTANCE);
-            }
+    private static ReactorType determineReactorType(ServerLevel level, BlockPos pos) {
+        // Simplified detection: look at nearby blocks
+        // In a real implementation, this would be part of multiblock assembly
+        // and stored in WorldSimulationData.
+        
+        // For now, let's use some simple heuristics
+        boolean hasSodiumNearby = false;
+        boolean hasModeratorNearby = false;
+        boolean hasWaterCoolantNearby = false;
+
+        for (net.minecraft.core.Direction dir : net.minecraft.core.Direction.values()) {
+            net.minecraft.world.level.block.state.BlockState state = level.getBlockState(pos.relative(dir));
+            if (state.is(Registration.MODERATOR.get())) hasModeratorNearby = true;
+            if (state.is(Registration.COOLANT_CHANNEL.get())) hasWaterCoolantNearby = true;
         }
+
+        if (hasModeratorNearby && hasWaterCoolantNearby) return RBMKReactorType.INSTANCE;
+        if (hasWaterCoolantNearby) return PWRReactorType.INSTANCE;
+        if (!hasModeratorNearby) return SodiumFastReactorType.INSTANCE;
+
+        return DefaultReactorType.INSTANCE;
     }
 
     @SubscribeEvent
@@ -65,7 +89,23 @@ public class SimulationEventHandler {
             if (isReactorBlock(event.getState())) {
                 WorldSimulationData.get(serverLevel).removeNode(pos);
             }
+            if (isReactorBlock(event.getState()) || event.getState().is(Registration.REACTOR_CASING.get())) {
+                notifyController(serverLevel, pos);
+            }
         }
+    }
+
+    private static void notifyController(ServerLevel level, BlockPos pos) {
+        // Find nearby controllers and mark them for reassembly
+        // Since multiblocks are relatively small, a simple search in a box is efficient enough
+        // especially since this only happens on block place/break.
+        int range = 16; 
+        BlockPos.betweenClosedStream(pos.offset(-range, -range, -range), pos.offset(range, range, range))
+            .forEach(p -> {
+                if (level.getBlockEntity(p) instanceof com.unnamednuclear.block.ReactorControllerBlockEntity controller) {
+                    controller.setNeedsReassembly();
+                }
+            });
     }
 
     private static boolean isReactorBlock(net.minecraft.world.level.block.state.BlockState state) {

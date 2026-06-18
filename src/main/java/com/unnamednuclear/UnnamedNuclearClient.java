@@ -14,6 +14,10 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import com.unnamednuclear.client.NuclearVisualizationRenderer;
 import com.unnamednuclear.client.ReactorOverlayRenderer;
 
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+
 @EventBusSubscriber(modid = UnnamedNuclear.MODID, value = Dist.CLIENT)
 public class UnnamedNuclearClient {
     @SubscribeEvent
@@ -25,6 +29,26 @@ public class UnnamedNuclearClient {
     public static void registerModEvents(net.neoforged.bus.api.IEventBus modEventBus) {
         modEventBus.addListener(UnnamedNuclearClient::registerScreens);
         modEventBus.addListener(UnnamedNuclearClient::onClientSetup);
+        modEventBus.addListener(UnnamedNuclearClient::registerClientExtensions);
+    }
+
+    private static void registerClientExtensions(RegisterClientExtensionsEvent event) {
+        event.registerFluidType(new IClientFluidTypeExtensions() {
+            private static final ResourceLocation WATER_STILL = ResourceLocation.parse("block/water_still");
+            private static final ResourceLocation WATER_FLOW = ResourceLocation.parse("block/water_flow");
+
+            @Override
+            public @org.jetbrains.annotations.Nullable ResourceLocation getStillTexture() {
+                return WATER_STILL;
+            }
+
+            @Override
+            public @org.jetbrains.annotations.Nullable ResourceLocation getFlowingTexture() {
+                return WATER_FLOW;
+            }
+        }, Registration.HF_TYPE.get(), Registration.F2_TYPE.get(), Registration.UF6_TYPE.get(),
+           Registration.HNO3_TYPE.get(), Registration.TBP_TYPE.get(), Registration.SODIUM_TYPE.get(),
+           Registration.HOT_SODIUM_TYPE.get(), Registration.STEAM_TYPE.get());
     }
 
     private static void registerScreens(RegisterMenuScreensEvent event) {

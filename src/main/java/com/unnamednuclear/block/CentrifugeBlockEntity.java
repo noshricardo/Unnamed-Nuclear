@@ -19,22 +19,19 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler inventory = new ItemStackHandler(4) {
+    private final ItemStackHandler inventory = new ItemStackHandler(3) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
         }
     };
 
-    private final net.neoforged.neoforge.fluids.capability.templates.FluidTank fluidTank = new net.neoforged.neoforge.fluids.capability.templates.FluidTank(4000) {
-        @Override
-        protected void onContentsChanged() {
-            setChanged();
-        }
-    };
+    private final net.neoforged.neoforge.fluids.capability.templates.FluidTank inputTank = new net.neoforged.neoforge.fluids.capability.templates.FluidTank(4000);
+    private final net.neoforged.neoforge.fluids.capability.templates.FluidTank productTank = new net.neoforged.neoforge.fluids.capability.templates.FluidTank(4000);
+    private final net.neoforged.neoforge.fluids.capability.templates.FluidTank tailsTank = new net.neoforged.neoforge.fluids.capability.templates.FluidTank(4000);
 
     private int progress = 0;
-    private int maxProgress = 200; // 10 seconds at 20 tps
+    private int maxProgress = 100;
 
     protected final ContainerData data = new ContainerData() {
         @Override
@@ -64,14 +61,17 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
         super(Registration.CENTRIFUGE_BE.get(), pos, state);
     }
 
+    public net.neoforged.neoforge.fluids.capability.templates.FluidTank getInputTank() { return inputTank; }
+    public net.neoforged.neoforge.fluids.capability.templates.FluidTank getProductTank() { return productTank; }
+    public net.neoforged.neoforge.fluids.capability.templates.FluidTank getTailsTank() { return tailsTank; }
+
     public static void tick(Level level, BlockPos pos, BlockState state, CentrifugeBlockEntity be) {
         if (level.isClientSide) return;
 
-        ItemStack input = be.inventory.getStackInSlot(0);
-        if (be.canProcess(input)) {
+        if (be.canProcess()) {
             be.progress++;
             if (be.progress >= be.maxProgress) {
-                be.process(input);
+                be.process();
                 be.progress = 0;
             }
             be.setChanged();
@@ -81,70 +81,120 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
                 be.setChanged();
             }
         }
-    }
-
-    private boolean canProcess(ItemStack input) {
-        if (input.isEmpty()) return false;
         
-        // Enrichment: UF6 gas enrichment
-        if (input.is(Registration.URANIUM_HEXAFLUORIDE.get())) {
-            if (input.getCount() < 2) return false;
-            
-            ItemStack enrichedSlot = inventory.getStackInSlot(1);
-            ItemStack depletedSlot = inventory.getStackInSlot(2);
-            
-            boolean canFitEnriched = enrichedSlot.isEmpty() || (enrichedSlot.is(Registration.URANIUM_HEXAFLUORIDE.get()) && enrichedSlot.getCount() < 64);
-            boolean canFitDepleted = depletedSlot.isEmpty() || (depletedSlot.is(Registration.URANIUM_HEXAFLUORIDE.get()) && depletedSlot.getCount() < 64);
-            
-            return canFitEnriched && canFitDepleted;
-        }
-
-        return false;
+        // Output items to tanks
+        be.fillTanksFromInventory();
     }
 
-    private void process(ItemStack input) {
-        if (input.is(Registration.URANIUM_HEXAFLUORIDE.get())) {
-            com.unnamednuclear.item.NuclearComposition comp = input.get(Registration.COMPOSITION.get());
-            if (comp == null) comp = new com.unnamednuclear.item.NuclearComposition(0.0071, 0.99285, 0, 0, 0, 0, 0.00005, 0, 0);
-
-            input.shrink(2);
-            
-            // Separation logic (cascade stage)
-            double x_f = comp.u235() / (comp.u235() + comp.u238());
-            double alpha = 1.1; // Realistic stage separation factor is actually smaller (~1.004), but for gameplay 1.1 is better
-            double x_p = (alpha * x_f) / (1 + (alpha - 1) * x_f);
-            
-            double totalU235 = comp.u235() * 2;
-            double enrichedU235 = x_p; 
-            double depletedU235 = Math.max(0.001, totalU235 - enrichedU235);
-            
-            double enrichedU238 = 1.0 - enrichedU235;
-            double depletedU238 = 1.0 - depletedU235;
-            
-            // Normalize
-            double sumE = enrichedU235 + enrichedU238;
-            enrichedU235 /= sumE;
-            enrichedU238 /= sumE;
-            
-            double sumD = depletedU235 + depletedU238;
-            depletedU235 /= sumD;
-            depletedU238 /= sumD;
-            
-            ItemStack enrichedResult = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
-            enrichedResult.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(enrichedU235, enrichedU238, 0, 0, 0, 0, comp.u234(), comp.u236(), 0));
-            
-            ItemStack depletedResult = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
-            depletedResult.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(depletedU235, depletedU238, 0, 0, 0, 0, comp.u234(), comp.u236(), 0));
-            
-            addOrGrow(1, enrichedResult);
-            addOrGrow(2, depletedResult);
+    private void fillTanksFromInventory() {
+        // Product Tank
+        ItemStack productStack = inventory.getStackInSlot(1);
+        if (!productStack.isEmpty() && productStack.is(Registration.URANIUM_HEXAFLUORIDE.get())) {
+            int amount = Math.min(productStack.getCount() * 100, productTank.getCapacity() - productTank.getFluidAmount());
+            if (amount >= 100) {
+                int toConsume = amount / 100;
+                if (productTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), toConsume * 100), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE) > 0) {
+                    productStack.shrink(toConsume);
+                }
+            }
         }
+        
+        // Tails Tank
+        ItemStack tailsStack = inventory.getStackInSlot(2);
+        if (!tailsStack.isEmpty() && tailsStack.is(Registration.URANIUM_HEXAFLUORIDE.get())) {
+            int amount = Math.min(tailsStack.getCount() * 100, tailsTank.getCapacity() - tailsTank.getFluidAmount());
+            if (amount >= 100) {
+                int toConsume = amount / 100;
+                if (tailsTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), toConsume * 100), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE) > 0) {
+                    tailsStack.shrink(toConsume);
+                }
+            }
+        }
+    }
+
+    private boolean canProcess() {
+        ItemStack input = inventory.getStackInSlot(0);
+        
+        if (input.isEmpty() || !input.is(Registration.URANIUM_HEXAFLUORIDE.get()) || input.getCount() < 2) {
+            if (inputTank.getFluidAmount() < 200 || !inputTank.getFluid().is(Registration.UF6.get())) {
+                return false;
+            }
+        }
+        
+        return inventory.getStackInSlot(1).getCount() < inventory.getSlotLimit(1) && 
+               inventory.getStackInSlot(2).getCount() < inventory.getSlotLimit(2) &&
+               productTank.getFluidAmount() <= productTank.getCapacity() - 100 &&
+               tailsTank.getFluidAmount() <= tailsTank.getCapacity() - 100;
+    }
+
+    private void process() {
+        ItemStack inputStack = inventory.getStackInSlot(0);
+        com.unnamednuclear.item.NuclearComposition comp;
+        
+        if (inputStack.getCount() >= 2 && inputStack.is(Registration.URANIUM_HEXAFLUORIDE.get())) {
+            comp = inputStack.get(Registration.COMPOSITION.get());
+            inputStack.shrink(2);
+        } else if (inputTank.getFluidAmount() >= 200 && inputTank.getFluid().is(Registration.UF6.get())) {
+            comp = null; 
+            inputTank.drain(200, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+        } else {
+            return;
+        }
+        
+        if (comp == null) comp = new com.unnamednuclear.item.NuclearComposition(0.0071, 0.99285, 0, 0, 0, 0, 0.00005, 0, 0);
+
+        double x_f = comp.u235() / (comp.u235() + comp.u238());
+        double alpha = 1.05; 
+        double x_p = (alpha * x_f) / (1 + (alpha - 1) * x_f);
+        double x_t = x_f / (alpha - (alpha - 1) * x_f); // More accurate tails concentration
+
+        // For a single stage, we assume a symmetric cut (theta = 0.5) for simplicity,
+        // or we calculate the cut required for mass balance: theta = (x_f - x_t) / (x_p - x_t)
+        double theta = (x_p != x_t) ? (x_f - x_t) / (x_p - x_t) : 0.5;
+        theta = Math.max(0.1, Math.min(0.9, theta)); // Keep it reasonable
+        
+        double uTotal = comp.u235() + comp.u238();
+        double othersTotal = comp.getTotal() - uTotal;
+        
+        // Product Uranium
+        double p_uTotal = uTotal * theta;
+        double p_u235 = p_uTotal * x_p;
+        double p_u238 = p_uTotal * (1.0 - x_p);
+
+        // Tails Uranium
+        double t_uTotal = uTotal * (1.0 - theta);
+        double t_u235 = t_uTotal * x_t;
+        double t_u238 = t_uTotal * (1.0 - x_t);
+
+        // Other isotopes and waste are distributed by mass
+        double productScale = theta;
+        double tailsScale = 1.0 - theta;
+
+        com.unnamednuclear.item.NuclearComposition productComp = new com.unnamednuclear.item.NuclearComposition(
+                p_u235, p_u238, comp.pu239() * productScale, comp.sr90() * productScale, comp.cs137() * productScale, 
+                comp.waste() * productScale, comp.u234() * productScale, comp.u236() * productScale, comp.pu240() * productScale);
+                
+        com.unnamednuclear.item.NuclearComposition tailsComp = new com.unnamednuclear.item.NuclearComposition(
+                t_u235, t_u238, comp.pu239() * tailsScale, comp.sr90() * tailsScale, comp.cs137() * tailsScale, 
+                comp.waste() * tailsScale, comp.u234() * tailsScale, comp.u236() * tailsScale, comp.pu240() * tailsScale);
+
+        ItemStack productStack = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
+        productStack.set(Registration.COMPOSITION.get(), productComp.normalize());
+
+        ItemStack tailsStack = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
+        tailsStack.set(Registration.COMPOSITION.get(), tailsComp.normalize());
+
+        addOrGrow(1, productStack);
+        addOrGrow(2, tailsStack);
+        
+        productTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), 100), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+        tailsTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), 100), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
     }
 
     private void addOrGrow(int slot, ItemStack stack) {
         ItemStack existing = inventory.getStackInSlot(slot);
         if (existing.isEmpty()) {
-            inventory.setStackInSlot(slot, stack);
+            inventory.setStackInSlot(slot, stack.copy());
         } else {
             existing.grow(stack.getCount());
         }
@@ -169,7 +219,9 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
     protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("Inventory", inventory.serializeNBT(registries));
-        tag.put("FluidTank", fluidTank.writeToNBT(registries, new CompoundTag()));
+        tag.put("InputTank", inputTank.writeToNBT(registries, new CompoundTag()));
+        tag.put("ProductTank", productTank.writeToNBT(registries, new CompoundTag()));
+        tag.put("TailsTank", tailsTank.writeToNBT(registries, new CompoundTag()));
         tag.putInt("Progress", progress);
     }
 
@@ -179,8 +231,14 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
         if (tag.contains("Inventory")) {
             inventory.deserializeNBT(registries, tag.getCompound("Inventory"));
         }
-        if (tag.contains("FluidTank")) {
-            fluidTank.readFromNBT(registries, tag.getCompound("FluidTank"));
+        if (tag.contains("InputTank")) {
+            inputTank.readFromNBT(registries, tag.getCompound("InputTank"));
+        }
+        if (tag.contains("ProductTank")) {
+            productTank.readFromNBT(registries, tag.getCompound("ProductTank"));
+        }
+        if (tag.contains("TailsTank")) {
+            tailsTank.readFromNBT(registries, tag.getCompound("TailsTank"));
         }
         progress = tag.getInt("Progress");
     }

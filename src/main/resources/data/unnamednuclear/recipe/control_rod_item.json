@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shaped",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     " I ",
     " I ",
@@ -12,6 +13,6 @@
   },
   "result": {
     "count": 1,
-    "item": "unnamednuclear:control_rod"
+    "id": "unnamednuclear:control_rod"
   }
 }

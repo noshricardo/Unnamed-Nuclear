@@ -7,6 +7,6 @@
     "item": "unnamednuclear:raw_uranium"
   },
   "result": {
-    "item": "unnamednuclear:yellowcake"
+    "id": "unnamednuclear:yellowcake"
   }
 }

@@ -18,7 +18,7 @@ import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
 public class SolventExtractorBlockEntity extends BlockEntity implements MenuProvider {
-    private final ItemStackHandler inventory = new ItemStackHandler(4) {
+    private final ItemStackHandler inventory = new ItemStackHandler(6) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
@@ -57,6 +57,10 @@ public class SolventExtractorBlockEntity extends BlockEntity implements MenuProv
         super(Registration.SOLVENT_EXTRACTOR_BE.get(), pos, state);
     }
 
+    public net.neoforged.neoforge.fluids.capability.templates.FluidTank getFluidTank() {
+        return fluidTank;
+    }
+
     public static void tick(Level level, BlockPos pos, BlockState state, SolventExtractorBlockEntity be) {
         if (level.isClientSide) return;
         
@@ -78,33 +82,34 @@ public class SolventExtractorBlockEntity extends BlockEntity implements MenuProv
 
     private boolean canProcess(ItemStack input) {
         if (input.isEmpty()) return false;
+        int limit = inventory.getSlotLimit(1);
         
+        // Slot 4: Solvent (TBP), Slot 5: Acid (Nitric Acid)
+        ItemStack solvent = inventory.getStackInSlot(4);
+        ItemStack acid = inventory.getStackInSlot(5);
+
         // Uranyl/Plutonium Nitrate + TBP -> Separated Nitrates
         if (input.is(Registration.URANYL_NITRATE.get()) || input.is(Registration.PLUTONIUM_NITRATE.get())) {
-            return fluidTank.getFluidAmount() >= 500 && fluidTank.getFluid().is(Registration.TBP.get())
-                && inventory.getStackInSlot(1).getCount() < 64;
+            return !solvent.isEmpty() && solvent.is(Registration.TBP_KEROSENE.get())
+                && inventory.getStackInSlot(1).getCount() < limit;
         }
 
         // Nitric Acid Dissolution: Spent Fuel -> Nitrates
         if (input.is(Registration.NUCLEAR_FUEL.get())) {
             com.unnamednuclear.item.NuclearComposition comp = input.get(Registration.COMPOSITION.get());
             if (comp == null) return false;
-            return fluidTank.getFluidAmount() >= 1000 && fluidTank.getFluid().is(Registration.HNO3.get())
-                && inventory.getStackInSlot(1).getCount() < 64 && inventory.getStackInSlot(2).getCount() < 64
-                && inventory.getStackInSlot(3).getCount() < 64;
-        }
-
-        // Uranyl/Plutonium Nitrate + Solidification -> Items
-        if (input.is(Registration.URANYL_NITRATE.get()) || input.is(Registration.PLUTONIUM_NITRATE.get())) {
-             // If player just wants to solidify without TBP (not PUREX but needed for cycle)
-             // We'll prioritize TBP if present in tank, otherwise maybe a different machine?
-             // Let's stick to PUREX here.
+            return !acid.isEmpty() && acid.is(Registration.NITRIC_ACID.get())
+                && inventory.getStackInSlot(1).getCount() < limit && inventory.getStackInSlot(2).getCount() < limit
+                && inventory.getStackInSlot(3).getCount() < limit;
         }
 
         return false;
     }
 
     private void process(ItemStack input) {
+        ItemStack solvent = inventory.getStackInSlot(4);
+        ItemStack acid = inventory.getStackInSlot(5);
+
         if (input.is(Registration.NUCLEAR_FUEL.get())) {
             com.unnamednuclear.item.NuclearComposition comp = input.get(Registration.COMPOSITION.get());
             if (comp == null) return;
@@ -122,7 +127,7 @@ public class SolventExtractorBlockEntity extends BlockEntity implements MenuProv
             ));
 
             input.shrink(1);
-            fluidTank.drain(1000, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+            acid.shrink(1);
             addOrGrow(1, uNitrate);
             addOrGrow(2, puNitrate);
             
@@ -135,14 +140,14 @@ public class SolventExtractorBlockEntity extends BlockEntity implements MenuProv
             ItemStack uo2 = new ItemStack(Registration.URANIUM_DIOXIDE.get());
             uo2.set(Registration.COMPOSITION.get(), input.get(Registration.COMPOSITION.get()));
             input.shrink(1);
-            fluidTank.drain(500, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+            solvent.shrink(1);
             addOrGrow(1, uo2);
         } else if (input.is(Registration.PLUTONIUM_NITRATE.get())) {
              // Plutonium Nitrate + TBP -> Pure Plutonium (simplified)
             ItemStack pu = new ItemStack(Registration.PLUTONIUM.get());
             pu.set(Registration.COMPOSITION.get(), input.get(Registration.COMPOSITION.get()));
             input.shrink(1);
-            fluidTank.drain(500, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+            solvent.shrink(1);
             addOrGrow(1, pu);
         }
     }

@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shaped",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "IPI",
     "IRI",
@@ -18,6 +19,6 @@
   },
   "result": {
     "count": 1,
-    "item": "unnamednuclear:solvent_extractor"
+    "id": "unnamednuclear:solvent_extractor"
   }
 }

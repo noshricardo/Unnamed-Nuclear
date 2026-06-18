@@ -14,11 +14,12 @@ import java.util.Map;
 public record SimulationDataSyncPayload(Map<BlockPos, NodeData> nodes) implements CustomPacketPayload {
     public static final Type<SimulationDataSyncPayload> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, "simulation_data"));
 
-    public record NodeData(float fast, float thermal, float heat) {
+    public record NodeData(float fast, float thermal, float heat, float xenon) {
         public static final StreamCodec<FriendlyByteBuf, NodeData> STREAM_CODEC = StreamCodec.composite(
                 ByteBufCodecs.FLOAT, NodeData::fast,
                 ByteBufCodecs.FLOAT, NodeData::thermal,
                 ByteBufCodecs.FLOAT, NodeData::heat,
+                ByteBufCodecs.FLOAT, NodeData::xenon,
                 NodeData::new
         );
     }

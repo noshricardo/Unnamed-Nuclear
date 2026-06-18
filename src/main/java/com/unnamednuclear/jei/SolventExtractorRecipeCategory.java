@@ -49,13 +49,15 @@ public class SolventExtractorRecipeCategory implements IRecipeCategory<SolventEx
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SolventExtractorRecipeJEI recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 38, 6).addIngredients(VanillaTypes.ITEM_STACK, recipe.inputs());
-        if (!recipe.fluidInputs().isEmpty()) {
-            builder.addSlot(RecipeIngredientRole.INPUT, 5, 6).addIngredients(NeoForgeTypes.FLUID_STACK, recipe.fluidInputs());
+        if (recipe.inputs().size() > 0) {
+            builder.addSlot(RecipeIngredientRole.INPUT, 5, 26).addItemStack(recipe.inputs().get(0));
+        }
+        if (recipe.inputs().size() > 1) {
+            builder.addSlot(RecipeIngredientRole.INPUT, 5, 8).addItemStack(recipe.inputs().get(1));
         }
         
-        if (recipe.outputs().size() > 0) builder.addSlot(RecipeIngredientRole.OUTPUT, 61, 6).addItemStack(recipe.outputs().get(0));
-        if (recipe.outputs().size() > 1) builder.addSlot(RecipeIngredientRole.OUTPUT, 81, 6).addItemStack(recipe.outputs().get(1));
-        if (recipe.outputs().size() > 2) builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 6).addItemStack(recipe.outputs().get(2));
+        if (recipe.outputs().size() > 0) builder.addSlot(RecipeIngredientRole.OUTPUT, 61, 26).addItemStack(recipe.outputs().get(0));
+        if (recipe.outputs().size() > 1) builder.addSlot(RecipeIngredientRole.OUTPUT, 81, 26).addItemStack(recipe.outputs().get(1));
+        if (recipe.outputs().size() > 2) builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 26).addItemStack(recipe.outputs().get(2));
     }
 }

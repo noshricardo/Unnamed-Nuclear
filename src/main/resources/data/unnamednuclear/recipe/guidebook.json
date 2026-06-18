@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shaped",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     " U ",
     " B ",
@@ -14,6 +15,6 @@
     }
   },
   "result": {
-    "item": "unnamednuclear:guidebook"
+    "id": "unnamednuclear:guidebook"
   }
 }

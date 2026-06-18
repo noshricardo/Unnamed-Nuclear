@@ -39,6 +39,7 @@ public class UnnamedNuclear {
         Registration.BLOCKS.register(modEventBus);
         Registration.ITEMS.register(modEventBus);
         Registration.DATA_COMPONENTS.register(modEventBus);
+        Registration.RECIPE_SERIALIZERS.register(modEventBus);
         Registration.BLOCK_ENTITIES.register(modEventBus);
         Registration.MENU_TYPES.register(modEventBus);
         Registration.FLUID_TYPES.register(modEventBus);
@@ -67,8 +68,21 @@ public class UnnamedNuclear {
             if (side == net.minecraft.core.Direction.UP) return controller.getInputTank();
             return controller.getOutputTank();
         });
-        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, Registration.STEAM_TURBINE_BE.get(), (be, side) -> ((com.unnamednuclear.block.SteamTurbineBlockEntity)be).getSteamTank());
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, Registration.STEAM_TURBINE_BE.get(), (be, side) -> {
+            com.unnamednuclear.block.SteamTurbineBlockEntity turbine = (com.unnamednuclear.block.SteamTurbineBlockEntity) be;
+            if (side == net.minecraft.core.Direction.DOWN) return turbine.getWaterTank();
+            return turbine.getSteamTank();
+        });
         event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.EnergyStorage.BLOCK, Registration.STEAM_TURBINE_BE.get(), (be, side) -> ((com.unnamednuclear.block.SteamTurbineBlockEntity)be).getEnergyStorage());
+        
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, Registration.CENTRIFUGE_BE.get(), (be, side) -> {
+            com.unnamednuclear.block.CentrifugeBlockEntity centrifuge = (com.unnamednuclear.block.CentrifugeBlockEntity) be;
+            if (side == net.minecraft.core.Direction.UP) return centrifuge.getInputTank();
+            if (side == net.minecraft.core.Direction.NORTH || side == net.minecraft.core.Direction.EAST) return centrifuge.getProductTank();
+            return centrifuge.getTailsTank();
+        });
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, Registration.CHEMICAL_CONVERTER_BE.get(), (be, side) -> ((com.unnamednuclear.block.ChemicalConverterBlockEntity)be).getFluidTank());
+        event.registerBlockEntity(net.neoforged.neoforge.capabilities.Capabilities.FluidHandler.BLOCK, Registration.SOLVENT_EXTRACTOR_BE.get(), (be, side) -> ((com.unnamednuclear.block.SolventExtractorBlockEntity)be).getFluidTank());
     }
 
     private void registerPayloads(final net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent event) {
@@ -77,6 +91,11 @@ public class UnnamedNuclear {
                 com.unnamednuclear.network.SimulationDataSyncPayload.TYPE,
                 com.unnamednuclear.network.SimulationDataSyncPayload.STREAM_CODEC,
                 com.unnamednuclear.network.NetworkHandler::handleSimulationData
+        );
+        registrar.playToClient(
+                com.unnamednuclear.network.ReactorInteriorSyncPayload.TYPE,
+                com.unnamednuclear.network.ReactorInteriorSyncPayload.STREAM_CODEC,
+                com.unnamednuclear.network.NetworkHandler::handleReactorInterior
         );
     }
 }

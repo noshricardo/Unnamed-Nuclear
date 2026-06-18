@@ -1,0 +1,349 @@
+[17Jun2026 18:19:33.413] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientdev, --version, 21.1.233, --assetIndex, asset-index, --assetsDir, /home/nosh/.gradle/caches/minecraft/assets, --gameDir, ., --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.233, --fml.neoFormVersion, 20240808.144430]
+[17Jun2026 18:19:33.416] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Azul Systems, Inc. OpenJDK 64-Bit Server VM 21.0.11+10-LTS
+[17Jun2026 18:19:33.417] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.11 by Azul Systems, Inc.; OS Linux arch amd64 version 7.0.12-zen1-1.1-zen
+[17Jun2026 18:19:33.498] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+[17Jun2026 18:19:33.570] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
+[17Jun2026 18:19:33.749] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
+[17Jun2026 18:19:33.807] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/home/nosh/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23130!/ Service=ModLauncher Env=CLIENT
+[17Jun2026 18:19:33.847] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce RTX 4070 Laptop GPU/PCIe/SSE2 GL version 4.6.0 NVIDIA 610.43.02, NVIDIA Corporation
+[17Jun2026 18:19:33.877] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-21.1.233.jar" [locator: neoforge devenv provider ([/home/nosh/IdeaProjects/Unnamed-Nuclear/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/21.1.233/neoforge-21.1.233.jar])]
+[17Jun2026 18:19:33.895] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-21.1.233.jar" [locator: neoforge devenv provider ([/home/nosh/IdeaProjects/Unnamed-Nuclear/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/21.1.233/neoforge-21.1.233.jar])]
+[17Jun2026 18:19:33.903] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "main" [locator: userdev mods and services, reader: mod manifest]
+[17Jun2026 18:19:33.912] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "neoforge-21.1.233.jar" [locator: userdev mods and services, reader: mod manifest]
+[17Jun2026 18:19:33.918] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "Patchouli-1.21.1-92-NEOFORGE-SNAPSHOT.jar" [locator: userdev mods and services, reader: mod manifest]
+[17Jun2026 18:19:33.920] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "jade-15.1.5+neoforge.jar" [locator: userdev mods and services, reader: mod manifest]
+[17Jun2026 18:19:33.924] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found mod file "jei-1.21.1-neoforge-19.21.0.247.jar" [locator: userdev mods and services, reader: mod manifest]
+[17Jun2026 18:19:33.932] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found gamelibrary file "mixinextras-neoforge-0.5.3.jar" [locator: userdev mods and services, reader: mod manifest]
+[17Jun2026 18:19:34.019] [main/WARN] [net.neoforged.jarjar.selection.JarSelector/]: Attempted to select a dependency jar for JarJar which was passed in as source: library:mixinextras.neoforge. Using Mod File: /home/nosh/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-neoforge/0.5.3/a0919957808de97707c5fb4ce073e66aeef3e187/mixinextras-neoforge-0.5.3.jar
+[17Jun2026 18:19:34.019] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 1 dependencies adding them to mods collection
+[17Jun2026 18:19:34.019] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/SCAN]: Found library file "net.neoforged.neoforge-coremods-21.1.233.jar" [parent: neoforge-21.1.233.jar, locator: jarinjar, reader: mod manifest]
+[17Jun2026 18:19:34.020] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
+     Mod List:
+		Name Version (Mod Id)
+
+		Jade 15.1.5+neoforge (jade)
+		Just Enough Items 19.21.0.247 (jei)
+		Minecraft 1.21.1 (minecraft)
+		NeoForge 21.1.233 (neoforge)
+		Patchouli 1.21.1-92-NEOFORGE-SNAPSHOT (patchouli)
+		Unnamed Nuclear 1.0.0 (unnamednuclear)
+[17Jun2026 18:19:34.288] [main/INFO] [mixin/]: Compatibility level set to JAVA_21
+[17Jun2026 18:19:34.294] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientdev' with arguments [--version, 21.1.233, --gameDir, ., --assetsDir, /home/nosh/.gradle/caches/minecraft/assets, --assetIndex, asset-index]
+[17Jun2026 18:19:34.323] [main/WARN] [mixin/]: Reference map 'patchouli.refmap.json' for patchouli_xplat.mixins.json could not be read. If this is a development environment you can ignore this message
+[17Jun2026 18:19:35.255] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.3).
+[17Jun2026 18:19:35.417] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 168 milliseconds
+[17Jun2026 18:19:39.730] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[17Jun2026 18:19:39.731] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[17Jun2026 18:19:39.733] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[17Jun2026 18:19:39.734] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[17Jun2026 18:19:39.735] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[17Jun2026 18:19:39.789] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/nosh/IdeaProjects/Unnamed-Nuclear/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/21.1.233/neoforge-21.1.233.jar%23183!/assets/.mcassetsroot' uses unexpected schema
+[17Jun2026 18:19:39.789] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/home/nosh/IdeaProjects/Unnamed-Nuclear/.gradle/repositories/ng_dummy_ng/net/neoforged/neoforge/21.1.233/neoforge-21.1.233.jar%23183!/data/.mcassetsroot' uses unexpected schema
+[17Jun2026 18:19:39.804] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[17Jun2026 18:19:39.809] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[17Jun2026 18:19:39.866] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
+[17Jun2026 18:19:41.365] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.233, for MC 1.21.1
+[17Jun2026 18:19:41.398] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager...
+[17Jun2026 18:19:41.400] [modloading-worker-0/INFO] [mezz.jei.library.load.PluginCaller/]: Sending ConfigManager took 892.4 μs
+[17Jun2026 18:19:41.901] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: [unnamednuclear]
+[17Jun2026 18:19:42.009] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/jade, mod/patchouli, mod/unnamednuclear, mod/neoforge, mod/jei
+[17Jun2026 18:19:42.085] [Worker-Main-13/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
+[17Jun2026 18:19:42.124] [Worker-Main-10/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
+[17Jun2026 18:19:42.545] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Unable to load model: 'unnamednuclear:item/nitric_acid_bucket' referenced from: unnamednuclear:item/nitric_acid_bucket: java.io.FileNotFoundException: unnamednuclear:models/item/nitric_acid_bucket.json
+[17Jun2026 18:19:42.546] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Unable to load model: 'unnamednuclear:item/fluorine_gas_bucket' referenced from: unnamednuclear:item/fluorine_gas_bucket: java.io.FileNotFoundException: unnamednuclear:models/item/fluorine_gas_bucket.json
+[17Jun2026 18:19:42.547] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Unable to load model: 'unnamednuclear:item/hydrofluoric_acid_bucket' referenced from: unnamednuclear:item/hydrofluoric_acid_bucket: java.io.FileNotFoundException: unnamednuclear:models/item/hydrofluoric_acid_bucket.json
+[17Jun2026 18:19:42.547] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Unable to load model: 'unnamednuclear:item/tbp_kerosene_bucket' referenced from: unnamednuclear:item/tbp_kerosene_bucket: java.io.FileNotFoundException: unnamednuclear:models/item/tbp_kerosene_bucket.json
+[17Jun2026 18:19:42.554] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Unable to load model: 'unnamednuclear:item/uranium_hexafluoride_bucket' referenced from: unnamednuclear:item/uranium_hexafluoride_bucket: java.io.FileNotFoundException: unnamednuclear:models/item/uranium_hexafluoride_bucket.json
+[17Jun2026 18:19:42.555] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelBakery/]: Unable to load model: 'unnamednuclear:item/gas_container' referenced from: unnamednuclear:item/gas_container: java.io.FileNotFoundException: unnamednuclear:models/item/gas_container.json
+[17Jun2026 18:19:42.842] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelManager/]: Missing textures in model unnamednuclear:hydrofluoric_acid#inventory:
+    minecraft:textures/atlas/blocks.png:unnamednuclear:item/hydrofluoric_acid
+[17Jun2026 18:19:42.842] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelManager/]: Missing textures in model unnamednuclear:fluorine_gas#inventory:
+    minecraft:textures/atlas/blocks.png:unnamednuclear:item/fluorine_gas
+[17Jun2026 18:19:42.843] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelManager/]: Missing textures in model unnamednuclear:nitric_acid#inventory:
+    minecraft:textures/atlas/blocks.png:unnamednuclear:item/nitric_acid
+[17Jun2026 18:19:42.843] [Worker-Main-8/WARN] [net.minecraft.client.resources.model.ModelManager/]: Missing textures in model unnamednuclear:tbp_kerosene#inventory:
+    minecraft:textures/atlas/blocks.png:unnamednuclear:item/tbp_kerosene
+[17Jun2026 18:19:42.950] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Start loading plugin from snownee.jade.addon.vanilla.VanillaPlugin
+[17Jun2026 18:19:42.978] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Bootstrapped plugin from snownee.jade.addon.vanilla.VanillaPlugin in 26.11 ms
+[17Jun2026 18:19:42.982] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Loaded plugin from snownee.jade.addon.vanilla.VanillaPlugin in 30.50 ms
+[17Jun2026 18:19:42.982] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Start loading plugin from snownee.jade.addon.universal.UniversalPlugin
+[17Jun2026 18:19:42.986] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Bootstrapped plugin from snownee.jade.addon.universal.UniversalPlugin in 2.806 ms
+[17Jun2026 18:19:42.986] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Loaded plugin from snownee.jade.addon.universal.UniversalPlugin in 3.123 ms
+[17Jun2026 18:19:42.986] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Start loading plugin from snownee.jade.addon.debug.DebugPlugin
+[17Jun2026 18:19:42.988] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Bootstrapped plugin from snownee.jade.addon.debug.DebugPlugin in 1.086 ms
+[17Jun2026 18:19:42.988] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Loaded plugin from snownee.jade.addon.debug.DebugPlugin in 1.343 ms
+[17Jun2026 18:19:42.988] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Start loading plugin from snownee.jade.addon.core.CorePlugin
+[17Jun2026 18:19:42.991] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Bootstrapped plugin from snownee.jade.addon.core.CorePlugin in 2.384 ms
+[17Jun2026 18:19:42.991] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Loaded plugin from snownee.jade.addon.core.CorePlugin in 2.675 ms
+[17Jun2026 18:19:42.991] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Start loading plugin from com.unnamednuclear.client.UnnamedNuclearJadePlugin
+[17Jun2026 18:19:42.992] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Bootstrapped plugin from com.unnamednuclear.client.UnnamedNuclearJadePlugin in 467.3 μs
+[17Jun2026 18:19:42.992] [Worker-Main-8/INFO] [snownee.jade.Jade/]: Loaded plugin from com.unnamednuclear.client.UnnamedNuclearJadePlugin in 779.3 μs
+[17Jun2026 18:19:43.093] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[17Jun2026 18:19:43.094] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[17Jun2026 18:19:43.141] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device SteelSeries Arctis 9 Game
+[17Jun2026 18:19:43.141] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
+[17Jun2026 18:19:43.242] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[17Jun2026 18:19:43.248] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[17Jun2026 18:19:43.248] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[17Jun2026 18:19:43.248] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[17Jun2026 18:19:43.249] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[17Jun2026 18:19:43.252] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[17Jun2026 18:19:43.252] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[17Jun2026 18:19:43.252] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[17Jun2026 18:19:43.253] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[17Jun2026 18:19:43.380] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[17Jun2026 18:19:43.382] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[17Jun2026 18:19:43.382] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[17Jun2026 18:19:43.383] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[17Jun2026 18:19:43.383] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[17Jun2026 18:19:43.401] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[17Jun2026 18:19:43.435] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader preloaded 13 jsons
+[17Jun2026 18:19:43.435] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
+[17Jun2026 18:19:43.435] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x0 jei:textures/atlas/gui.png-atlas
+[17Jun2026 18:19:59.692] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/moderator - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:moderator"}]
+[17Jun2026 18:19:59.708] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/centrifuge - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:centrifuge"}]
+[17Jun2026 18:19:59.715] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/control_channel - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:control_channel"}]
+[17Jun2026 18:19:59.718] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/fuel_channel - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:fuel_channel"}]
+[17Jun2026 18:19:59.722] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/coolant_channel - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:coolant_channel"}]
+[17Jun2026 18:19:59.726] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/solvent_extractor - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:solvent_extractor"}]
+[17Jun2026 18:19:59.727] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/reactor_casing - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:reactor_casing"}]
+[17Jun2026 18:19:59.731] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/chemical_converter - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:chemical_converter"}]
+[17Jun2026 18:19:59.740] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/heat_exchanger - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:heat_exchanger"}]
+[17Jun2026 18:19:59.741] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/reactor_controller - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:reactor_controller"}]
+[17Jun2026 18:19:59.743] [Worker-Main-4/ERROR] [net.minecraft.world.level.storage.loot.LootDataType/]: Couldn't parse element ResourceKey[minecraft:root / minecraft:loot_table]:unnamednuclear:blocks/steam_turbine - No key name in MapLike[{"type":"minecraft:item","id":"unnamednuclear:steam_turbine"}]
+[17Jun2026 18:19:59.863] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1320 recipes
+[17Jun2026 18:19:59.972] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1399 advancements
+[17Jun2026 18:20:00.269] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver received class net.neoforged.neoforge.event.TagsUpdatedEvent too early, ignoring
+[17Jun2026 18:20:00.274] [Render thread/INFO] [snownee.jade.Jade/]: LootTableMineableCollector took 4.073 ms
+[17Jun2026 18:20:00.336] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
+[17Jun2026 18:20:00.336] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[17Jun2026 18:20:01.047] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[17Jun2026 18:20:01.210] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[17Jun2026 18:20:01.284] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[17Jun2026 18:20:01.286] [Server thread/INFO] [patchouli/]: Sending reload packet to clients
+[17Jun2026 18:20:01.296] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 236 ms
+[17Jun2026 18:20:01.343] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
+[17Jun2026 18:20:01.343] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[17Jun2026 18:20:01.645] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver received class net.neoforged.neoforge.event.TagsUpdatedEvent
+[17Jun2026 18:20:01.811] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:e373a6f7] logged in with entity id 72 at (-132.72752855853219, 80.0, -42.044832693100716)
+[17Jun2026 18:20:01.847] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev joined the game
+[17Jun2026 18:20:01.984] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver received class net.neoforged.neoforge.client.event.RecipesUpdatedEvent
+[17Jun2026 18:20:01.984] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from LISTENING to JEI_STARTED
+[17Jun2026 18:20:01.985] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Starting JEI...
+[17Jun2026 18:20:01.990] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering item subtypes...
+[17Jun2026 18:20:01.994] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering item subtypes took 3.302 ms
+[17Jun2026 18:20:01.994] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering fluid subtypes...
+[17Jun2026 18:20:01.995] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering fluid subtypes took 1.096 ms
+[17Jun2026 18:20:01.996] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering ingredients...
+[17Jun2026 18:20:02.041] [Render thread/WARN] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Item Group has no display items and no search tab display items. Items from this group will be missing from the JEI ingredient list. Operator Utilities
+[17Jun2026 18:20:02.052] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering ingredients: jei:minecraft took 55.63 milliseconds
+[17Jun2026 18:20:02.052] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering ingredients took 56.33 ms
+[17Jun2026 18:20:02.053] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering extra ingredients...
+[17Jun2026 18:20:02.053] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering extra ingredients took 435.3 μs
+[17Jun2026 18:20:02.053] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering search ingredient aliases...
+[17Jun2026 18:20:02.054] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering search ingredient aliases took 513.6 μs
+[17Jun2026 18:20:02.062] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Mod Info...
+[17Jun2026 18:20:02.063] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Mod Info took 478.9 μs
+[17Jun2026 18:20:02.077] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering categories...
+[17Jun2026 18:20:02.091] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering categories took 13.62 ms
+[17Jun2026 18:20:02.091] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering vanilla category extensions...
+[17Jun2026 18:20:02.093] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering vanilla category extensions took 1.816 ms
+[17Jun2026 18:20:02.094] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipe catalysts...
+[17Jun2026 18:20:02.095] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipe catalysts took 1.398 ms
+[17Jun2026 18:20:02.096] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building recipe registry...
+[17Jun2026 18:20:02.105] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building recipe registry took 8.972 ms
+[17Jun2026 18:20:02.105] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering advanced plugins...
+[17Jun2026 18:20:02.106] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering advanced plugins took 473.1 μs
+[17Jun2026 18:20:02.106] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes...
+[17Jun2026 18:20:02.183] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: jei:minecraft took 75.87 milliseconds
+[17Jun2026 18:20:02.206] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: jei:internal took 22.57 milliseconds
+[17Jun2026 18:20:02.207] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes took 100.1 ms
+[17Jun2026 18:20:02.210] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes transfer handlers...
+[17Jun2026 18:20:02.213] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes transfer handlers took 2.401 ms
+[17Jun2026 18:20:02.218] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building runtime...
+[17Jun2026 18:20:02.221] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering gui handlers...
+[17Jun2026 18:20:02.225] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering gui handlers took 3.447 ms
+[17Jun2026 18:20:02.243] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Runtime...
+[17Jun2026 18:20:02.245] [Render thread/INFO] [mezz.jei.gui.startup.JeiGuiStarter/]: Starting JEI GUI
+[17Jun2026 18:20:02.245] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient list...
+[17Jun2026 18:20:02.262] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient list took 16.72 ms
+[17Jun2026 18:20:02.262] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient filter...
+[17Jun2026 18:20:02.275] [Render thread/INFO] [mezz.jei.gui.ingredients.IngredientFilter/]: Adding 1740 ingredients
+[17Jun2026 18:20:02.418] [Render thread/INFO] [mezz.jei.gui.ingredients.IngredientFilter/]: Added 1740 ingredients
+[17Jun2026 18:20:02.419] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient filter took 156.7 ms
+[17Jun2026 18:20:02.455] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Runtime: jei:neoforge_gui took 211.0 milliseconds
+[17Jun2026 18:20:02.455] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Runtime took 211.7 ms
+[17Jun2026 18:20:02.455] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building runtime took 236.8 ms
+[17Jun2026 18:20:02.456] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime...
+[17Jun2026 18:20:02.456] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime took 386.6 μs
+[17Jun2026 18:20:02.456] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Starting JEI took 471.0 ms
+[17Jun2026 18:20:02.469] [Render thread/INFO] [snownee.jade.Jade/]: Received config from the server: 
+[17Jun2026 18:20:02.471] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1280 advancements
+[17Jun2026 18:20:02.478] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 101.9 μs
+[17Jun2026 18:20:02.481] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 65.12 μs
+[17Jun2026 18:20:02.494] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 48.22 μs
+[17Jun2026 18:20:02.495] [Render thread/WARN] [patchouli/]: Recipe unnamednuclear:nitric_acid_bucket (of type minecraft:crafting) not found
+[17Jun2026 18:20:02.495] [Render thread/WARN] [patchouli/]: Recipe unnamednuclear:tbp_kerosene_bucket (of type minecraft:crafting) not found
+[17Jun2026 18:20:02.495] [Render thread/WARN] [patchouli/]: Recipe unnamednuclear:hydrofluoric_acid_bucket (of type minecraft:crafting) not found
+[17Jun2026 18:20:02.495] [Render thread/WARN] [patchouli/]: Recipe unnamednuclear:yellowcake_from_smelting (of type minecraft:crafting) not found
+[17Jun2026 18:20:02.495] [Render thread/WARN] [patchouli/]: Recipe unnamednuclear:fluorite_from_smelting (of type minecraft:crafting) not found
+[17Jun2026 18:24:23.629] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:24:23.643] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:24:30.493] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:24:30.506] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:24:49.592] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: The game is sprinting]
+[17Jun2026 18:24:49.597] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] The game is sprinting
+[17Jun2026 18:31:40.586] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Sprint completed with 233 ticks per second, or 4.28 ms per tick
+[17Jun2026 18:31:40.598] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [Server: Sprint completed with 233 ticks per second, or 4.28 ms per tick]
+[17Jun2026 18:32:46.428] [Server thread/WARN] [mezz.jei.common.network.packets.PacketDeletePlayerItem/]: Player 'literal{Dev} (380df991-f603-344c-a090-369bad2a924a)' tried to delete ItemStack 'translation{key='chat.square_brackets', args=[empty[siblings=[translation{key='item.unnamednuclear.yellowcake', args=[]}]]]}[style={color=white,hoverEvent=TypedHoverEvent[action=<action show_item>, value=net.minecraft.network.chat.HoverEvent$ItemStackInfo@ee31498c]}]' but is currently holding a different ItemStack 'translation{key='chat.square_brackets', args=[empty[siblings=[translation{key='block.minecraft.air', args=[]}]]]}'.
+[17Jun2026 18:33:06.160] [Server thread/WARN] [mezz.jei.common.network.packets.PacketDeletePlayerItem/]: Player 'literal{Dev} (380df991-f603-344c-a090-369bad2a924a)' tried to delete ItemStack 'translation{key='chat.square_brackets', args=[empty[siblings=[translation{key='block.unnamednuclear.steam_turbine', args=[]}]]]}[style={color=white,hoverEvent=TypedHoverEvent[action=<action show_item>, value=net.minecraft.network.chat.HoverEvent$ItemStackInfo@f2605cbc]}]' but is currently holding a different ItemStack 'translation{key='chat.square_brackets', args=[empty[siblings=[translation{key='block.minecraft.air', args=[]}]]]}'.
+[17Jun2026 18:34:04.678] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: The game is sprinting]
+[17Jun2026 18:34:04.679] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] The game is sprinting
+[17Jun2026 18:35:54.384] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:35:54.387] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:36:04.911] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:36:04.920] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:36:14.055] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:36:14.071] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:36:22.839] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:36:22.853] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:36:35.167] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:36:35.172] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:36:44.165] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:36:44.175] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:36:51.464] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:36:51.480] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:37:00.179] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:37:00.188] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:37:08.135] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:37:08.146] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:37:28.085] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[17Jun2026 18:37:28.165] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[17Jun2026 18:37:28.199] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[17Jun2026 18:37:28.199] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[17Jun2026 18:37:31.603] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:37:31.615] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:37:40.789] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:37:40.803] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:37:47.798] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:37:47.804] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:37:55.343] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:37:55.347] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:02.505] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:02.509] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:02.747] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:02.762] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:08.161] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:08.174] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:08.363] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:08.374] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:13.853] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:13.856] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:14.052] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:14.055] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:19.447] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:19.453] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:19.594] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:19.597] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:25.077] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:25.082] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:25.327] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:25.336] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:30.814] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:30.819] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:31.098] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:31.109] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:36.017] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:36.027] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:36.287] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:36.295] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:41.174] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:41.176] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:41.526] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:41.535] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:47.114] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:47.124] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:47.304] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:47.310] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:53.115] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:53.122] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:53.408] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:53.417] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:59.328] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:59.337] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:38:59.599] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:38:59.603] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:04.584] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:04.598] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:04.831] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:04.838] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:10.328] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:10.338] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:10.585] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:10.589] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:15.847] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:15.857] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:16.143] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:16.149] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:21.555] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:21.561] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:21.893] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:21.894] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:26.323] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:26.336] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:26.563] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:26.577] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:31.655] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:31.658] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:31.949] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:31.952] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:36.732] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:36.735] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:36.935] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:36.947] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:42.560] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:42.563] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:42.816] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:42.819] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:48.128] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:48.144] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:48.424] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:48.438] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:53.862] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:53.871] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:39:54.064] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:39:54.070] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:40:00.842] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:40:00.857] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:40:01.122] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 1 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:40:01.124] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 1 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:40:06.215] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Gave 16 [Uranium Hexafluoride (UF6)] to Dev]
+[17Jun2026 18:40:06.227] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Gave 16 [Uranium Hexafluoride (UF6)] to Dev
+[17Jun2026 18:40:23.552] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Sprint completed with 236 ticks per second, or 4.23 ms per tick
+[17Jun2026 18:40:23.552] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [Dev: Interrupted the current tick sprint]
+[17Jun2026 18:40:23.562] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] [Server: Sprint completed with 236 ticks per second, or 4.23 ms per tick]
+[17Jun2026 18:40:23.562] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Interrupted the current tick sprint
+[17Jun2026 18:40:52.398] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[17Jun2026 18:40:52.418] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[17Jun2026 18:40:52.424] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[17Jun2026 18:40:52.424] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[17Jun2026 18:40:53.032] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver received class net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent$LoggingOut
+[17Jun2026 18:40:53.032] [Render thread/INFO] [mezz.jei.neoforge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from JEI_STARTED to LISTENING
+[17Jun2026 18:40:53.032] [Render thread/INFO] [mezz.jei.library.startup.JeiStarter/]: Stopping JEI
+[17Jun2026 18:40:53.032] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable...
+[17Jun2026 18:40:53.032] [Render thread/INFO] [mezz.jei.neoforge.plugins.neoforge.NeoForgeGuiPlugin/]: Stopping JEI GUI
+[17Jun2026 18:40:53.034] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable took 2.200 ms
+[17Jun2026 18:40:53.054] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[17Jun2026 18:40:53.054] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Dev left the game
+[17Jun2026 18:40:53.074] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[17Jun2026 18:40:53.105] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[17Jun2026 18:40:53.106] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[17Jun2026 18:40:53.106] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[17Jun2026 18:40:53.202] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[17Jun2026 18:40:53.244] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[17Jun2026 18:40:53.246] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[17Jun2026 18:40:53.254] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[17Jun2026 18:40:53.254] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[17Jun2026 18:40:53.254] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[17Jun2026 18:40:53.254] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[17Jun2026 18:40:54.521] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!

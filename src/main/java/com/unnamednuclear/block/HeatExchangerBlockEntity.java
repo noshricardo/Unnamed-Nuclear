@@ -29,31 +29,50 @@ public class HeatExchangerBlockEntity extends BlockEntity {
     public static void tick(Level level, BlockPos pos, BlockState state, HeatExchangerBlockEntity be) {
         if (level.isClientSide) return;
 
-        // 1. Heat transfer from hot sodium
+        // 1. Heat transfer from hot primary coolant
         if (!be.primaryTank.isEmpty() && be.primaryTank.getFluid().is(Registration.HOT_SODIUM.get())) {
-            FluidStack stack = be.primaryTank.getFluid();
-            // Simple model: 1mB of primary coolant transfers some heat
-            double transfer = stack.getAmount() * 0.01;
-            be.internalHeat += transfer;
+            FluidStack hotStack = be.primaryTank.getFluid();
+            int amount = Math.min(hotStack.getAmount(), 200);
             
-            // Turn hot sodium back to liquid sodium
-            int amount = be.primaryTank.getFluidAmount();
-            be.primaryTank.setFluid(new FluidStack(Registration.SODIUM.get(), amount));
-        }
-
-        // 2. Steam generation
-        if (be.internalHeat > 373 && !be.waterTank.isEmpty()) { // 100C
-            int amountToBoil = Math.min(be.waterTank.getFluidAmount(), 100);
-            double heatRequired = amountToBoil * 2.0; // Latent heat etc simplified
-            if (be.internalHeat > heatRequired) {
-                be.waterTank.drain(amountToBoil, IFluidHandler.FluidAction.EXECUTE);
-                be.steamTank.fill(new FluidStack(Registration.STEAM.get(), amountToBoil * 10), IFluidHandler.FluidAction.EXECUTE);
-                be.internalHeat -= heatRequired;
+            // Sodium specific heat: ~1.2 J/g*K. 
+            // Simplified: 1mB transfers enough energy to heat internal heat.
+            double heatEnergy = amount * 5.0;
+            
+            // Only convert if we have space in the tank for the cooled fluid
+            // Since we are draining from the same tank, we need to be careful if it's the same tank.
+            // If it's a single tank for both Hot and Cold, convert in place or drain then fill.
+            
+            int drained = be.primaryTank.drain(amount, IFluidHandler.FluidAction.SIMULATE).getAmount();
+            if (drained > 0) {
+                be.primaryTank.drain(drained, IFluidHandler.FluidAction.EXECUTE);
+                be.primaryTank.fill(new FluidStack(Registration.SODIUM.get(), drained), IFluidHandler.FluidAction.EXECUTE);
+                be.internalHeat += (drained * 5.0);
             }
         }
 
-        // 3. Ambient loss
-        be.internalHeat -= (be.internalHeat - 293) * 0.01;
+        // 2. Steam generation (Boiling)
+        // Water boiling point is 100C (373K)
+        if (be.internalHeat > 373 && !be.waterTank.isEmpty()) {
+            double deltaT = be.internalHeat - 373;
+            int maxBoil = (int) (deltaT * 2); 
+            int amountToBoil = Math.min(be.waterTank.getFluidAmount(), Math.min(maxBoil, 500));
+            
+            if (amountToBoil > 0) {
+                int steamAmount = amountToBoil * 20;
+                int filled = be.steamTank.fill(new FluidStack(Registration.STEAM.get(), steamAmount), IFluidHandler.FluidAction.SIMULATE);
+                if (filled > 0) {
+                    int waterToDrain = filled / 20;
+                    if (waterToDrain > 0) {
+                        be.waterTank.drain(waterToDrain, IFluidHandler.FluidAction.EXECUTE);
+                        be.steamTank.fill(new FluidStack(Registration.STEAM.get(), waterToDrain * 20), IFluidHandler.FluidAction.EXECUTE);
+                        be.internalHeat -= waterToDrain * 1.5;
+                    }
+                }
+            }
+        }
+
+        // 3. Ambient heat loss
+        be.internalHeat -= (be.internalHeat - 293) * 0.05;
     }
 
     @Override

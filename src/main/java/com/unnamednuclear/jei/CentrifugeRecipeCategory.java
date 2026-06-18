@@ -23,7 +23,7 @@ public class CentrifugeRecipeCategory implements IRecipeCategory<CentrifugeRecip
 
     public CentrifugeRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, "textures/gui/container/centrifuge.png"), 40, 30, 120, 30);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Registration.CENTRIFUGE.get()));
+        this.icon = helper.createDrawableIngredient(mezz.jei.api.constants.VanillaTypes.ITEM_STACK, new ItemStack(Registration.CENTRIFUGE.get()));
     }
 
     @Override
@@ -51,13 +51,10 @@ public class CentrifugeRecipeCategory implements IRecipeCategory<CentrifugeRecip
         builder.addSlot(RecipeIngredientRole.INPUT, 5, 6).addIngredients(VanillaTypes.ITEM_STACK, recipe.inputs());
         
         if (recipe.outputs().size() > 0) {
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 61, 6).addItemStack(recipe.outputs().get(0));
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 61, -3).addIngredient(VanillaTypes.ITEM_STACK, recipe.outputs().get(0));
         }
         if (recipe.outputs().size() > 1) {
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 81, 6).addItemStack(recipe.outputs().get(1));
-        }
-        if (recipe.outputs().size() > 2) {
-            builder.addSlot(RecipeIngredientRole.OUTPUT, 101, 6).addItemStack(recipe.outputs().get(2));
+            builder.addSlot(RecipeIngredientRole.OUTPUT, 61, 15).addIngredient(VanillaTypes.ITEM_STACK, recipe.outputs().get(1));
         }
     }
 }

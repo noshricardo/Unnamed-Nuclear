@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shapeless",
+  "type": "unnamednuclear:composition_transfer",
+  "category": "misc",
   "ingredients": [
     {
       "item": "unnamednuclear:uranium_dioxide"
@@ -7,6 +8,6 @@
   ],
   "result": {
     "count": 4,
-    "item": "unnamednuclear:fuel_pellet"
+    "id": "unnamednuclear:fuel_pellet"
   }
 }

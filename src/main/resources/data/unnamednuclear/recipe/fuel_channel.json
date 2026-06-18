@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shaped",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "I I",
     "ICI",
@@ -15,6 +16,6 @@
   },
   "result": {
     "count": 1,
-    "item": "unnamednuclear:fuel_channel"
+    "id": "unnamednuclear:fuel_channel"
   }
 }

@@ -12,6 +12,7 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,6 +39,7 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
 
     private boolean assembled = false;
     private boolean active = true;
+    private boolean needsReassembly = true;
     private AssemblyResult lastResult = AssemblyResult.NO_INTERIOR;
     private final List<BlockPos> errorPositions = new ArrayList<>();
     private final List<BlockPos> interiorNodes = new ArrayList<>();
@@ -58,33 +60,87 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
 
         tickCounter++;
         if (tickCounter % 20 == 0) {
-            checkMultiblock();
+            if (needsReassembly) {
+                checkMultiblock();
+                needsReassembly = false;
+            }
             transferHeatToCoolant();
+            syncInteriorToPlayers();
         }
+    }
+
+    private void syncInteriorToPlayers() {
+        if (!assembled || interiorNodes.isEmpty()) return;
+
+        List<com.unnamednuclear.network.ReactorInteriorSyncPayload.ChannelData> syncData = new ArrayList<>();
+        for (BlockPos pos : interiorNodes) {
+            BlockState state = level.getBlockState(pos);
+            String type = "interior";
+            if (state.is(Registration.FUEL_CHANNEL.get())) type = "fuel";
+            else if (state.is(Registration.CONTROL_CHANNEL.get())) type = "control";
+            else if (state.is(Registration.COOLANT_CHANNEL.get())) type = "coolant";
+            else if (state.is(Registration.MODERATOR.get())) type = "moderator";
+
+            ItemStack item = ItemStack.EMPTY;
+            int insertion = 0;
+            if (level.getBlockEntity(pos) instanceof ReactorChannelBlockEntity channel) {
+                item = channel.getItem();
+            }
+            if (state.hasProperty(ReactorChannelBlock.INSERTION)) {
+                insertion = state.getValue(ReactorChannelBlock.INSERTION);
+            }
+            syncData.add(new com.unnamednuclear.network.ReactorInteriorSyncPayload.ChannelData(pos, type, item, insertion));
+        }
+
+        com.unnamednuclear.network.ReactorInteriorSyncPayload payload = new com.unnamednuclear.network.ReactorInteriorSyncPayload(syncData);
+        // Find players who have this container open
+        for (net.minecraft.server.level.ServerPlayer player : ((net.minecraft.server.level.ServerLevel)level).players()) {
+            if (player.containerMenu instanceof ReactorMenu menu && menu.getBlockEntity() == this) {
+                net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(player, payload);
+            }
+        }
+    }
+
+    public void setNeedsReassembly() {
+        this.needsReassembly = true;
     }
 
     private void transferHeatToCoolant() {
         if (!assembled || !active) return;
         
         WorldSimulationData data = WorldSimulationData.get((net.minecraft.server.level.ServerLevel) level);
-        if (inputTank.getFluidAmount() > 0 && inputTank.getFluid().is(Registration.SODIUM.get())) {
-            int amountToHeats = Math.min(inputTank.getFluidAmount(), 100);
-            double totalHeat = 0;
+        
+        boolean isSodium = inputTank.getFluidAmount() > 0 && inputTank.getFluid().is(Registration.SODIUM.get());
+        boolean isWater = inputTank.getFluidAmount() > 0 && inputTank.getFluid().is(net.minecraft.world.level.material.Fluids.WATER);
+        
+        if (isSodium || isWater) {
+            // Count coolant channels
+            long coolantChannels = interiorNodes.stream().filter(pos -> level.getBlockState(pos).is(Registration.COOLANT_CHANNEL.get())).count();
+            if (coolantChannels == 0) return;
+
+            int amountToHeat = Math.min(inputTank.getFluidAmount(), (int) (coolantChannels * 100));
+            double heatEnergyExtracted = 0;
+            
+            double extractionEfficiency = 0.5;
             for (BlockPos pos : interiorNodes) {
-                SimulationNode node = data.getNode(pos);
-                if (node != null) totalHeat += node.heat;
+                if (level.getBlockState(pos).is(Registration.COOLANT_CHANNEL.get())) {
+                    SimulationNode node = data.getNode(pos);
+                    if (node != null && node.heat > 300) { // Only extract if above ambient
+                        double extract = (node.heat - 300) * extractionEfficiency;
+                        node.heat -= extract;
+                        heatEnergyExtracted += extract;
+                    }
+                }
             }
 
-            if (totalHeat > 100) { // Some threshold to start heating
-                inputTank.drain(amountToHeats, IFluidHandler.FluidAction.EXECUTE);
-                outputTank.fill(new FluidStack(Registration.HOT_SODIUM.get(), amountToHeats), IFluidHandler.FluidAction.EXECUTE);
-                
-                // Remove heat from the core
-                double heatToRemove = amountToHeats * 2.0;
-                double heatPerNode = heatToRemove / interiorNodes.size();
-                for (BlockPos pos : interiorNodes) {
-                    SimulationNode node = data.getNode(pos);
-                    if (node != null) node.heat = Math.max(0, node.heat - heatPerNode);
+            if (heatEnergyExtracted > 0) {
+                inputTank.drain(amountToHeat, IFluidHandler.FluidAction.EXECUTE);
+                if (isSodium) {
+                    outputTank.fill(new FluidStack(Registration.HOT_SODIUM.get(), amountToHeat), IFluidHandler.FluidAction.EXECUTE);
+                } else {
+                    // Water to Steam (simplified, directly to steam if hot enough)
+                    // Or we could have "Hot Water" but for now let's just use Steam.
+                    outputTank.fill(new FluidStack(Registration.STEAM.get(), amountToHeat * 10), IFluidHandler.FluidAction.EXECUTE);
                 }
             }
         }
@@ -193,6 +249,10 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
                state.is(Registration.COOLANT_CHANNEL.get());
     }
 
+
+    public List<BlockPos> getInteriorNodes() {
+        return interiorNodes;
+    }
 
     public boolean isAssembled() {
         return assembled;

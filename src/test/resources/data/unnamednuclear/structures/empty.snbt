@@ -1,0 +1,15 @@
+{
+  "size": [3, 3, 3],
+  "entities": [],
+  "blocks": [
+    {
+      "pos": [0, 0, 0],
+      "state": 0
+    }
+  ],
+  "palette": [
+    {
+      "Name": "minecraft:air"
+    }
+  ]
+}

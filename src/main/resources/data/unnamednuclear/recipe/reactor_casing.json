@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shaped",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "III",
     "ILI",
@@ -15,6 +16,6 @@
   },
   "result": {
     "count": 1,
-    "item": "unnamednuclear:reactor_casing"
+    "id": "unnamednuclear:reactor_casing"
   }
 }

@@ -14,6 +14,17 @@ public class DefaultReactorType implements ReactorType {
         return "default";
     }
 
+    public double getModerationEfficiency(BlockState state, SimulationNode data) {
+        if (state.is(Registration.MODERATOR.get())) {
+            return 0.8; // Graphite
+        }
+        return 0;
+    }
+
+    protected double getModerationLoss(BlockState state) {
+        return 0.02;
+    }
+
     @Override
     public void simulateNode(Level level, BlockPos pos, BlockState state, SimulationNode data) {
         net.minecraft.world.level.block.entity.BlockEntity be = level.getBlockEntity(pos);
@@ -28,86 +39,95 @@ public class DefaultReactorType implements ReactorType {
                 }
 
                 if (comp.getTotal() > 0) {
-                    // Fission
-                    // Thermal neutrons are absorbed by fuel to cause fission.
-                    // Xenon-135 is a major neutron poison.
-                    double xenonAbsorption = data.thermalNeutrons * 0.8 * (data.xenon135 / (data.xenon135 + 0.1));
-                    double availableThermalNeutrons = Math.max(0, data.thermalNeutrons - xenonAbsorption);
-                    data.nextThermalNeutrons -= xenonAbsorption;
+                    // Xenon-135 absorption cross-section is massive
+                    double xenonEffect = data.xenon135 * 2000.0;
+                    double absorptionProbability = xenonEffect / (xenonEffect + 1.0);
+                    double absorbedByXenon = data.thermalNeutrons * 0.9 * absorptionProbability;
+                    data.nextThermalNeutrons -= absorbedByXenon;
 
-                    double fissionU235 = (availableThermalNeutrons * 0.5 * comp.u235()) + (0.001 * comp.u235());
-                    double fissionPu239 = (availableThermalNeutrons * 0.8 * comp.pu239()) + (0.001 * comp.pu239());
-                    double totalFission = fissionU235 + fissionPu239;
+                    double availableThermal = Math.max(0, data.thermalNeutrons - absorbedByXenon);
                     
-                    data.nextFastNeutrons += totalFission * getNeutronsPerFission();
-                    data.nextHeat += totalFission * getHeatPerFission();
-                    data.nextThermalNeutrons -= (fissionU235 + fissionPu239); // Absorbed for fission
-
-                    // Iodine and Xenon production
-                    data.nextIodine135 += totalFission * 0.06; // 6% yield
+                    // Fission: Thermal neutrons cause fission in U-235 and Pu-239
+                    double fissionYield = 0.8;
+                    double fissionU235 = availableThermal * fissionYield * comp.u235();
+                    double fissionPu239 = availableThermal * fissionYield * 1.2 * comp.pu239(); // Pu239 is more fissile
                     
-                    // Breeding
-                    double breeding = (data.fastNeutrons * 0.2 * comp.u238());
-                    data.nextFastNeutrons -= breeding; // Neutrons captured
+                    // Spontaneous fission (source)
+                    double sourceU235 = 0.0001 * comp.u235();
+                    
+                    double totalFissions = fissionU235 + fissionPu239 + sourceU235;
+                    
+                    data.nextFastNeutrons += totalFissions * getNeutronsPerFission();
+                    data.nextHeat += totalFissions * getHeatPerFission();
+                    data.nextThermalNeutrons -= (fissionU235 + fissionPu239);
 
-                    // Absorption by waste (poisoning)
-                    double poison = availableThermalNeutrons * 0.1 * comp.waste();
-                    data.nextThermalNeutrons -= poison;
+                    // Iodine-135 production from fission
+                    data.nextIodine135 += totalFissions * 0.0639; // Fission yield for I-135
+                    
+                    // Breeding: Fast neutrons captured by U-238 to eventually form Pu-239
+                    double breedCapture = data.fastNeutrons * 0.15 * comp.u238();
+                    data.nextFastNeutrons -= breedCapture;
 
-                    // Chemical Changes (slow)
-                    if (level.getRandom().nextDouble() < 0.1) {
-                        double deltaU235 = fissionU235 * 0.01;
-                        double deltaPu239 = (fissionPu239 * 0.01) - (breeding * 0.01);
-                        double deltaU238 = breeding * 0.01;
-                        double deltaSr90 = totalFission * 0.004;
-                        double deltaCs137 = totalFission * 0.005;
-                        double deltaWaste = totalFission * 0.001;
-
-                        double newU235 = Math.max(0, comp.u235() - deltaU235);
-                        double newU238 = Math.max(0, comp.u238() - deltaU238);
-                        double newPu239 = Math.max(0, comp.pu239() - deltaPu239);
-                        double newSr90 = comp.sr90() + deltaSr90;
-                        double newCs137 = comp.cs137() + deltaCs137;
-                        double newWaste = comp.waste() + deltaWaste;
-
-                        stack.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(newU235, newU238, newPu239, newSr90, newCs137, newWaste, comp.u234(), comp.u236(), comp.pu240()));
-                        channel.setChanged();
-                    }
+                    // Fuel depletion logic (every 20 ticks to save performance)
+                    double consumeRate = 0.001;
+                    double newU235 = Math.max(0, comp.u235() - fissionU235 * consumeRate);
+                    double newU238 = Math.max(0, comp.u238() - breedCapture * consumeRate);
+                    double newPu239 = Math.max(0, comp.pu239() + (breedCapture - fissionPu239) * consumeRate);
+                    double newWaste = comp.waste() + totalFissions * consumeRate;
+                    
+                    stack.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(
+                        newU235, newU238, newPu239, comp.sr90(), comp.cs137(), newWaste, 
+                        comp.u234(), comp.u236(), comp.pu240()));
+                    channel.setChanged();
                 }
             }
-        } else if (state.is(Registration.MODERATOR.get())) {
-            // Graphite/Beryllium moderator efficiency
-            double moderated = data.fastNeutrons * 0.7;
-            data.nextFastNeutrons -= moderated;
-            data.nextThermalNeutrons += moderated * 0.95; // Some loss
-            data.nextHeat += moderated * 0.01;
-        } else if (state.is(Registration.CONTROL_CHANNEL.get()) && be instanceof com.unnamednuclear.block.ReactorChannelBlockEntity channel) {
-            if (channel.getItem().is(Registration.CONTROL_ROD_ITEM.get())) {
-                double insertion = state.getValue(com.unnamednuclear.block.ReactorChannelBlock.INSERTION) / 10.0;
-                data.nextFastNeutrons -= data.fastNeutrons * 0.5 * insertion;
-                data.nextThermalNeutrons -= data.thermalNeutrons * 0.99 * insertion;
+        } else {
+            double moderationEfficiency = getModerationEfficiency(state, data);
+            
+            // Temperature/Void feedback
+            double feedback = 1.0 + (data.heat * getTemperatureCoefficient());
+            if (state.is(Registration.COOLANT_CHANNEL.get())) {
+                feedback += getVoidCoefficient() * (data.heat / 2000.0); // Simple void model: hotter = more steam
             }
-        } else if (state.is(Registration.COOLANT_CHANNEL.get())) {
-            // Active cooling will be handled by fluid exchange later, but basic heat removal for now
-            data.nextHeat -= data.heat * 0.3;
+            moderationEfficiency *= Math.max(0.1, feedback);
+
+            if (moderationEfficiency > 0) {
+                double slowed = data.fastNeutrons * moderationEfficiency;
+                data.nextFastNeutrons -= slowed;
+                data.nextThermalNeutrons += slowed * (1.0 - getModerationLoss(state));
+            }
+            
+            if (state.is(Registration.CONTROL_CHANNEL.get()) && be instanceof com.unnamednuclear.block.ReactorChannelBlockEntity channel) {
+                double insertion = state.getValue(com.unnamednuclear.block.ReactorChannelBlock.INSERTION) / 10.0;
+                if (channel.getItem().is(Registration.CONTROL_ROD_ITEM.get())) {
+                    data.nextThermalNeutrons -= data.thermalNeutrons * 0.95 * insertion;
+                    data.nextFastNeutrons -= data.fastNeutrons * 0.1 * insertion;
+                }
+            } else if (state.is(Registration.COOLANT_CHANNEL.get())) {
+                data.nextHeat -= data.heat * 0.1;
+            }
         }
         
-        // Radioactive Decay: I-135 -> Xe-135 -> Cs-135
-        double iDecay = data.iodine135 * 0.05;
+        // Decay and ambient cooling
+        simulateDecay(data);
+        data.nextHeat -= data.heat * 0.001;
+
+        if (data.heat > 5000) {
+            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 6.0f, Level.ExplosionInteraction.BLOCK);
+            level.destroyBlock(pos, false);
+        }
+    }
+
+    protected void simulateDecay(SimulationNode data) {
+        double iodineDecayConst = 0.0001;
+        double xenonDecayConst = 0.00007;
+        
+        double iDecay = data.iodine135 * iodineDecayConst;
         data.nextIodine135 -= iDecay;
         data.nextXenon135 += iDecay;
         
-        double xeDecay = data.xenon135 * 0.02;
+        double xeDecay = data.xenon135 * xenonDecayConst;
         data.nextXenon135 -= xeDecay;
-        
-        // Ambient cooling
-        data.nextHeat -= data.heat * 0.005;
-
-        // Meltdown check
-        if (data.heat > 2000) {
-            level.explode(null, pos.getX(), pos.getY(), pos.getZ(), 4.0f, Level.ExplosionInteraction.BLOCK);
-            level.destroyBlock(pos, false);
-        }
     }
 
     @Override

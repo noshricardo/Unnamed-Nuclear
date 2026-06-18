@@ -60,6 +60,7 @@ public class WorldSimulationData extends SavedData {
                 for (Direction dir : Direction.values()) {
                     BlockPos neighborPos = pos.relative(dir);
                     SimulationNode neighborNode = nodes.get(neighborPos);
+                    // Even if neighborNode is null, we might want to diffuse (loss)
                     type.diffuse(level, pos, node, neighborNode);
                 }
             }
@@ -106,8 +107,15 @@ public class WorldSimulationData extends SavedData {
             node.iodine135 = nodeTag.getDouble("iodine");
             node.xenon135 = nodeTag.getDouble("xenon");
             data.nodes.put(pos, node);
-            // For now, only default type
-            data.types.put(pos, DefaultReactorType.INSTANCE);
+            
+            String typeId = nodeTag.getString("type");
+            ReactorType type = switch (typeId) {
+                case "rbmk" -> RBMKReactorType.INSTANCE;
+                case "sodium_fast" -> SodiumFastReactorType.INSTANCE;
+                case "pwr" -> PWRReactorType.INSTANCE;
+                default -> DefaultReactorType.INSTANCE;
+            };
+            data.types.put(pos, type);
         }
         return data;
     }

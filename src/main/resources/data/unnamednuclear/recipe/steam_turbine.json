@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shaped",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "IGI",
     "GRG",
@@ -18,6 +19,6 @@
   },
   "result": {
     "count": 1,
-    "item": "unnamednuclear:steam_turbine"
+    "id": "unnamednuclear:steam_turbine"
   }
 }

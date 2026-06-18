@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shaped",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "ICI",
     "RER",
@@ -21,6 +22,6 @@
   },
   "result": {
     "count": 1,
-    "item": "unnamednuclear:reactor_controller"
+    "id": "unnamednuclear:reactor_controller"
   }
 }

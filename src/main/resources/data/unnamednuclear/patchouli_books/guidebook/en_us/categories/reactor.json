@@ -1,0 +1,6 @@
+{
+  "name": "Advanced Nuclear Reactors",
+  "description": "Building and managing multiblock reactor cores.",
+  "icon": "unnamednuclear:reactor_controller",
+  "priority": 0
+}

@@ -7,6 +7,6 @@
     "item": "unnamednuclear:fluorite_ore"
   },
   "result": {
-    "item": "unnamednuclear:fluorite"
+    "id": "unnamednuclear:fluorite"
   }
 }

@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shapeless",
+  "type": "unnamednuclear:composition_transfer",
+  "category": "misc",
   "ingredients": [
     {
       "item": "unnamednuclear:enriched_uranium"
@@ -7,6 +8,6 @@
   ],
   "result": {
     "count": 1,
-    "item": "unnamednuclear:uranium_dioxide"
+    "id": "unnamednuclear:uranium_dioxide"
   }
 }

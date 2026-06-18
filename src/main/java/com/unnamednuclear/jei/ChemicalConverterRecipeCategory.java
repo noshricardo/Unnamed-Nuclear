@@ -49,9 +49,11 @@ public class ChemicalConverterRecipeCategory implements IRecipeCategory<Chemical
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ChemicalConverterRecipeJEI recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 21, 6).addIngredients(VanillaTypes.ITEM_STACK, recipe.inputs());
-        if (!recipe.fluidInputs().isEmpty()) {
-            builder.addSlot(RecipeIngredientRole.INPUT, 5, 6).addIngredients(NeoForgeTypes.FLUID_STACK, recipe.fluidInputs());
+        if (recipe.inputs().size() > 0) {
+            builder.addSlot(RecipeIngredientRole.INPUT, 5, 6).addItemStack(recipe.inputs().get(0));
+        }
+        if (recipe.inputs().size() > 1) {
+            builder.addSlot(RecipeIngredientRole.INPUT, 5, -12).addItemStack(recipe.inputs().get(1));
         }
         builder.addSlot(RecipeIngredientRole.OUTPUT, 81, 6).addIngredients(VanillaTypes.ITEM_STACK, recipe.outputs());
     }

@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shapeless",
+  "type": "unnamednuclear:composition_transfer",
+  "category": "misc",
   "ingredients": [
     {
       "item": "unnamednuclear:uranium_dioxide"
@@ -10,6 +11,6 @@
   ],
   "result": {
     "count": 1,
-    "item": "unnamednuclear:uranium_tetrafluoride"
+    "id": "unnamednuclear:uranium_tetrafluoride"
   }
 }

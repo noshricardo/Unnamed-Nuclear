@@ -25,6 +25,7 @@ public class ChemicalConverterMenu extends AbstractContainerMenu {
 
         addSlot(new SlotItemHandler(blockEntity.getInventory(), 0, 44, 35));
         addSlot(new SlotItemHandler(blockEntity.getInventory(), 1, 116, 35));
+        addSlot(new SlotItemHandler(blockEntity.getInventory(), 2, 44, 17));
 
         layoutPlayerInventorySlots(playerInventory, 8, 84);
         addDataSlots(data);
@@ -45,8 +46,8 @@ public class ChemicalConverterMenu extends AbstractContainerMenu {
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            if (index < 2) {
-                if (!this.moveItemStackTo(itemstack1, 2, this.slots.size(), true)) {
+            if (index < 3) {
+                if (!this.moveItemStackTo(itemstack1, 3, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {

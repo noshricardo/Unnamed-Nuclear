@@ -1,10 +1,11 @@
 {
   "type": "minecraft:blasting",
+  "category": "misc",
   "ingredient": {
     "item": "unnamednuclear:uranium_ore"
   },
   "result": {
-    "item": "unnamednuclear:raw_uranium"
+    "id": "unnamednuclear:raw_uranium"
   },
   "experience": 0.7,
   "cookingtime": 100

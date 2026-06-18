@@ -1,5 +1,6 @@
 {
-  "type": "minecraft:shaped",
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "pattern": [
     "CCC",
     "CGC",
@@ -14,7 +15,7 @@
     }
   },
   "result": {
-    "item": "unnamednuclear:coolant_channel",
-    "count": 1
+    "count": 1,
+    "id": "unnamednuclear:coolant_channel"
   }
 }

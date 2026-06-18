@@ -22,4 +22,16 @@ public interface ReactorType {
     default double getHeatPerFission() {
         return 20.0;
     }
+
+    default double getModerationEfficiency(BlockState state, SimulationNode data) {
+        return 0;
+    }
+
+    default double getVoidCoefficient() {
+        return 0;
+    }
+
+    default double getTemperatureCoefficient() {
+        return -0.0001; // Default negative feedback
+    }
 }

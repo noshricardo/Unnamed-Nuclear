@@ -11,7 +11,12 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -35,6 +40,7 @@ public class Registration {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(UnnamedNuclear.MODID);
     public static final DeferredRegister<DataComponentType<?>> DATA_COMPONENTS = DeferredRegister.create(Registries.DATA_COMPONENT_TYPE, UnnamedNuclear.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, UnnamedNuclear.MODID);
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, UnnamedNuclear.MODID);
     public static final DeferredRegister<net.minecraft.world.inventory.MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, UnnamedNuclear.MODID);
     public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, UnnamedNuclear.MODID);
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, UnnamedNuclear.MODID);
@@ -108,6 +114,10 @@ public class Registration {
     public static final DeferredItem<Item> ENRICHED_URANIUM = ITEMS.register("enriched_uranium", () -> new EnrichedItem(new Item.Properties()));
     public static final DeferredItem<Item> DEPLETED_URANIUM = ITEMS.register("depleted_uranium", () -> new EnrichedItem(new Item.Properties()));
     public static final DeferredItem<Item> URANIUM_DIOXIDE = ITEMS.register("uranium_dioxide", () -> new EnrichedItem(new Item.Properties()));
+    public static final DeferredItem<Item> HYDROFLUORIC_ACID = ITEMS.register("hydrofluoric_acid", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> FLUORINE_GAS = ITEMS.register("fluorine_gas", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> NITRIC_ACID = ITEMS.register("nitric_acid", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<Item> TBP_KEROSENE = ITEMS.register("tbp_kerosene", () -> new Item(new Item.Properties()));
     public static final DeferredItem<Item> FUEL_PELLET = ITEMS.register("fuel_pellet", () -> new EnrichedItem(new Item.Properties()));
     public static final DeferredItem<Item> PLUTONIUM = ITEMS.register("plutonium", () -> new EnrichedItem(new Item.Properties()));
     public static final DeferredItem<Item> URANYL_NITRATE = ITEMS.register("uranyl_nitrate", () -> new EnrichedItem(new Item.Properties()));
@@ -117,8 +127,88 @@ public class Registration {
     public static final DeferredItem<Item> GUIDEBOOK = ITEMS.register("guidebook", () -> new com.unnamednuclear.item.GuidebookItem(new Item.Properties().stacksTo(1)));
 
     public static final Supplier<DataComponentType<String>> FUEL_TYPE = DATA_COMPONENTS.register("fuel_type", () -> DataComponentType.<String>builder().persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8).build());
+    public static final DeferredItem<Item> GAS_CONTAINER = ITEMS.register("gas_container", () -> new Item(new Item.Properties().stacksTo(1)));
     public static final Supplier<DataComponentType<Double>> ENRICHMENT = DATA_COMPONENTS.register("enrichment", () -> DataComponentType.<Double>builder().persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE).build());
     public static final Supplier<DataComponentType<com.unnamednuclear.item.NuclearComposition>> COMPOSITION = DATA_COMPONENTS.register("composition", () -> DataComponentType.<com.unnamednuclear.item.NuclearComposition>builder().persistent(com.unnamednuclear.item.NuclearComposition.CODEC).networkSynchronized(com.unnamednuclear.item.NuclearComposition.STREAM_CODEC).build());
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<com.unnamednuclear.recipe.CompositionTransferRecipe>> COMPOSITION_TRANSFER_SERIALIZER = RECIPE_SERIALIZERS.register("composition_transfer", () -> new RecipeSerializer<com.unnamednuclear.recipe.CompositionTransferRecipe>() {
+        private static final com.mojang.serialization.MapCodec<com.unnamednuclear.recipe.CompositionTransferRecipe> CODEC = com.mojang.serialization.codecs.RecordCodecBuilder.mapCodec(inst -> inst.group(
+                CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(com.unnamednuclear.recipe.CompositionTransferRecipe::category),
+                Ingredient.CODEC.listOf().fieldOf("ingredients").xmap(list -> {
+                    NonNullList<Ingredient> nl = NonNullList.create();
+                    nl.addAll(list);
+                    return nl;
+                }, list -> (java.util.List<Ingredient>) list).forGetter(com.unnamednuclear.recipe.CompositionTransferRecipe::getIngredients),
+                ItemStack.STRICT_CODEC.fieldOf("result").forGetter(com.unnamednuclear.recipe.CompositionTransferRecipe::getResult)
+        ).apply(inst, com.unnamednuclear.recipe.CompositionTransferRecipe::new));
+
+        private static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, com.unnamednuclear.recipe.CompositionTransferRecipe> STREAM_CODEC = net.minecraft.network.codec.StreamCodec.of(
+                (buf, recipe) -> {
+                    CraftingBookCategory.STREAM_CODEC.encode(buf, recipe.category());
+                    buf.writeVarInt(recipe.getIngredients().size());
+                    for (Ingredient ingredient : recipe.getIngredients()) {
+                        Ingredient.CONTENTS_STREAM_CODEC.encode(buf, ingredient);
+                    }
+                    ItemStack.STREAM_CODEC.encode(buf, recipe.getResult());
+                },
+                buf -> {
+                    CraftingBookCategory category = CraftingBookCategory.STREAM_CODEC.decode(buf);
+                    int size = buf.readVarInt();
+                    NonNullList<Ingredient> ingredients = NonNullList.withSize(size, Ingredient.EMPTY);
+                    for (int i = 0; i < size; i++) {
+                        ingredients.set(i, Ingredient.CONTENTS_STREAM_CODEC.decode(buf));
+                    }
+                    ItemStack result = ItemStack.STREAM_CODEC.decode(buf);
+                    return new com.unnamednuclear.recipe.CompositionTransferRecipe(category, ingredients, result);
+                }
+        );
+
+        @Override
+        public com.mojang.serialization.MapCodec<com.unnamednuclear.recipe.CompositionTransferRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, com.unnamednuclear.recipe.CompositionTransferRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+    });
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<com.unnamednuclear.recipe.ShapedCompositionTransferRecipe>> SHAPED_COMPOSITION_TRANSFER_SERIALIZER = RECIPE_SERIALIZERS.register("shaped_composition_transfer", () -> new RecipeSerializer<com.unnamednuclear.recipe.ShapedCompositionTransferRecipe>() {
+        @Override
+        public com.mojang.serialization.MapCodec<com.unnamednuclear.recipe.ShapedCompositionTransferRecipe> codec() {
+            return RecipeSerializer.SHAPED_RECIPE.codec().xmap(com.unnamednuclear.recipe.ShapedCompositionTransferRecipe::new, recipe -> recipe);
+        }
+
+        @Override
+        public net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, com.unnamednuclear.recipe.ShapedCompositionTransferRecipe> streamCodec() {
+            return net.minecraft.network.codec.StreamCodec.of(
+                (buf, recipe) -> RecipeSerializer.SHAPED_RECIPE.streamCodec().encode(buf, recipe),
+                buf -> new com.unnamednuclear.recipe.ShapedCompositionTransferRecipe(RecipeSerializer.SHAPED_RECIPE.streamCodec().decode(buf))
+            );
+        }
+    });
+
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<com.unnamednuclear.recipe.UraniumHexafluorideMixingRecipe>> UF6_MIXING_SERIALIZER = RECIPE_SERIALIZERS.register("uf6_mixing", () -> new RecipeSerializer<com.unnamednuclear.recipe.UraniumHexafluorideMixingRecipe>() {
+        private static final com.mojang.serialization.MapCodec<com.unnamednuclear.recipe.UraniumHexafluorideMixingRecipe> CODEC = com.mojang.serialization.codecs.RecordCodecBuilder.mapCodec(inst -> inst.group(
+                CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(com.unnamednuclear.recipe.UraniumHexafluorideMixingRecipe::category)
+        ).apply(inst, com.unnamednuclear.recipe.UraniumHexafluorideMixingRecipe::new));
+
+        private static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, com.unnamednuclear.recipe.UraniumHexafluorideMixingRecipe> STREAM_CODEC = net.minecraft.network.codec.StreamCodec.of(
+                (buf, recipe) -> CraftingBookCategory.STREAM_CODEC.encode(buf, recipe.category()),
+                buf -> new com.unnamednuclear.recipe.UraniumHexafluorideMixingRecipe(CraftingBookCategory.STREAM_CODEC.decode(buf))
+        );
+
+        @Override
+        public com.mojang.serialization.MapCodec<com.unnamednuclear.recipe.UraniumHexafluorideMixingRecipe> codec() {
+            return CODEC;
+        }
+
+        @Override
+        public net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, com.unnamednuclear.recipe.UraniumHexafluorideMixingRecipe> streamCodec() {
+            return STREAM_CODEC;
+        }
+    });
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReactorControllerBlockEntity>> REACTOR_CONTROLLER_BE = BLOCK_ENTITIES.register("reactor_controller", () -> BlockEntityType.Builder.of(ReactorControllerBlockEntity::new, REACTOR_CONTROLLER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ReactorChannelBlockEntity>> REACTOR_CHANNEL_BE = BLOCK_ENTITIES.register("reactor_channel", () -> BlockEntityType.Builder.of(ReactorChannelBlockEntity::new, FUEL_CHANNEL.get(), CONTROL_CHANNEL.get(), COOLANT_CHANNEL.get()).build(null));

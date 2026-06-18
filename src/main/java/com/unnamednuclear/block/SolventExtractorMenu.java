@@ -27,6 +27,8 @@ public class SolventExtractorMenu extends AbstractContainerMenu {
         addSlot(new SlotItemHandler(blockEntity.getInventory(), 1, 108, 35));
         addSlot(new SlotItemHandler(blockEntity.getInventory(), 2, 126, 35));
         addSlot(new SlotItemHandler(blockEntity.getInventory(), 3, 144, 35));
+        addSlot(new SlotItemHandler(blockEntity.getInventory(), 4, 44, 17));
+        addSlot(new SlotItemHandler(blockEntity.getInventory(), 5, 44, 53));
 
         layoutPlayerInventorySlots(playerInventory, 8, 84);
         addDataSlots(data);
@@ -47,8 +49,8 @@ public class SolventExtractorMenu extends AbstractContainerMenu {
         if (slot != null && slot.hasItem()) {
             ItemStack itemstack1 = slot.getItem();
             itemstack = itemstack1.copy();
-            if (index < 4) {
-                if (!this.moveItemStackTo(itemstack1, 4, this.slots.size(), true)) {
+            if (index < 6) {
+                if (!this.moveItemStackTo(itemstack1, 6, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
             } else if (!this.moveItemStackTo(itemstack1, 0, 1, false)) {

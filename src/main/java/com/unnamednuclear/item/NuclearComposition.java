@@ -54,4 +54,10 @@ public record NuclearComposition(double u235, double u238, double pu239, double 
     public double getTotal() {
         return u235 + u238 + pu239 + sr90 + cs137 + waste + u234 + u236 + pu240;
     }
+
+    public NuclearComposition normalize() {
+        double total = getTotal();
+        if (total <= 0) return this;
+        return new NuclearComposition(u235 / total, u238 / total, pu239 / total, sr90 / total, cs137 / total, waste / total, u234 / total, u236 / total, pu240 / total);
+    }
 }

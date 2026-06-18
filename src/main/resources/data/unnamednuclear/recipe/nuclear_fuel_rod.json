@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:shaped",
+  "type": "unnamednuclear:shaped_composition_transfer",
   "category": "misc",
   "key": {
     "C": {
@@ -16,6 +16,6 @@
   ],
   "result": {
     "count": 1,
-    "item": "unnamednuclear:nuclear_fuel"
+    "id": "unnamednuclear:nuclear_fuel"
   }
 }
