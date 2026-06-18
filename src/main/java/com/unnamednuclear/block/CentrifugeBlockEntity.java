@@ -93,9 +93,9 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
             int amount = Math.min(productStack.getCount() * 100, productTank.getCapacity() - productTank.getFluidAmount());
             if (amount >= 100) {
                 int toConsume = amount / 100;
-                if (productTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), toConsume * 100), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE) > 0) {
-                    productStack.shrink(toConsume);
-                }
+                //if (productTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), toConsume * 100), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE) > 0) {
+                    //productStack.shrink(toConsume);
+                //}
             }
         }
         
@@ -105,9 +105,9 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
             int amount = Math.min(tailsStack.getCount() * 100, tailsTank.getCapacity() - tailsTank.getFluidAmount());
             if (amount >= 100) {
                 int toConsume = amount / 100;
-                if (tailsTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), toConsume * 100), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE) > 0) {
-                    tailsStack.shrink(toConsume);
-                }
+                //if (tailsTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), toConsume * 100), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE) > 0) {
+                    //tailsStack.shrink(toConsume);
+                //}
             }
         }
     }
