@@ -1,0 +1,15 @@
+{
+  "id": "unnamednuclear:mo99",
+  "atomic_mass": 98.91,
+  "half_life": 6855840.0,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:tc99m": 0.876,
+        "unnamednuclear:tc99": 0.124
+      }
+    }
+  ]
+}

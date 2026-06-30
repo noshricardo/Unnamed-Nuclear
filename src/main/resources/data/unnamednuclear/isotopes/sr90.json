@@ -1,0 +1,14 @@
+{
+  "id": "unnamednuclear:sr90",
+  "atomic_mass": 89.91,
+  "half_life": 1311025536.0,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:y90": 1.0
+      }
+    }
+  ]
+}

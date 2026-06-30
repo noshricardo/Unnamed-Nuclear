@@ -1,0 +1,14 @@
+{
+  "id": "unnamednuclear:i135",
+  "atomic_mass": 134.91,
+  "half_life": 682452.48,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:xe135": 1.0
+      }
+    }
+  ]
+}

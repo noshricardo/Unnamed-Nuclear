@@ -1,0 +1,14 @@
+{
+  "id": "unnamednuclear:pm149",
+  "atomic_mass": 148.92,
+  "half_life": 191088.0,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:sm149": 1.0
+      }
+    }
+  ]
+}

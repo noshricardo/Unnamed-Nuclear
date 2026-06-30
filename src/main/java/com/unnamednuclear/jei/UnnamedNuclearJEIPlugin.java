@@ -16,6 +16,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @JeiPlugin
 public class UnnamedNuclearJEIPlugin implements IModPlugin {
@@ -40,30 +41,34 @@ public class UnnamedNuclearJEIPlugin implements IModPlugin {
         registerThermodynamicsRecipes(registration);
     }
 
+    private static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, path);
+    }
+
     private void registerCentrifugeRecipes(IRecipeRegistration registration) {
         List<CentrifugeRecipeJEI> recipes = new ArrayList<>();
 
         // UF6 Enrichment (Natural -> LEU)
         ItemStack uf6 = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
-        uf6.set(Registration.COMPOSITION.get(), new NuclearComposition(0.0071, 0.9929, 0, 0, 0, 0, 0, 0, 0));
+        uf6.set(Registration.COMPOSITION.get(), new NuclearComposition(Map.of(id("u235"), 0.0071, id("u238"), 0.9929)));
         
         ItemStack enrichedU = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
-        enrichedU.set(Registration.COMPOSITION.get(), new NuclearComposition(0.03, 0.97, 0, 0, 0, 0, 0, 0, 0));
+        enrichedU.set(Registration.COMPOSITION.get(), new NuclearComposition(Map.of(id("u235"), 0.03, id("u238"), 0.97)));
         
         ItemStack depletedU = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
-        depletedU.set(Registration.COMPOSITION.get(), new NuclearComposition(0.002, 0.998, 0, 0, 0, 0, 0, 0, 0));
+        depletedU.set(Registration.COMPOSITION.get(), new NuclearComposition(Map.of(id("u235"), 0.002, id("u238"), 0.998)));
         
         recipes.add(new CentrifugeRecipeJEI(List.of(uf6), List.of(enrichedU, depletedU)));
 
         // Higher Enrichment (LEU -> HEU)
         ItemStack leuInput = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
-        leuInput.set(Registration.COMPOSITION.get(), new NuclearComposition(0.03, 0.97, 0, 0, 0, 0, 0, 0, 0));
+        leuInput.set(Registration.COMPOSITION.get(), new NuclearComposition(Map.of(id("u235"), 0.03, id("u238"), 0.97)));
 
         ItemStack heuOutput = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
-        heuOutput.set(Registration.COMPOSITION.get(), new NuclearComposition(0.20, 0.80, 0, 0, 0, 0, 0, 0, 0));
+        heuOutput.set(Registration.COMPOSITION.get(), new NuclearComposition(Map.of(id("u235"), 0.20, id("u238"), 0.80)));
 
         ItemStack tailsOutput = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
-        tailsOutput.set(Registration.COMPOSITION.get(), new NuclearComposition(0.01, 0.99, 0, 0, 0, 0, 0, 0, 0));
+        tailsOutput.set(Registration.COMPOSITION.get(), new NuclearComposition(Map.of(id("u235"), 0.01, id("u238"), 0.99)));
 
         recipes.add(new CentrifugeRecipeJEI(List.of(leuInput), List.of(heuOutput, tailsOutput)));
 
@@ -111,7 +116,10 @@ public class UnnamedNuclearJEIPlugin implements IModPlugin {
         
         // PUREX Dissolution/Extraction: Spent Fuel + Nitric Acid -> Nitrates
         ItemStack spentFuel = new ItemStack(Registration.NUCLEAR_FUEL.get());
-        spentFuel.set(Registration.COMPOSITION.get(), new NuclearComposition(0.01, 0.80, 0.05, 0.04, 0.05, 0.05, 0, 0, 0));
+        spentFuel.set(Registration.COMPOSITION.get(), new NuclearComposition(Map.of(
+            id("u235"), 0.01, id("u238"), 0.80, id("pu239"), 0.05, 
+            id("sr90"), 0.04, id("cs137"), 0.05, id("i135"), 0.05
+        )));
         
         recipes.add(new SolventExtractorRecipeJEI(
             List.of(spentFuel, new ItemStack(Registration.NITRIC_ACID.get())),

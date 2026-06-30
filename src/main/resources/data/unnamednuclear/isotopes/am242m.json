@@ -1,0 +1,28 @@
+{
+  "id": "unnamednuclear:am242m",
+  "atomic_mass": 242.06,
+  "half_life": 89000000000.0,
+  "reactions": [
+    {
+      "type": "thermal_fission",
+      "cross_section": 6600.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:i135": 0.0639,
+        "unnamednuclear:sr90": 0.0577,
+        "unnamednuclear:cs137": 0.0621,
+        "unnamednuclear:mo99": 0.0611,
+        "unnamednuclear:sn121": 0.0001
+      },
+      "neutrons": 3.2,
+      "energy": 210.0
+    },
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:am242": 1.0
+      }
+    }
+  ]
+}

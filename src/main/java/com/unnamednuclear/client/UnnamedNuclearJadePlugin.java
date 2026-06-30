@@ -70,6 +70,9 @@ public class UnnamedNuclearJadePlugin implements IWailaPlugin {
                 tooltip.add(Component.literal("Heat: ").append(String.format("%.2f", data.getDouble("heat"))));
                 tooltip.add(Component.literal("Fast Neutrons: ").append(String.format("%.2f", data.getDouble("fast"))));
                 tooltip.add(Component.literal("Thermal Neutrons: ").append(String.format("%.2f", data.getDouble("thermal"))));
+                if (data.contains("emissions")) {
+                    tooltip.add(Component.literal("Neutron Emissions: ").append(String.format("%.2f n/t", data.getDouble("emissions"))).withStyle(net.minecraft.ChatFormatting.GOLD));
+                }
                 if (data.contains("xenon")) {
                     tooltip.add(Component.literal("Xenon-135: ").append(String.format("%.4f", data.getDouble("xenon"))));
                 }
@@ -86,7 +89,8 @@ public class UnnamedNuclearJadePlugin implements IWailaPlugin {
                     data.putDouble("heat", node.heat);
                     data.putDouble("fast", node.fastNeutrons);
                     data.putDouble("thermal", node.thermalNeutrons);
-                    data.putDouble("xenon", node.xenon135);
+                    data.putDouble("emissions", node.emissions);
+                    data.putDouble("xenon", node.composition.getAmount(ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, "xe135")));
                     tag.put("nuclear_data", data);
                 }
             }

@@ -1,0 +1,32 @@
+{
+  "id": "unnamednuclear:u238",
+  "atomic_mass": 238.05,
+  "half_life": 0.0,
+  "reactions": [
+    {
+      "type": "fast_capture",
+      "cross_section": 2.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:pu239": 1.0
+      },
+      "neutrons": 0.0,
+      "energy": 0.0
+    },
+    {
+      "type": "fast_fission",
+      "cross_section": 0.5,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:i135": 0.0639,
+        "unnamednuclear:sr90": 0.0577,
+        "unnamednuclear:cs137": 0.0621,
+        "unnamednuclear:mo99": 0.0611,
+        "unnamednuclear:nd149": 0.0108,
+        "unnamednuclear:sn121": 0.0001
+      },
+      "neutrons": 2.6,
+      "energy": 200.0
+    }
+  ]
+}

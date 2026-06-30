@@ -1,0 +1,15 @@
+{
+  "id": "unnamednuclear:am242",
+  "atomic_mass": 242.06,
+  "half_life": 57600.0,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:cm242": 0.827,
+        "unnamednuclear:pu242": 0.173
+      }
+    }
+  ]
+}

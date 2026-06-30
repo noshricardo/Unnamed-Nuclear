@@ -49,6 +49,8 @@ public class UnnamedNuclear {
         modEventBus.addListener(this::registerCapabilities);
         modEventBus.addListener(this::registerPayloads);
 
+        NeoForge.EVENT_BUS.addListener(this::onAddReloadListeners);
+
         if (FMLEnvironment.dist == Dist.CLIENT) {
             UnnamedNuclearClient.registerModEvents(modEventBus);
         }
@@ -97,5 +99,9 @@ public class UnnamedNuclear {
                 com.unnamednuclear.network.ReactorInteriorSyncPayload.STREAM_CODEC,
                 com.unnamednuclear.network.NetworkHandler::handleReactorInterior
         );
+    }
+
+    private void onAddReloadListeners(net.neoforged.neoforge.event.AddReloadListenerEvent event) {
+        event.addListener(new com.unnamednuclear.simulation.IsotopeDataLoader());
     }
 }

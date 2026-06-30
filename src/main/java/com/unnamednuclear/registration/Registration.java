@@ -28,6 +28,8 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import com.unnamednuclear.block.DebugNeutronSourceBlock;
+import com.unnamednuclear.block.DebugNeutronSourceBlockEntity;
 import com.unnamednuclear.block.ReactorControllerBlock;
 import com.unnamednuclear.block.ReactorControllerBlockEntity;
 
@@ -95,8 +97,13 @@ public class Registration {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<?>> HEAT_EXCHANGER_BE = BLOCK_ENTITIES.register("heat_exchanger", () -> BlockEntityType.Builder.of(com.unnamednuclear.block.HeatExchangerBlockEntity::new, HEAT_EXCHANGER.get()).build(null));
     public static final DeferredBlock<ReactorChannelBlock> FUEL_CHANNEL = register("fuel_channel", () -> new ReactorChannelBlock(BlockBehaviour.Properties.of().strength(3.0f).sound(SoundType.METAL)));
     public static final DeferredBlock<Block> MODERATOR = register("moderator", () -> new Block(BlockBehaviour.Properties.of().strength(2.0f).sound(SoundType.STONE)));
+    public static final DeferredBlock<Block> NEUTRON_REFLECTOR = register("neutron_reflector", () -> new Block(BlockBehaviour.Properties.of().strength(3.0f).sound(SoundType.METAL)));
+    public static final DeferredBlock<Block> NEUTRON_ABSORBER = register("neutron_absorber", () -> new Block(BlockBehaviour.Properties.of().strength(3.0f).sound(SoundType.METAL)));
+    public static final DeferredBlock<Block> DEBUG_NEUTRON_REFLECTOR = register("debug_neutron_reflector", () -> new Block(BlockBehaviour.Properties.of().strength(5.0f).sound(SoundType.METAL)));
+    public static final DeferredBlock<Block> DEBUG_NEUTRON_ABSORBER = register("debug_neutron_absorber", () -> new Block(BlockBehaviour.Properties.of().strength(5.0f).sound(SoundType.METAL)));
     public static final DeferredBlock<ReactorChannelBlock> CONTROL_CHANNEL = register("control_channel", () -> new ReactorChannelBlock(BlockBehaviour.Properties.of().strength(3.0f).sound(SoundType.METAL)));
     public static final DeferredBlock<ReactorChannelBlock> COOLANT_CHANNEL = register("coolant_channel", () -> new ReactorChannelBlock(BlockBehaviour.Properties.of().strength(3.0f).sound(SoundType.METAL)));
+    public static final DeferredBlock<DebugNeutronSourceBlock> DEBUG_NEUTRON_SOURCE = register("debug_neutron_source", () -> new DebugNeutronSourceBlock(BlockBehaviour.Properties.of().strength(5.0f).sound(SoundType.METAL)));
     public static final DeferredBlock<Block> URANIUM_ORE = register("uranium_ore", () -> new Block(BlockBehaviour.Properties.of().strength(3.0f).sound(SoundType.STONE).requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> DEEPSLATE_URANIUM_ORE = register("deepslate_uranium_ore", () -> new Block(BlockBehaviour.Properties.of().strength(4.5f).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops()));
     public static final DeferredBlock<Block> FLUORITE_ORE = register("fluorite_ore", () -> new Block(BlockBehaviour.Properties.of().strength(3.0f).sound(SoundType.STONE).requiresCorrectToolForDrops()));
@@ -215,6 +222,7 @@ public class Registration {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.unnamednuclear.block.CentrifugeBlockEntity>> CENTRIFUGE_BE = BLOCK_ENTITIES.register("centrifuge", () -> BlockEntityType.Builder.of(com.unnamednuclear.block.CentrifugeBlockEntity::new, CENTRIFUGE.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.unnamednuclear.block.ChemicalConverterBlockEntity>> CHEMICAL_CONVERTER_BE = BLOCK_ENTITIES.register("chemical_converter", () -> BlockEntityType.Builder.of(com.unnamednuclear.block.ChemicalConverterBlockEntity::new, CHEMICAL_CONVERTER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.unnamednuclear.block.SolventExtractorBlockEntity>> SOLVENT_EXTRACTOR_BE = BLOCK_ENTITIES.register("solvent_extractor", () -> BlockEntityType.Builder.of(com.unnamednuclear.block.SolventExtractorBlockEntity::new, SOLVENT_EXTRACTOR.get()).build(null));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.unnamednuclear.block.DebugNeutronSourceBlockEntity>> DEBUG_NEUTRON_SOURCE_BE = BLOCK_ENTITIES.register("debug_neutron_source", () -> BlockEntityType.Builder.of(com.unnamednuclear.block.DebugNeutronSourceBlockEntity::new, DEBUG_NEUTRON_SOURCE.get()).build(null));
     public static final DeferredHolder<net.minecraft.world.inventory.MenuType<?>, net.minecraft.world.inventory.MenuType<com.unnamednuclear.block.ReactorMenu>> REACTOR_MENU = MENU_TYPES.register("reactor_controller", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.unnamednuclear.block.ReactorMenu::new));
     public static final DeferredHolder<net.minecraft.world.inventory.MenuType<?>, net.minecraft.world.inventory.MenuType<com.unnamednuclear.block.CentrifugeMenu>> CENTRIFUGE_MENU = MENU_TYPES.register("centrifuge", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.unnamednuclear.block.CentrifugeMenu::new));
     public static final DeferredHolder<net.minecraft.world.inventory.MenuType<?>, net.minecraft.world.inventory.MenuType<com.unnamednuclear.block.ChemicalConverterMenu>> CHEMICAL_CONVERTER_MENU = MENU_TYPES.register("chemical_converter", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.unnamednuclear.block.ChemicalConverterMenu::new));

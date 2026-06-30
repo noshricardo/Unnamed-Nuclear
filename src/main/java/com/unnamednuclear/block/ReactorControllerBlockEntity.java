@@ -1,5 +1,6 @@
 package com.unnamednuclear.block;
 
+import com.unnamednuclear.UnnamedNuclear;
 import com.unnamednuclear.client.ClientReactorTracker;
 import com.unnamednuclear.registration.Registration;
 import com.unnamednuclear.simulation.SimulationNode;
@@ -7,6 +8,7 @@ import com.unnamednuclear.simulation.WorldSimulationData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
@@ -222,6 +224,9 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
                 interiorNodes.clear();
                 interiorNodes.addAll(foundInterior);
                 changed = true;
+                
+                // Initialize simulation parameters
+                initializeSimulationParameters(foundInterior);
             }
         } else {
             if (assembled) {
@@ -234,6 +239,57 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
         if (changed && level != null && !level.isClientSide) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
             setChanged();
+        }
+    }
+
+    private void initializeSimulationParameters(List<BlockPos> interior) {
+        if (level == null || level.isClientSide) return;
+        WorldSimulationData data = WorldSimulationData.get((net.minecraft.server.level.ServerLevel) level);
+        
+        boolean hasModerator = false;
+        boolean hasWaterCoolant = false;
+        
+        for (BlockPos pos : interior) {
+            BlockState state = level.getBlockState(pos);
+            if (state.is(Registration.MODERATOR.get())) hasModerator = true;
+            if (state.is(Registration.COOLANT_CHANNEL.get())) hasWaterCoolant = true;
+        }
+        
+        for (BlockPos pos : interior) {
+            SimulationNode node = data.getNode(pos);
+            if (node == null) continue;
+            
+            BlockState state = level.getBlockState(pos);
+            
+            // Default parameters
+            node.fissionYield = 0.8;
+            node.neutronsPerFission = 2.5;
+            node.heatPerFission = 20.0;
+            node.moderationEfficiency = 0.0;
+            node.moderationLoss = 0.02;
+            node.voidCoefficient = 0.0;
+            node.temperatureCoefficient = -0.0001;
+
+            if (hasModerator && hasWaterCoolant) {
+                // RBMK-like
+                if (state.is(Registration.MODERATOR.get())) node.moderationEfficiency = 0.85;
+                node.voidCoefficient = 0.4;
+                node.temperatureCoefficient = 0.0001;
+            } else if (hasWaterCoolant) {
+                // PWR-like
+                if (state.is(Registration.COOLANT_CHANNEL.get())) node.moderationEfficiency = 0.95;
+                node.voidCoefficient = -0.2;
+                node.temperatureCoefficient = -0.0005;
+                node.moderationLoss = 0.05;
+            } else if (!hasModerator) {
+                // Fast-like
+                node.neutronsPerFission = 2.9;
+                // Note: SimulationEngine would need to handle fast fission spectrum 
+                // but for now we'll stick to the generalized parameters.
+            } else {
+                // Default graphite moderated
+                if (state.is(Registration.MODERATOR.get())) node.moderationEfficiency = 0.8;
+            }
         }
     }
 
@@ -296,7 +352,7 @@ public class ReactorControllerBlockEntity extends BlockEntity implements MenuPro
         for (BlockPos pos : interiorNodes) {
             SimulationNode node = data.getNode(pos);
             if (node != null) {
-                totalXenon += node.xenon135;
+                totalXenon += node.composition.getAmount(ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, "xe135"));
                 count++;
             }
         }

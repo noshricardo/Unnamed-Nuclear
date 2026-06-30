@@ -35,16 +35,7 @@ public class UraniumHexafluorideMixingRecipe extends CustomRecipe {
 
     @Override
     public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
-        List<ItemStack> stacks = new ArrayList<>();
-        double totalU235 = 0;
-        double totalU238 = 0;
-        double totalPu239 = 0;
-        double totalSr90 = 0;
-        double totalCs137 = 0;
-        double totalWaste = 0;
-        double totalU234 = 0;
-        double totalU236 = 0;
-        double totalPu240 = 0;
+        java.util.Map<net.minecraft.resources.ResourceLocation, Double> totalAmounts = new java.util.HashMap<>();
         int totalItems = 0;
 
         for (int i = 0; i < input.size(); i++) {
@@ -52,37 +43,28 @@ public class UraniumHexafluorideMixingRecipe extends CustomRecipe {
             if (!stack.isEmpty()) {
                 NuclearComposition comp = stack.get(Registration.COMPOSITION.get());
                 if (comp == null) {
-                    comp = new NuclearComposition(0.0071, 0.99285, 0, 0, 0, 0, 0.00005, 0, 0);
+                    comp = new NuclearComposition(java.util.Map.of(
+                        net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("unnamednuclear", "u235"), 0.0071,
+                        net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("unnamednuclear", "u238"), 0.99285,
+                        net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("unnamednuclear", "u234"), 0.00005
+                    ));
                 }
                 
                 int count = stack.getCount();
-                totalU235 += comp.u235() * count;
-                totalU238 += comp.u238() * count;
-                totalPu239 += comp.pu239() * count;
-                totalSr90 += comp.sr90() * count;
-                totalCs137 += comp.cs137() * count;
-                totalWaste += comp.waste() * count;
-                totalU234 += comp.u234() * count;
-                totalU236 += comp.u236() * count;
-                totalPu240 += comp.pu240() * count;
+                for (java.util.Map.Entry<net.minecraft.resources.ResourceLocation, Double> entry : comp.amounts().entrySet()) {
+                    totalAmounts.put(entry.getKey(), totalAmounts.getOrDefault(entry.getKey(), 0.0) + entry.getValue() * count);
+                }
                 totalItems += count;
-                stacks.add(stack);
             }
         }
 
         if (totalItems == 0) return ItemStack.EMPTY;
 
-        NuclearComposition averageComp = new NuclearComposition(
-                totalU235 / totalItems,
-                totalU238 / totalItems,
-                totalPu239 / totalItems,
-                totalSr90 / totalItems,
-                totalCs137 / totalItems,
-                totalWaste / totalItems,
-                totalU234 / totalItems,
-                totalU236 / totalItems,
-                totalPu240 / totalItems
-        );
+        final double finalTotalItems = totalItems;
+        java.util.Map<net.minecraft.resources.ResourceLocation, Double> averageAmounts = new java.util.HashMap<>();
+        totalAmounts.forEach((id, amount) -> averageAmounts.put(id, amount / finalTotalItems));
+
+        NuclearComposition averageComp = new NuclearComposition(averageAmounts);
 
         ItemStack result = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get(), 1);
         if (totalItems > 16) {

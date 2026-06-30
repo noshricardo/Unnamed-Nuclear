@@ -1,0 +1,15 @@
+{
+  "id": "unnamednuclear:sm149",
+  "atomic_mass": 148.92,
+  "half_life": 0.0,
+  "reactions": [
+    {
+      "type": "thermal_capture",
+      "cross_section": 40140.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:sm150": 1.0
+      }
+    }
+  ]
+}

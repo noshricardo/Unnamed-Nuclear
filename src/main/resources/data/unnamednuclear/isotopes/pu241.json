@@ -1,0 +1,28 @@
+{
+  "id": "unnamednuclear:pu241",
+  "atomic_mass": 241.06,
+  "half_life": 451000000.0,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:am241": 1.0
+      }
+    },
+    {
+      "type": "thermal_fission",
+      "cross_section": 1011.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:i135": 0.0639,
+        "unnamednuclear:sr90": 0.0577,
+        "unnamednuclear:cs137": 0.0621,
+        "unnamednuclear:mo99": 0.0611,
+        "unnamednuclear:sn121": 0.0001
+      },
+      "neutrons": 3.0,
+      "energy": 210.0
+    }
+  ]
+}

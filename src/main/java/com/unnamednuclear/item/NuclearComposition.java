@@ -1,63 +1,59 @@
 package com.unnamednuclear.item;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.unnamednuclear.UnnamedNuclear;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 
-public record NuclearComposition(double u235, double u238, double pu239, double sr90, double cs137, double waste, double u234, double u236, double pu240) {
-    public static final NuclearComposition EMPTY = new NuclearComposition(0, 0, 0, 0, 0, 0, 0, 0, 0);
+import java.util.HashMap;
+import java.util.Map;
 
-    public static final Codec<NuclearComposition> CODEC = RecordCodecBuilder.create(instance ->
-        instance.group(
-            Codec.DOUBLE.fieldOf("u235").forGetter(NuclearComposition::u235),
-            Codec.DOUBLE.fieldOf("u238").forGetter(NuclearComposition::u238),
-            Codec.DOUBLE.fieldOf("pu239").forGetter(NuclearComposition::pu239),
-            Codec.DOUBLE.fieldOf("sr90").forGetter(NuclearComposition::sr90),
-            Codec.DOUBLE.fieldOf("cs137").forGetter(NuclearComposition::cs137),
-            Codec.DOUBLE.fieldOf("waste").forGetter(NuclearComposition::waste),
-            Codec.DOUBLE.fieldOf("u234").forGetter(NuclearComposition::u234),
-            Codec.DOUBLE.fieldOf("u236").forGetter(NuclearComposition::u236),
-            Codec.DOUBLE.fieldOf("pu240").forGetter(NuclearComposition::pu240)
-        ).apply(instance, NuclearComposition::new)
+public record NuclearComposition(Map<ResourceLocation, Double> amounts) {
+    public static final NuclearComposition EMPTY = new NuclearComposition(Map.of());
+
+    public static final Codec<NuclearComposition> CODEC = Codec.unboundedMap(ResourceLocation.CODEC, Codec.DOUBLE)
+            .xmap(NuclearComposition::new, NuclearComposition::amounts);
+
+    public static final StreamCodec<ByteBuf, NuclearComposition> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.map(HashMap::new, ResourceLocation.STREAM_CODEC, ByteBufCodecs.DOUBLE), NuclearComposition::amounts,
+            NuclearComposition::new
     );
-    
-    public static final StreamCodec<ByteBuf, NuclearComposition> STREAM_CODEC = new StreamCodec<ByteBuf, NuclearComposition>() {
-        @Override
-        public NuclearComposition decode(ByteBuf buffer) {
-            return new NuclearComposition(
-                buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
-                buffer.readDouble(), buffer.readDouble(), buffer.readDouble(),
-                buffer.readDouble(), buffer.readDouble(), buffer.readDouble()
-            );
-        }
 
-        @Override
-        public void encode(ByteBuf buffer, NuclearComposition value) {
-            buffer.writeDouble(value.u235());
-            buffer.writeDouble(value.u238());
-            buffer.writeDouble(value.pu239());
-            buffer.writeDouble(value.sr90());
-            buffer.writeDouble(value.cs137());
-            buffer.writeDouble(value.waste());
-            buffer.writeDouble(value.u234());
-            buffer.writeDouble(value.u236());
-            buffer.writeDouble(value.pu240());
-        }
-    };
-
-    public double getFissileContent() {
-        return u235 + pu239;
+    public double getAmount(ResourceLocation id) {
+        return amounts.getOrDefault(id, 0.0);
     }
 
     public double getTotal() {
-        return u235 + u238 + pu239 + sr90 + cs137 + waste + u234 + u236 + pu240;
+        return amounts.values().stream().mapToDouble(Double::doubleValue).sum();
+    }
+
+    // IDs for common isotopes (internal use only)
+    private static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(UnnamedNuclear.MODID, path);
+    }
+
+    public double u235() { return getAmount(id("u235")); }
+    public double u238() { return getAmount(id("u238")); }
+
+    public NuclearComposition with(ResourceLocation id, double amount) {
+        Map<ResourceLocation, Double> newMap = new HashMap<>(amounts);
+        if (amount <= 0) {
+            newMap.remove(id);
+        } else {
+            newMap.put(id, amount);
+        }
+        return new NuclearComposition(newMap);
     }
 
     public NuclearComposition normalize() {
         double total = getTotal();
-        if (total <= 0) return this;
-        return new NuclearComposition(u235 / total, u238 / total, pu239 / total, sr90 / total, cs137 / total, waste / total, u234 / total, u236 / total, pu240 / total);
+        if (total <= 0) return EMPTY;
+        Map<ResourceLocation, Double> newMap = new HashMap<>();
+        for (Map.Entry<ResourceLocation, Double> entry : amounts.entrySet()) {
+            newMap.put(entry.getKey(), entry.getValue() / total);
+        }
+        return new NuclearComposition(newMap);
     }
 }

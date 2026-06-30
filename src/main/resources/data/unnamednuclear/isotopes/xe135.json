@@ -1,0 +1,22 @@
+{
+  "id": "unnamednuclear:xe135",
+  "atomic_mass": 134.91,
+  "half_life": 949408.8,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:xe136": 1.0
+      }
+    },
+    {
+      "type": "thermal_capture",
+      "cross_section": 2600000.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:xe136": 1.0
+      }
+    }
+  ]
+}

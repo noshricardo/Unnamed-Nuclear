@@ -1,0 +1,15 @@
+{
+  "id": "unnamednuclear:np237",
+  "atomic_mass": 237.05,
+  "half_life": 1354000000000000.0,
+  "reactions": [
+    {
+      "type": "thermal_capture",
+      "cross_section": 170.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:np238": 1.0
+      }
+    }
+  ]
+}

@@ -18,6 +18,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
     private final ItemStackHandler inventory = new ItemStackHandler(3) {
         @Override
@@ -135,60 +138,71 @@ public class CentrifugeBlockEntity extends BlockEntity implements MenuProvider {
             comp = inputStack.get(Registration.COMPOSITION.get());
             inputStack.shrink(2);
         } else if (inputTank.getFluidAmount() >= 200 && inputTank.getFluid().is(Registration.UF6.get())) {
-            comp = null; 
+            comp = inputTank.getFluid().get(Registration.COMPOSITION.get()); 
             inputTank.drain(200, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
         } else {
             return;
         }
         
-        if (comp == null) comp = new com.unnamednuclear.item.NuclearComposition(0.0071, 0.99285, 0, 0, 0, 0, 0.00005, 0, 0);
+        if (comp == null) comp = new com.unnamednuclear.item.NuclearComposition(Map.of(id("u235"), 0.0071, id("u238"), 0.99285, id("u234"), 0.00005));
 
-        double x_f = comp.u235() / (comp.u235() + comp.u238());
-        double alpha = 1.05; 
-        double x_p = (alpha * x_f) / (1 + (alpha - 1) * x_f);
-        double x_t = x_f / (alpha - (alpha - 1) * x_f); // More accurate tails concentration
-
-        // For a single stage, we assume a symmetric cut (theta = 0.5) for simplicity,
-        // or we calculate the cut required for mass balance: theta = (x_f - x_t) / (x_p - x_t)
-        double theta = (x_p != x_t) ? (x_f - x_t) / (x_p - x_t) : 0.5;
-        theta = Math.max(0.1, Math.min(0.9, theta)); // Keep it reasonable
+        double theta = 0.5; // Symmetric cut
+        double alphaBase = 1.1; // Separation factor per mass unit difference
         
-        double uTotal = comp.u235() + comp.u238();
-        double othersTotal = comp.getTotal() - uTotal;
-        
-        // Product Uranium
-        double p_uTotal = uTotal * theta;
-        double p_u235 = p_uTotal * x_p;
-        double p_u238 = p_uTotal * (1.0 - x_p);
+        Map<net.minecraft.resources.ResourceLocation, Double> productAmounts = new HashMap<>();
+        Map<net.minecraft.resources.ResourceLocation, Double> tailsAmounts = new HashMap<>();
 
-        // Tails Uranium
-        double t_uTotal = uTotal * (1.0 - theta);
-        double t_u235 = t_uTotal * x_t;
-        double t_u238 = t_uTotal * (1.0 - x_t);
+        double productSum = 0;
+        double tailsSum = 0;
 
-        // Other isotopes and waste are distributed by mass
-        double productScale = theta;
-        double tailsScale = 1.0 - theta;
+        for (Map.Entry<net.minecraft.resources.ResourceLocation, Double> entry : comp.amounts().entrySet()) {
+            com.unnamednuclear.simulation.Isotope isotope = com.unnamednuclear.simulation.IsotopeRegistry.get(entry.getKey());
+            double mass = (isotope != null) ? isotope.atomicMass() : 238.0;
+            
+            // Separation factor based on mass difference from U-238
+            double separation = Math.pow(alphaBase, (238.0 - mass) * 0.1);
+            
+            double p_val = entry.getValue() * theta * separation;
+            double t_val = entry.getValue() * (1.0 - theta) / separation;
+            
+            productAmounts.put(entry.getKey(), p_val);
+            tailsAmounts.put(entry.getKey(), t_val);
+            productSum += p_val;
+            tailsSum += t_val;
+        }
 
-        com.unnamednuclear.item.NuclearComposition productComp = new com.unnamednuclear.item.NuclearComposition(
-                p_u235, p_u238, comp.pu239() * productScale, comp.sr90() * productScale, comp.cs137() * productScale, 
-                comp.waste() * productScale, comp.u234() * productScale, comp.u236() * productScale, comp.pu240() * productScale);
-                
-        com.unnamednuclear.item.NuclearComposition tailsComp = new com.unnamednuclear.item.NuclearComposition(
-                t_u235, t_u238, comp.pu239() * tailsScale, comp.sr90() * tailsScale, comp.cs137() * tailsScale, 
-                comp.waste() * tailsScale, comp.u234() * tailsScale, comp.u236() * tailsScale, comp.pu240() * tailsScale);
+        // Normalize to preserve total mass proportions
+        double originalTotal = comp.getTotal();
+        for (net.minecraft.resources.ResourceLocation id : productAmounts.keySet()) {
+            productAmounts.put(id, (productAmounts.get(id) / productSum) * originalTotal * theta);
+        }
+        for (net.minecraft.resources.ResourceLocation id : tailsAmounts.keySet()) {
+            tailsAmounts.put(id, (tailsAmounts.get(id) / tailsSum) * originalTotal * (1.0 - theta));
+        }
+
+        com.unnamednuclear.item.NuclearComposition productComp = new com.unnamednuclear.item.NuclearComposition(productAmounts);
+        com.unnamednuclear.item.NuclearComposition tailsComp = new com.unnamednuclear.item.NuclearComposition(tailsAmounts);
 
         ItemStack productStack = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
-        productStack.set(Registration.COMPOSITION.get(), productComp.normalize());
+        productStack.set(Registration.COMPOSITION.get(), productComp);
 
         ItemStack tailsStack = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get());
-        tailsStack.set(Registration.COMPOSITION.get(), tailsComp.normalize());
+        tailsStack.set(Registration.COMPOSITION.get(), tailsComp);
 
         addOrGrow(1, productStack);
         addOrGrow(2, tailsStack);
         
-        productTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), 100), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
-        tailsTank.fill(new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), 100), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+        net.neoforged.neoforge.fluids.FluidStack productFluid = new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), 100);
+        productFluid.set(Registration.COMPOSITION.get(), productComp);
+        productTank.fill(productFluid, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+
+        net.neoforged.neoforge.fluids.FluidStack tailsFluid = new net.neoforged.neoforge.fluids.FluidStack(Registration.UF6.get(), 100);
+        tailsFluid.set(Registration.COMPOSITION.get(), tailsComp);
+        tailsTank.fill(tailsFluid, net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+    }
+
+    private static net.minecraft.resources.ResourceLocation id(String path) {
+        return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(com.unnamednuclear.UnnamedNuclear.MODID, path);
     }
 
     private void addOrGrow(int slot, ItemStack stack) {

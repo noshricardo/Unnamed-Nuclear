@@ -1,0 +1,15 @@
+{
+  "id": "unnamednuclear:am243",
+  "atomic_mass": 243.06,
+  "half_life": 232000000000.0,
+  "reactions": [
+    {
+      "type": "thermal_capture",
+      "cross_section": 75.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:am244": 1.0
+      }
+    }
+  ]
+}

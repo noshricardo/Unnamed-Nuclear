@@ -1,0 +1,22 @@
+{
+  "id": "unnamednuclear:am241",
+  "atomic_mass": 241.06,
+  "half_life": 13632480000.0,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:np237": 1.0
+      }
+    },
+    {
+      "type": "thermal_capture",
+      "cross_section": 600.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:am242m": 1.0
+      }
+    }
+  ]
+}

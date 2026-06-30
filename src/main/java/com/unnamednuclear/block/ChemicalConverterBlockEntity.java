@@ -106,7 +106,10 @@ public class ChemicalConverterBlockEntity extends BlockEntity implements MenuPro
         if (!result.isEmpty()) {
             com.unnamednuclear.item.NuclearComposition comp = input.get(Registration.COMPOSITION.get());
             if (comp == null && (input.is(Registration.YELLOWCAKE.get()) || input.is(Registration.URANYL_NITRATE.get()) || input.is(Registration.URANIUM_DIOXIDE.get()) || input.is(Registration.URANIUM_TETRAFLUORIDE.get()))) {
-                comp = new com.unnamednuclear.item.NuclearComposition(0.007, 0.993, 0, 0, 0, 0, 0, 0, 0);
+                comp = new com.unnamednuclear.item.NuclearComposition(java.util.Map.of(
+                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("unnamednuclear", "u235"), 0.007,
+                    net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("unnamednuclear", "u238"), 0.993
+                ));
             }
             
             input.shrink(1);

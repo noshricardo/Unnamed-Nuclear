@@ -1,0 +1,14 @@
+{
+  "id": "unnamednuclear:ba137m",
+  "atomic_mass": 136.91,
+  "half_life": 4414.0,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:ba137": 1.0
+      }
+    }
+  ]
+}

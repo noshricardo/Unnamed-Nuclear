@@ -1,0 +1,14 @@
+{
+  "id": "unnamednuclear:tc99m",
+  "atomic_mass": 98.91,
+  "half_life": 623256.0,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:tc99": 1.0
+      }
+    }
+  ]
+}

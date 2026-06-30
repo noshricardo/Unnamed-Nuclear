@@ -21,15 +21,9 @@ public class TooltipUtils {
         if (comp != null) {
             double total = comp.getTotal();
             if (total > 0) {
-                addPart(tooltip, "u235", comp.u235(), total, ChatFormatting.GRAY);
-                addPart(tooltip, "u238", comp.u238(), total, ChatFormatting.GRAY);
-                addPart(tooltip, "u234", comp.u234(), total, ChatFormatting.DARK_GRAY);
-                addPart(tooltip, "u236", comp.u236(), total, ChatFormatting.DARK_GRAY);
-                addPart(tooltip, "pu239", comp.pu239(), total, ChatFormatting.GOLD);
-                addPart(tooltip, "pu240", comp.pu240(), total, ChatFormatting.GOLD);
-                addPart(tooltip, "sr90", comp.sr90(), total, ChatFormatting.DARK_RED);
-                addPart(tooltip, "cs137", comp.cs137(), total, ChatFormatting.DARK_PURPLE);
-                addPart(tooltip, "waste", comp.waste(), total, ChatFormatting.DARK_GRAY);
+                for (java.util.Map.Entry<net.minecraft.resources.ResourceLocation, Double> entry : comp.amounts().entrySet()) {
+                    addPart(tooltip, entry.getKey().getPath(), entry.getValue(), total, ChatFormatting.GRAY);
+                }
             }
         } else {
             Double enrichment = stack.get(Registration.ENRICHMENT.get());

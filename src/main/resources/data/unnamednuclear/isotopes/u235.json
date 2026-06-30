@@ -1,0 +1,47 @@
+{
+  "id": "unnamednuclear:u235",
+  "atomic_mass": 235.04,
+  "half_life": 0.0,
+  "reactions": [
+    {
+      "type": "thermal_fission",
+      "cross_section": 582.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:i135": 0.0639,
+        "unnamednuclear:sr90": 0.0577,
+        "unnamednuclear:cs137": 0.0621,
+        "unnamednuclear:mo99": 0.0611,
+        "unnamednuclear:nd149": 0.0108,
+        "unnamednuclear:sn121": 0.0001
+      },
+      "neutrons": 2.4,
+      "energy": 200.0
+    },
+    {
+      "type": "fast_fission",
+      "cross_section": 1.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:i135": 0.0639,
+        "unnamednuclear:sr90": 0.0577,
+        "unnamednuclear:cs137": 0.0621,
+        "unnamednuclear:mo99": 0.0611,
+        "unnamednuclear:nd149": 0.0108,
+        "unnamednuclear:sn121": 0.0001
+      },
+      "neutrons": 2.5,
+      "energy": 200.0
+    },
+    {
+      "type": "thermal_capture",
+      "cross_section": 99.0,
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:u236": 1.0
+      },
+      "neutrons": 0.0,
+      "energy": 0.0
+    }
+  ]
+}

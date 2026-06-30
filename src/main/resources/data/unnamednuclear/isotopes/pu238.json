@@ -1,0 +1,14 @@
+{
+  "id": "unnamednuclear:pu238",
+  "atomic_mass": 238.05,
+  "half_life": 2768000000.0,
+  "reactions": [
+    {
+      "type": "decay",
+      "probability": 1.0,
+      "products": {
+        "unnamednuclear:u234": 1.0
+      }
+    }
+  ]
+}

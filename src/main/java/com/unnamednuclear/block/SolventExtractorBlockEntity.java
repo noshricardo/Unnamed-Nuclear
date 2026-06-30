@@ -113,27 +113,37 @@ public class SolventExtractorBlockEntity extends BlockEntity implements MenuProv
         if (input.is(Registration.NUCLEAR_FUEL.get())) {
             com.unnamednuclear.item.NuclearComposition comp = input.get(Registration.COMPOSITION.get());
             if (comp == null) return;
-            double total = comp.getTotal();
+            
+            java.util.Map<net.minecraft.resources.ResourceLocation, Double> uAmounts = new java.util.HashMap<>();
+            java.util.Map<net.minecraft.resources.ResourceLocation, Double> puAmounts = new java.util.HashMap<>();
+            java.util.Map<net.minecraft.resources.ResourceLocation, Double> fpAmounts = new java.util.HashMap<>();
+
+            for (java.util.Map.Entry<net.minecraft.resources.ResourceLocation, Double> entry : comp.amounts().entrySet()) {
+                String path = entry.getKey().getPath();
+                if (path.startsWith("u")) {
+                    uAmounts.put(entry.getKey(), entry.getValue());
+                } else if (path.startsWith("pu")) {
+                    puAmounts.put(entry.getKey(), entry.getValue());
+                } else {
+                    fpAmounts.put(entry.getKey(), entry.getValue());
+                }
+            }
             
             ItemStack uNitrate = new ItemStack(Registration.URANYL_NITRATE.get());
-            uNitrate.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(
-                comp.u235() / total, comp.u238() / total, 0, 0, 0, 0, 
-                comp.u234() / total, comp.u236() / total, 0
-            ));
+            uNitrate.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(uAmounts));
 
             ItemStack puNitrate = new ItemStack(Registration.PLUTONIUM_NITRATE.get());
-            puNitrate.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(
-                0, 0, comp.pu239() / total, 0, 0, 0, 0, 0, comp.pu240() / total
-            ));
+            puNitrate.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(puAmounts));
 
             input.shrink(1);
             acid.shrink(1);
             addOrGrow(1, uNitrate);
             addOrGrow(2, puNitrate);
             
-            // Generate some liquid waste (simplified as fission products in output 3)
-            if (comp.waste() > 0.01) {
-                addOrGrow(3, new ItemStack(Registration.FISSION_PRODUCTS.get()));
+            if (!fpAmounts.isEmpty()) {
+                ItemStack fp = new ItemStack(Registration.FISSION_PRODUCTS.get());
+                fp.set(Registration.COMPOSITION.get(), new com.unnamednuclear.item.NuclearComposition(fpAmounts));
+                addOrGrow(3, fp);
             }
         } else if (input.is(Registration.URANYL_NITRATE.get())) {
             // Uranyl Nitrate + TBP -> Pure Uranium Dioxide (simplified intermediate)

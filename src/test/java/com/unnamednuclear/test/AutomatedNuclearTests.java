@@ -19,7 +19,7 @@ import net.neoforged.neoforge.gametest.PrefixGameTestTemplate;
 public class AutomatedNuclearTests {
 
     @PrefixGameTestTemplate(false)
-    @GameTest(template = "neoforge:empty")
+    @GameTest(template = "minecraft:empty")
     public static void testCentrifugeItemProcessing(GameTestHelper helper) {
         BlockPos pos = new BlockPos(1, 1, 1);
         helper.setBlock(pos, Registration.CENTRIFUGE.get());
@@ -28,7 +28,7 @@ public class AutomatedNuclearTests {
         
         // Prepare input: 2 UF6 items with standard composition
         ItemStack input = new ItemStack(Registration.URANIUM_HEXAFLUORIDE.get(), 2);
-        NuclearComposition natural = new NuclearComposition(0.0071, 0.99285, 0, 0, 0, 0, 0.00005, 0, 0);
+        NuclearComposition natural = new NuclearComposition(java.util.Map.of(id("u235"), 0.0071, id("u238"), 0.99285, id("u234"), 0.00005));
         input.set(Registration.COMPOSITION.get(), natural);
         
         be.getInventory().setStackInSlot(0, input);
@@ -56,7 +56,7 @@ public class AutomatedNuclearTests {
     }
 
     @PrefixGameTestTemplate(false)
-    @GameTest(template = "neoforge:empty")
+    @GameTest(template = "minecraft:empty")
     public static void testCentrifugeFluidProcessing(GameTestHelper helper) {
         BlockPos pos = new BlockPos(1, 1, 1);
         helper.setBlock(pos, Registration.CENTRIFUGE.get());
@@ -78,7 +78,7 @@ public class AutomatedNuclearTests {
     }
 
     @PrefixGameTestTemplate(false)
-    @GameTest(template = "neoforge:empty")
+    @GameTest(template = "minecraft:empty")
     public static void testHeatExchanger(GameTestHelper helper) {
         BlockPos pos = new BlockPos(1, 1, 1);
         helper.setBlock(pos, Registration.HEAT_EXCHANGER.get());
@@ -108,7 +108,7 @@ public class AutomatedNuclearTests {
     }
 
     @PrefixGameTestTemplate(false)
-    @GameTest(template = "neoforge:empty")
+    @GameTest(template = "minecraft:empty")
     public static void testReactorAssembly(GameTestHelper helper) {
         // Create a 3x3x3 reactor
         // Controller at (1, 1, 0)
@@ -139,7 +139,7 @@ public class AutomatedNuclearTests {
     }
 
     @PrefixGameTestTemplate(false)
-    @GameTest(template = "neoforge:empty")
+    @GameTest(template = "minecraft:empty")
     public static void testReactorWithFuel(GameTestHelper helper) {
         // Build the same 3x3x3 reactor but with a fuel rod
         for (int x = 0; x < 3; x++) {
@@ -180,7 +180,7 @@ public class AutomatedNuclearTests {
         });
     }
     @PrefixGameTestTemplate(false)
-    @GameTest(template = "neoforge:empty")
+    @GameTest(template = "minecraft:empty")
     public static void testRBMKReactor(GameTestHelper helper) {
         // RBMK: Graphite moderated, Water cooled
         for (int x = 0; x < 5; x++) {
@@ -228,7 +228,7 @@ public class AutomatedNuclearTests {
     }
 
     @PrefixGameTestTemplate(false)
-    @GameTest(template = "neoforge:empty")
+    @GameTest(template = "minecraft:empty")
     public static void testSodiumFastReactor(GameTestHelper helper) {
         // Sodium Fast: No moderator
         for (int x = 0; x < 3; x++) {
@@ -261,7 +261,7 @@ public class AutomatedNuclearTests {
         });
     }
 
-    @GameTest(template = "neoforge:empty")
+    @GameTest(template = "minecraft:empty")
     @PrefixGameTestTemplate(false)
     public static void testLooseBlockSimulation(GameTestHelper helper) {
         BlockPos pos = new BlockPos(1, 1, 1);
@@ -285,7 +285,7 @@ public class AutomatedNuclearTests {
         });
     }
 
-    @GameTest(template = "neoforge:empty")
+    @GameTest(template = "minecraft:empty")
     @PrefixGameTestTemplate(false)
     public static void testRBMKInstability(GameTestHelper helper) {
         // Build an RBMK-like structure (Graphite moderated)
@@ -317,5 +317,8 @@ public class AutomatedNuclearTests {
                 helper.succeed();
             }
         });
+    }
+    private static net.minecraft.resources.ResourceLocation id(String path) {
+        return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath("unnamednuclear", path);
     }
 }
